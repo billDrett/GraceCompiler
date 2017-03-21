@@ -5,8 +5,19 @@ Tokens
     plus = '+';
     minus = '-';
     mult = '*';
-    div = '/';
-    mod = '%';
+    division = '/';
+    div = 'div';
+    mod = 'mod';    
+
+    assign = '<-';
+    equal = '=';
+    n_equal =  '<>';
+    less = '<';
+    less_equal = '<=';
+    greater = '>';
+    greater_equal = '>=';
+    hash = '#';
+    
     l_par = '(';
     r_par = ')';
     blank = (' ' |13 | 10 | '\t' | 9)+;
