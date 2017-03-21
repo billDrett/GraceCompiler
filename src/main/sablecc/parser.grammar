@@ -1,0 +1,55 @@
+Package compiler;   
+ 
+Tokens
+    number = ['0' .. '9']+;
+    plus = '+';
+    minus = '-';
+    mult = '*';
+    division = '/';
+
+    assign = '<-';
+    equal = '=';
+    n_equal =  '<>';
+    less = '<';
+    less_equal = '<=';
+    greater = '>';
+    greater_equal = '>=';
+    hash = '#';
+    
+    l_par = '(';
+    r_par = ')';
+    blank = (' ' |13 | 10 | '\t' | 9)+;
+
+Ignored Tokens
+  blank;
+	/*
+Productions
+   expr = {factor} factor
+        | {plus} expr plus factor
+        | {minus} expr minus factor;
+   
+   factor = 
+        {term} term
+        | {mult} factor mult term 
+        | {div} factor div term
+        | {mod} factor mod term;
+
+   term = {number} number
+        | {expr} l_par expr r_par;
+  
+/*
+Helpers
+  sp = ' ';
+  lf = 0x000a;
+  cr = 0x000d;
+  ff = 0x000c;
+  ht = 0x0009; 
+  line_terminator = lf | cr | cr lf;
+  white_space = (sp | ht | ff | line_terminator)*;
+
+Tokens
+  white_space = white_space;
+
+Ignored Tokens
+  white_space;*/
+
