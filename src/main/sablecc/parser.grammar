@@ -1,7 +1,6 @@
 Package compiler;   
  
 Tokens
-    number = ['0' .. '9']+;
     plus = '+';
     minus = '-';
     mult = '*';
@@ -49,8 +48,9 @@ Tokens
     reference = 'ref';
     
     return = 'return';
-    
+
     variable = 'var';
+    number = ['0' .. '9']+;
     
     blank = (' ' |13 | 10 | '\t' | 9)+;
 
