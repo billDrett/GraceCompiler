@@ -1,18 +1,23 @@
-Package compiler;   
+Package compiler;
 
 Helpers
-  sp = ' ';
-  lf = 0x000a;
-  cr = 0x000d;
-  ff = 0x000c;
-  ht = 0x0009; 
-  line_terminator = lf | cr | cr lf;
-  white_space = (sp | ht | ff | line_terminator); 
-  
-  digit = ['0'..'9'];
-  lowercase = ['a'..'z'];
-  uppercase = ['A'..'Z'];
-  letter  = lowercase | uppercase | '_' | digit*;
+    sp = ' ';
+    lf = 0x000a;
+    cr = 0x000d;
+    ff = 0x000c;
+    ht = 0x0009;
+    line_terminator = lf | cr | cr lf;
+    white_space = (sp | ht | ff | line_terminator);
+
+    digit = ['0'..'9'];
+    lowercase = ['a'..'z'];
+    uppercase = ['A'..'Z'];
+    letter  = lowercase | uppercase | '_' | digit*;
+
+    ascii_input_character = [0..255];
+    input_character = [ascii_input_character - [cr + lf]];
+    end_of_line_comment = '$' input_character* line_terminator;
+
 
 Tokens
     number = '0' | [digit-'0'] digit*;
@@ -21,7 +26,7 @@ Tokens
     mult = '*';
     division = '/';
     div = 'div';
-    mod = 'mod';    
+    mod = 'mod';
 
     assign = '<-';
     equal = '=';
@@ -31,7 +36,7 @@ Tokens
     greater = '>';
     greater_equal = '>=';
     hash = '#';
-    
+
     l_par = '(';
     r_par = ')';
     l_brc = '{';
@@ -41,60 +46,60 @@ Tokens
     semi = ';';
     comma = ',';
     colon = ':';
-    
+
     char = 'char';
     int = 'int';
-    
+
     and = 'and';
     or = 'or';
     not = 'not';
-    
+
     if = 'if';
     then = 'then';
     else = 'else';
-    
+
     while = 'while';
     do = 'do';
-    
+
     nothing = 'nothing';
-    
+
     function = 'fun';
-    
+
     reference = 'ref';
-    
+
     return = 'return';
-    
+
     variable = 'var';
-    
+
    // blank = (' ' |13 | 10 | '\t' | 9 | 32)+;
-    identifier = (lowercase |  uppercase) letter*; 
-    white_spaces = white_space+; 
+    identifier = (lowercase |  uppercase) letter*;
+    white_spaces = white_space+;
 
 Ignored Tokens
+   white_spaces;
 
-  white_spaces;
 	/*
 Productions
    expr = {factor} factor
         | {plus} expr plus factor
         | {minus} expr minus factor;
-   
-   factor = 
+
+   factor =
         {term} term
-        | {mult} factor mult term 
+        | {mult} factor mult term
         | {div} factor div term
         | {mod} factor mod term;
 
    term = {number} number
         | {expr} l_par expr r_par;
-  
+
 /*
 Helpers
   sp = ' ';
   lf = 0x000a;
   cr = 0x000d;
   ff = 0x000c;
-  ht = 0x0009; 
+  ht = 0x0009;
   line_terminator = lf | cr | cr lf;
   white_space = (sp | ht | ff | line_terminator)*;
 
@@ -103,4 +108,3 @@ Tokens
 
 Ignored Tokens
   white_space;*/
-
