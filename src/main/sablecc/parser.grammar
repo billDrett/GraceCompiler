@@ -7,12 +7,19 @@ Helpers
     ff  = 0x000c;
     cr  = 0x000d;
     sp  = ' ';
+
+
     line_terminator = lf | cr | cr lf;
     input_character = [unicode_input_character - [cr + lf]];
 
+    not_dollar = [input_character - '$'];
+    not_double_dollar = [unicode_input_character - ['$' + '$']];
+
     white_space = (sp | ht | ff | line_terminator);
 
-    end_of_line_comment = '$' input_character* line_terminator?;
+    traditional_comment = '$' '$' not_double_dollar* '$' '$';
+
+    end_of_line_comment = '$' not_dollar input_character* line_terminator?;
 
     digit = ['0'..'9'];
     lowercase = ['a'..'z'];
@@ -20,7 +27,7 @@ Helpers
     letter  = lowercase | uppercase | '_' | digit*;
 
 Tokens
-    comment = end_of_line_comment;
+    comment = end_of_line_comment | traditional_comment;
 
     number = '0' | [digit-'0'] digit*;
     plus = '+';
