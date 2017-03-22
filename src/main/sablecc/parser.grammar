@@ -1,6 +1,7 @@
 Package compiler;   
  
 Tokens
+
     number = ['0' .. '9']+;
     plus = '+';
     minus = '-';
