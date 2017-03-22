@@ -8,28 +8,28 @@ Helpers
     cr  = 0x000d;
     sp  = ' ';
 
-
     line_terminator = lf | cr | cr lf;
     input_character = [unicode_input_character - [cr + lf]];
 
     not_dollar = [input_character - '$'];
-    not_double_dollar = [unicode_input_character - ['$' + '$']];
 
     white_space = (sp | ht | ff | line_terminator);
 
-    traditional_comment = '$' '$' not_double_dollar* '$' '$';
+    traditional_comment = '$' '$' not_dollar* ('$' (not_dollar)+)* '$' '$';
 
-    end_of_line_comment = '$' not_dollar input_character* line_terminator?;
+    end_of_line_comment = '$' (not_dollar input_character*)* line_terminator;
 
     digit = ['0'..'9'];
     lowercase = ['a'..'z'];
     uppercase = ['A'..'Z'];
-    letter  = lowercase | uppercase | '_' | digit*;
+    letter  = lowercase | uppercase;
+
+    hex_digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F';
+    escape_sequence = '\' 'n' | '\' 't' | '\' 'r' | '\' '0' | '\' '\' | '\' ''' | '\' '"' | '\' 'x' hex_digit hex_digit;
 
 Tokens
     comment = end_of_line_comment | traditional_comment;
 
-    number = '0' | [digit-'0'] digit*;
     plus = '+';
     minus = '-';
     mult = '*';
@@ -56,6 +56,9 @@ Tokens
     comma = ',';
     colon = ':';
 
+    number = '0' | [digit-'0'] digit*;
+    const_number = digit+;
+
     char = 'char';
     int = 'int';
 
@@ -81,11 +84,13 @@ Tokens
     variable = 'var';
 
    // blank = (' ' |13 | 10 | '\t' | 9 | 32)+;
-    identifier = (lowercase |  uppercase) letter*;
+    identifier = letter (letter | digit | '_')*;
     white_spaces = white_space+;
 
+    esc_sequence = escape_sequence;
+
 Ignored Tokens
-   white_spaces;
+   white_spaces, comment;
 
 	/*
 Productions
