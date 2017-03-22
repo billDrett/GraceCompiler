@@ -18,8 +18,8 @@ public class Main {
 
                         if (t instanceof EOF)
                                 break;
-
-                        System.out.println("token "+ t.toString());
+                        if (!t.getText().equals("\n"))
+                            System.out.println("Accepted Token :"+t.toString());
                         } catch (Exception e)
                         {
                                 System.err.println(e.getMessage());
