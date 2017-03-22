@@ -1,25 +1,27 @@
 Package compiler;
 
 Helpers
-    sp = ' ';
-    lf = 0x000a;
-    cr = 0x000d;
-    ff = 0x000c;
-    ht = 0x0009;
+    unicode_input_character = [0..0xffff];
+    ht  = 0x0009;
+    lf  = 0x000a;
+    ff  = 0x000c;
+    cr  = 0x000d;
+    sp  = ' ';
     line_terminator = lf | cr | cr lf;
+    input_character = [unicode_input_character - [cr + lf]];
+
     white_space = (sp | ht | ff | line_terminator);
+
+    end_of_line_comment = '$' input_character* line_terminator;
 
     digit = ['0'..'9'];
     lowercase = ['a'..'z'];
     uppercase = ['A'..'Z'];
     letter  = lowercase | uppercase | '_' | digit*;
 
-    ascii_input_character = [0..255];
-    input_character = [ascii_input_character - [cr + lf]];
-    end_of_line_comment = '$' input_character* line_terminator;
-
-
 Tokens
+    comment = end_of_line_comment;
+
     number = '0' | [digit-'0'] digit*;
     plus = '+';
     minus = '-';
