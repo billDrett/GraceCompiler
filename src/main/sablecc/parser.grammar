@@ -15,7 +15,7 @@ Helpers
 
     white_space = (sp | ht | ff | line_terminator);
 
-    traditional_comment = '$' '$' not_dollar* ('$' (not_dollar)+)* '$' '$';
+    traditional_comment = '$$' not_dollar* ('$' (not_dollar)+)* '$$';
 
     end_of_line_comment = '$' (not_dollar input_character*)* line_terminator;
 
@@ -25,7 +25,7 @@ Helpers
     letter  = lowercase | uppercase;
 
     hex_digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F';
-    escape_sequence = '\' 'n' | '\' 't' | '\' 'r' | '\' '0' | '\' '\' | '\' ''' | '\' '"' | '\' 'x' hex_digit hex_digit;
+    escape_sequence = '\n' | '\t' | '\r' | '\0' | '\\' | '\' ''' | '\' '"' | '\x' hex_digit hex_digit;
 
 Tokens
     comment = end_of_line_comment | traditional_comment;
@@ -58,6 +58,7 @@ Tokens
 
     number = '0' | [digit-'0'] digit*;
     const_number = digit+;
+    const_string = '"' (letter | digit | escape_sequence)* '"';
 
     char = 'char';
     int = 'int';
