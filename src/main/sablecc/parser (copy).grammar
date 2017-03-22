@@ -12,10 +12,10 @@ Helpers
   digit = ['0'..'9'];
   lowercase = ['a'..'z'];
   uppercase = ['A'..'Z'];
-  letter  = lowercase | uppercase | '_';
+  letter  = lowercase | uppercase | '_' | digit*;
 
 Tokens
-    number = digit+;
+    number = '0' | [digit-'0'] digit*;
     plus = '+';
     minus = '-';
     mult = '*';
@@ -71,8 +71,8 @@ Tokens
     white_spaces = white_space+; 
 
 Ignored Tokens
+   white_spaces;
 
-  white_spaces;
 	/*
 Productions
    expr = {factor} factor

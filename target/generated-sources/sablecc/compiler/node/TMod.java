@@ -9,12 +9,12 @@ public final class TMod extends Token
 {
     public TMod()
     {
-        super.setText("%");
+        super.setText("mod");
     }
 
     public TMod(int line, int pos)
     {
-        super.setText("%");
+        super.setText("mod");
         setLine(line);
         setPos(pos);
     }

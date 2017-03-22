@@ -84,12 +84,57 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
+    public void caseTDivision(TDivision node)
+    {
+        defaultCase(node);
+    }
+
     public void caseTDiv(TDiv node)
     {
         defaultCase(node);
     }
 
     public void caseTMod(TMod node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTAssign(TAssign node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTEqual(TEqual node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTNEqual(TNEqual node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTLess(TLess node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTLessEqual(TLessEqual node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTGreater(TGreater node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTGreaterEqual(TGreaterEqual node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTHash(THash node)
     {
         defaultCase(node);
     }
@@ -104,7 +149,122 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseTBlank(TBlank node)
+    public void caseTLBrc(TLBrc node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTRBrc(TRBrc node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTLBkt(TLBkt node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTRBkt(TRBkt node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTSemi(TSemi node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTComma(TComma node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTColon(TColon node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTChar(TChar node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTInt(TInt node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTAnd(TAnd node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTOr(TOr node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTNot(TNot node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTIf(TIf node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTThen(TThen node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTElse(TElse node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTWhile(TWhile node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTDo(TDo node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTNothing(TNothing node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTFunction(TFunction node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTReference(TReference node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTReturn(TReturn node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTVariable(TVariable node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTIdentifier(TIdentifier node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTWhiteSpaces(TWhiteSpaces node)
     {
         defaultCase(node);
     }

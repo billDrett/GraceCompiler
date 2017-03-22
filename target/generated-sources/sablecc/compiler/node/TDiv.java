@@ -9,12 +9,12 @@ public final class TDiv extends Token
 {
     public TDiv()
     {
-        super.setText("/");
+        super.setText("div");
     }
 
     public TDiv(int line, int pos)
     {
-        super.setText("/");
+        super.setText("div");
         setLine(line);
         setPos(pos);
     }
