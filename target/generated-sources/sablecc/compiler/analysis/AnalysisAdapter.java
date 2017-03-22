@@ -64,6 +64,11 @@ public class AnalysisAdapter implements Analysis
         }
     }
 
+    public void caseTComment(TComment node)
+    {
+        defaultCase(node);
+    }
+
     public void caseTNumber(TNumber node)
     {
         defaultCase(node);

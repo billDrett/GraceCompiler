@@ -12,7 +12,7 @@ Helpers
 
     white_space = (sp | ht | ff | line_terminator);
 
-    end_of_line_comment = '$' input_character* line_terminator;
+    end_of_line_comment = '$' input_character* line_terminator?;
 
     digit = ['0'..'9'];
     lowercase = ['a'..'z'];

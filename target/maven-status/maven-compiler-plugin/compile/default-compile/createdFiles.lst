@@ -11,6 +11,7 @@ compiler/node/TNot.class
 compiler/node/TLess.class
 compiler/node/TMod.class
 compiler/analysis/AnalysisAdapter.class
+compiler/node/TComment.class
 compiler/node/TChar.class
 compiler/node/TAssign.class
 compiler/lexer/Lexer$State.class

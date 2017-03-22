@@ -40,6 +40,7 @@
 /home/dimitris/git-repos/GraceCompiler/target/generated-sources/sablecc/compiler/node/TElse.java
 /home/dimitris/git-repos/GraceCompiler/target/generated-sources/sablecc/compiler/lexer/LexerException.java
 /home/dimitris/git-repos/GraceCompiler/target/generated-sources/sablecc/compiler/node/Token.java
+/home/dimitris/git-repos/GraceCompiler/target/generated-sources/sablecc/compiler/node/TComment.java
 /home/dimitris/git-repos/GraceCompiler/target/generated-sources/sablecc/compiler/node/EOF.java
 /home/dimitris/git-repos/GraceCompiler/target/generated-sources/sablecc/compiler/lexer/Lexer.java
 /home/dimitris/git-repos/GraceCompiler/target/generated-sources/sablecc/compiler/node/TColon.java
