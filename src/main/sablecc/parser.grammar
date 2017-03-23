@@ -39,12 +39,11 @@ Tokens
 
     assign = '<-';
     equal = '=';
-    n_equal =  '<>';
+    n_equal =  '#';
     less = '<';
     less_equal = '<=';
     greater = '>';
     greater_equal = '>=';
-    hash = '#';
 
     l_par = '(';
     r_par = ')';
@@ -88,8 +87,6 @@ Tokens
 
     identifier = letter (letter | digit | '_')*;
 
-    block = 'block!';
-
    // blank = (' ' |13 | 10 | '\t' | 9 | 32)+;
     white_spaces = white_space+;
 
@@ -101,14 +98,34 @@ Ignored Tokens
 
 Productions
 
-    program =
-        {func_def}  function_definition |
+    program =commd+;
+        /*{func_def}  function_definition |
         {command}   commd+ |
         {condition} cond |
         {func_call} func_call;
-
+*/
     commd =
-        expr semi;
+        stmt;
+
+    block =
+        {block} l_brc stmt* r_brc;
+
+    stmt =
+        {matched} matched |
+        {unmatched} unmatched;
+
+
+    matched =
+        {semi} semi |
+        {assignment} l_value assign expr semi |
+        {block} block |
+        {func_call} func_call semi |
+        {if_else} if cond then [id1]: matched else [id2]: matched |
+        {return} return expr? semi;
+
+    unmatched =
+        {if} if cond then stmt |
+        {if_else} if cond then matched else unmatched;
 
     expr =
         {factor} factor |
@@ -132,10 +149,10 @@ Productions
 
     term =
          {int_const} number |
-         {char_const} const_string;// |
-    /*   {l_value} l_value |
+         {char_const} const_char |
+         {l_value} l_value |
          {func_call} func_call;
-    */
+
 
     cond =
          {cond} cond_and |
@@ -165,7 +182,7 @@ Productions
          {greater_equal} greater_equal;
 
 
-    //Functions Definition
+ /*   //Functions Definition
     function_definition =
         header local_definition* block;
 
@@ -222,7 +239,7 @@ Productions
     function_declaration =
         {func_decl} header semi;
 
-
+*/
     //Function Call
     func_call =
         {func_call} identifier l_par func_call_expr? r_par;
@@ -232,6 +249,11 @@ Productions
 
     comma_expr =
         {comma_expr} comma expr;
+
+    l_value =
+         {id} identifier |
+         {string_literal} const_string |
+         {l_value} l_value l_bkt expr r_bkt;
 
 //******************************************************************************************
 
@@ -246,7 +268,7 @@ Productions
 
           block =
                {block} l_brc stmt* r_brc;
-      */
+
 
 
           l_value =
@@ -256,7 +278,7 @@ Productions
 
 
 
-      /*
+
           cond_relat =
                {cond} cond_par |
                {cond_relat} cond_relat relat_oper cond_par;

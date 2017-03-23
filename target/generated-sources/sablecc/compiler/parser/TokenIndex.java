@@ -88,194 +88,182 @@ class TokenIndex extends AnalysisAdapter
     }
 
     @Override
-    public void caseTHash(@SuppressWarnings("unused") THash node)
+    public void caseTLPar(@SuppressWarnings("unused") TLPar node)
     {
         this.index = 13;
     }
 
     @Override
-    public void caseTLPar(@SuppressWarnings("unused") TLPar node)
+    public void caseTRPar(@SuppressWarnings("unused") TRPar node)
     {
         this.index = 14;
     }
 
     @Override
-    public void caseTRPar(@SuppressWarnings("unused") TRPar node)
+    public void caseTLBrc(@SuppressWarnings("unused") TLBrc node)
     {
         this.index = 15;
     }
 
     @Override
-    public void caseTLBrc(@SuppressWarnings("unused") TLBrc node)
+    public void caseTRBrc(@SuppressWarnings("unused") TRBrc node)
     {
         this.index = 16;
     }
 
     @Override
-    public void caseTRBrc(@SuppressWarnings("unused") TRBrc node)
+    public void caseTLBkt(@SuppressWarnings("unused") TLBkt node)
     {
         this.index = 17;
     }
 
     @Override
-    public void caseTLBkt(@SuppressWarnings("unused") TLBkt node)
+    public void caseTRBkt(@SuppressWarnings("unused") TRBkt node)
     {
         this.index = 18;
     }
 
     @Override
-    public void caseTRBkt(@SuppressWarnings("unused") TRBkt node)
+    public void caseTSemi(@SuppressWarnings("unused") TSemi node)
     {
         this.index = 19;
     }
 
     @Override
-    public void caseTSemi(@SuppressWarnings("unused") TSemi node)
+    public void caseTComma(@SuppressWarnings("unused") TComma node)
     {
         this.index = 20;
     }
 
     @Override
-    public void caseTComma(@SuppressWarnings("unused") TComma node)
+    public void caseTColon(@SuppressWarnings("unused") TColon node)
     {
         this.index = 21;
     }
 
     @Override
-    public void caseTColon(@SuppressWarnings("unused") TColon node)
+    public void caseTNumber(@SuppressWarnings("unused") TNumber node)
     {
         this.index = 22;
     }
 
     @Override
-    public void caseTNumber(@SuppressWarnings("unused") TNumber node)
+    public void caseTConstChar(@SuppressWarnings("unused") TConstChar node)
     {
         this.index = 23;
     }
 
     @Override
-    public void caseTIntConst(@SuppressWarnings("unused") TIntConst node)
+    public void caseTConstString(@SuppressWarnings("unused") TConstString node)
     {
         this.index = 24;
     }
 
     @Override
-    public void caseTConstString(@SuppressWarnings("unused") TConstString node)
+    public void caseTChar(@SuppressWarnings("unused") TChar node)
     {
         this.index = 25;
     }
 
     @Override
-    public void caseTChar(@SuppressWarnings("unused") TChar node)
+    public void caseTInt(@SuppressWarnings("unused") TInt node)
     {
         this.index = 26;
     }
 
     @Override
-    public void caseTInt(@SuppressWarnings("unused") TInt node)
+    public void caseTAnd(@SuppressWarnings("unused") TAnd node)
     {
         this.index = 27;
     }
 
     @Override
-    public void caseTAnd(@SuppressWarnings("unused") TAnd node)
+    public void caseTOr(@SuppressWarnings("unused") TOr node)
     {
         this.index = 28;
     }
 
     @Override
-    public void caseTOr(@SuppressWarnings("unused") TOr node)
+    public void caseTNot(@SuppressWarnings("unused") TNot node)
     {
         this.index = 29;
     }
 
     @Override
-    public void caseTNot(@SuppressWarnings("unused") TNot node)
+    public void caseTIf(@SuppressWarnings("unused") TIf node)
     {
         this.index = 30;
     }
 
     @Override
-    public void caseTIf(@SuppressWarnings("unused") TIf node)
+    public void caseTThen(@SuppressWarnings("unused") TThen node)
     {
         this.index = 31;
     }
 
     @Override
-    public void caseTThen(@SuppressWarnings("unused") TThen node)
+    public void caseTElse(@SuppressWarnings("unused") TElse node)
     {
         this.index = 32;
     }
 
     @Override
-    public void caseTElse(@SuppressWarnings("unused") TElse node)
+    public void caseTWhile(@SuppressWarnings("unused") TWhile node)
     {
         this.index = 33;
     }
 
     @Override
-    public void caseTWhile(@SuppressWarnings("unused") TWhile node)
+    public void caseTDo(@SuppressWarnings("unused") TDo node)
     {
         this.index = 34;
     }
 
     @Override
-    public void caseTDo(@SuppressWarnings("unused") TDo node)
+    public void caseTNothing(@SuppressWarnings("unused") TNothing node)
     {
         this.index = 35;
     }
 
     @Override
-    public void caseTNothing(@SuppressWarnings("unused") TNothing node)
+    public void caseTFunction(@SuppressWarnings("unused") TFunction node)
     {
         this.index = 36;
     }
 
     @Override
-    public void caseTFunction(@SuppressWarnings("unused") TFunction node)
+    public void caseTReference(@SuppressWarnings("unused") TReference node)
     {
         this.index = 37;
     }
 
     @Override
-    public void caseTReference(@SuppressWarnings("unused") TReference node)
+    public void caseTReturn(@SuppressWarnings("unused") TReturn node)
     {
         this.index = 38;
     }
 
     @Override
-    public void caseTReturn(@SuppressWarnings("unused") TReturn node)
+    public void caseTVariable(@SuppressWarnings("unused") TVariable node)
     {
         this.index = 39;
     }
 
     @Override
-    public void caseTVariable(@SuppressWarnings("unused") TVariable node)
+    public void caseTIdentifier(@SuppressWarnings("unused") TIdentifier node)
     {
         this.index = 40;
     }
 
     @Override
-    public void caseTBlock(@SuppressWarnings("unused") TBlock node)
+    public void caseTEscSequence(@SuppressWarnings("unused") TEscSequence node)
     {
         this.index = 41;
     }
 
     @Override
-    public void caseTIdentifier(@SuppressWarnings("unused") TIdentifier node)
-    {
-        this.index = 42;
-    }
-
-    @Override
-    public void caseTEscSequence(@SuppressWarnings("unused") TEscSequence node)
-    {
-        this.index = 43;
-    }
-
-    @Override
     public void caseEOF(@SuppressWarnings("unused") EOF node)
     {
-        this.index = 44;
+        this.index = 42;
     }
 }
