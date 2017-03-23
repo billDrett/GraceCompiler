@@ -11,8 +11,39 @@ public interface Analysis extends Switch
     Object getOut(Node node);
     void setOut(Node node, Object o);
 
+    void caseStart(Start node);
+    void caseATermExpr(ATermExpr node);
+    void caseAAddExpr(AAddExpr node);
+    void caseASubExpr(ASubExpr node);
+    void caseAFactorTerm(AFactorTerm node);
+    void caseAMultTerm(AMultTerm node);
+    void caseADivisionTerm(ADivisionTerm node);
+    void caseADivTerm(ADivTerm node);
+    void caseAModTerm(AModTerm node);
+    void caseANumberFactor(ANumberFactor node);
+    void caseAParensFactor(AParensFactor node);
+    void caseAProgProgram(AProgProgram node);
+    void caseAFuncDefFuncDef(AFuncDefFuncDef node);
+    void caseAHeaderHeader(AHeaderHeader node);
+    void caseAFparDefinition(AFparDefinition node);
+    void caseASemiFparDef(ASemiFparDef node);
+    void caseAFparDefFparDef(AFparDefFparDef node);
+    void caseACommaIdentifier(ACommaIdentifier node);
+    void caseAIntTypeDataType(AIntTypeDataType node);
+    void caseACharTypeDataType(ACharTypeDataType node);
+    void caseATypeType(ATypeType node);
+    void caseATypeStruct(ATypeStruct node);
+    void caseADataRetType(ADataRetType node);
+    void caseANothRetType(ANothRetType node);
+    void caseAFparFparType(AFparFparType node);
+    void caseALrbkt(ALrbkt node);
+    void caseAFuncDefLocalDef(AFuncDefLocalDef node);
+    void caseAFuncDeclLocalDef(AFuncDeclLocalDef node);
+    void caseAVarDefLocalDef(AVarDefLocalDef node);
+    void caseAVarVarDef(AVarVarDef node);
+    void caseAFuncDecl(AFuncDecl node);
+
     void caseTComment(TComment node);
-    void caseTNumber(TNumber node);
     void caseTPlus(TPlus node);
     void caseTMinus(TMinus node);
     void caseTMult(TMult node);
@@ -36,6 +67,9 @@ public interface Analysis extends Switch
     void caseTSemi(TSemi node);
     void caseTComma(TComma node);
     void caseTColon(TColon node);
+    void caseTNumber(TNumber node);
+    void caseTIntConst(TIntConst node);
+    void caseTConstString(TConstString node);
     void caseTChar(TChar node);
     void caseTInt(TInt node);
     void caseTAnd(TAnd node);
@@ -51,7 +85,9 @@ public interface Analysis extends Switch
     void caseTReference(TReference node);
     void caseTReturn(TReturn node);
     void caseTVariable(TVariable node);
+    void caseTBlock(TBlock node);
     void caseTIdentifier(TIdentifier node);
     void caseTWhiteSpaces(TWhiteSpaces node);
+    void caseTEscSequence(TEscSequence node);
     void caseEOF(EOF node);
 }

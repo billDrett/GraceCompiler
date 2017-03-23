@@ -5,28 +5,39 @@ import compiler.lexer.Lexer;
 import compiler.node.*;
 import java.io.PushbackReader;
 import java.io.InputStreamReader;
+import compiler.parser.*;
+
 
 public class Main {
 
-        public static void main(String args[]) {
-                PushbackReader reader = new PushbackReader(new InputStreamReader(System.in));
-                Lexer lexer = new Lexer(reader);
+        public static void main(String args[])
+        {
+                try
+                {
+                        System.out.println("Type an expression:");
 
-                for(;;) {
-                        try {
-                                Token t = lexer.next();
 
-                        if (t instanceof EOF)
-                                break;
-                        if (!t.getText().equals("\n"))
-                            System.out.println("Accepted Token :"+t.toString());
-                        } catch (Exception e)
-                        {
-                                System.err.println(e.getMessage());
-                        }
+                        // Create a Parser instance.
+                        Parser p =
+                                new Parser(
+                                        new Lexer(
+                                                new PushbackReader(
+                                                        new InputStreamReader(System.in), 1024)));
+
+
+                        // Parse the input.
+
+                        Start tree = p.parse();
+
+                        System.out.println("START");
+                        System.out.println(tree.toString());
+                        System.out.println("END");
+
                 }
-
-                System.exit(0);
+                catch(Exception e)
+                {
+                        e.printStackTrace();
+                }
         }
 
 }

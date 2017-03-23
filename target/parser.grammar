@@ -7,22 +7,29 @@ Helpers
     ff  = 0x000c;
     cr  = 0x000d;
     sp  = ' ';
+
     line_terminator = lf | cr | cr lf;
     input_character = [unicode_input_character - [cr + lf]];
 
+    not_dollar = [input_character - '$'];
+
     white_space = (sp | ht | ff | line_terminator);
 
-    end_of_line_comment = '$' input_character* line_terminator?;
+    traditional_comment = '$$' not_dollar* ('$' (not_dollar)+)* '$$';
+
+    end_of_line_comment = '$' (not_dollar input_character*)* line_terminator;
 
     digit = ['0'..'9'];
     lowercase = ['a'..'z'];
     uppercase = ['A'..'Z'];
-    letter  = lowercase | uppercase | '_' | digit*;
+    letter  = lowercase | uppercase;
+
+    hex_digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F';
+    escape_sequence = '\n' | '\t' | '\r' | '\0' | '\\' | '\' ''' | '\' '"' | '\x' hex_digit hex_digit;
 
 Tokens
-    comment = end_of_line_comment;
+    comment = end_of_line_comment | traditional_comment;
 
-    number = '0' | [digit-'0'] digit*;
     plus = '+';
     minus = '-';
     mult = '*';
@@ -49,6 +56,11 @@ Tokens
     comma = ',';
     colon = ':';
 
+    number = '0' | [digit-'0'] digit*;
+
+    int_const = digit+;
+    const_string = '"' (letter | digit | escape_sequence)* '"';
+
     char = 'char';
     int = 'int';
 
@@ -73,40 +85,64 @@ Tokens
 
     variable = 'var';
 
+    block = 'block';
+
    // blank = (' ' |13 | 10 | '\t' | 9 | 32)+;
-    identifier = (lowercase |  uppercase) letter*;
+    identifier = letter (letter | digit | '_')*;
     white_spaces = white_space+;
 
-Ignored Tokens
-   white_spaces;
+    esc_sequence = escape_sequence;
 
-	/*
+Ignored Tokens
+    white_spaces, comment;
+
+
 Productions
-   expr = {factor} factor
-        | {plus} expr plus factor
-        | {minus} expr minus factor;
+    expr = {term} term |
+           {add}  expr plus term |
+           {sub}  expr minus term;
 
-   factor =
-        {term} term
-        | {mult} factor mult term
-        | {div} factor div term
-        | {mod} factor mod term;
+    term = {factor} factor |
+           {mult} term mult factor |
+           {division} term division factor |
+           {div} term div factor |
+           {mod} term mod factor;
 
-   term = {number} number
-        | {expr} l_par expr r_par;
+    factor = {number} number |
+      		   {parens} l_par expr r_par;
 
-/*
-Helpers
-  sp = ' ';
-  lf = 0x000a;
-  cr = 0x000d;
-  ff = 0x000c;
-  ht = 0x0009;
-  line_terminator = lf | cr | cr lf;
-  white_space = (sp | ht | ff | line_terminator)*;
+    program = {prog} func_def;
 
-Tokens
-  white_space = white_space;
+    func_def = {func_def} header local_def* block;
 
-Ignored Tokens
-  white_space;*/
+    header = {header} function identifier l_par fpar_definition? r_par colon ret_type;
+
+    fpar_definition = fpar_def semi_fpar_def*;
+
+    semi_fpar_def = semi fpar_def;
+
+    fpar_def = {fpar_def} reference? identifier comma_identifier* colon fpar_type;
+
+    comma_identifier = comma identifier;
+
+    data_type =  {int_type} int |
+                 {char_type} char;
+
+    type = {type} data_type type_struct*;
+
+    type_struct = l_bkt int_const r_bkt;
+
+    ret_type = {data} data_type |
+               {noth} nothing;
+
+    fpar_type = {fpar} data_type lrbkt? type_struct*;
+
+    lrbkt = l_bkt r_bkt;
+
+    local_def = {func_def}  func_def |
+                {func_decl} func_decl |
+                {var_def}   var_def;
+
+    var_def = {var} variable identifier comma_identifier* colon type semi;
+
+    func_decl = header semi;

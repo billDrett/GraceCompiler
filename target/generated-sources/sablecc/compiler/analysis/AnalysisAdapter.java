@@ -64,12 +64,162 @@ public class AnalysisAdapter implements Analysis
         }
     }
 
-    public void caseTComment(TComment node)
+    public void caseStart(Start node)
     {
         defaultCase(node);
     }
 
-    public void caseTNumber(TNumber node)
+    public void caseATermExpr(ATermExpr node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAAddExpr(AAddExpr node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseASubExpr(ASubExpr node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAFactorTerm(AFactorTerm node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAMultTerm(AMultTerm node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseADivisionTerm(ADivisionTerm node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseADivTerm(ADivTerm node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAModTerm(AModTerm node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseANumberFactor(ANumberFactor node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAParensFactor(AParensFactor node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAProgProgram(AProgProgram node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAFuncDefFuncDef(AFuncDefFuncDef node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAHeaderHeader(AHeaderHeader node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAFparDefinition(AFparDefinition node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseASemiFparDef(ASemiFparDef node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAFparDefFparDef(AFparDefFparDef node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseACommaIdentifier(ACommaIdentifier node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAIntTypeDataType(AIntTypeDataType node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseACharTypeDataType(ACharTypeDataType node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseATypeType(ATypeType node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseATypeStruct(ATypeStruct node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseADataRetType(ADataRetType node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseANothRetType(ANothRetType node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAFparFparType(AFparFparType node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseALrbkt(ALrbkt node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAFuncDefLocalDef(AFuncDefLocalDef node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAFuncDeclLocalDef(AFuncDeclLocalDef node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAVarDefLocalDef(AVarDefLocalDef node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAVarVarDef(AVarVarDef node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAFuncDecl(AFuncDecl node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTComment(TComment node)
     {
         defaultCase(node);
     }
@@ -189,6 +339,21 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
+    public void caseTNumber(TNumber node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTIntConst(TIntConst node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTConstString(TConstString node)
+    {
+        defaultCase(node);
+    }
+
     public void caseTChar(TChar node)
     {
         defaultCase(node);
@@ -264,12 +429,22 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
+    public void caseTBlock(TBlock node)
+    {
+        defaultCase(node);
+    }
+
     public void caseTIdentifier(TIdentifier node)
     {
         defaultCase(node);
     }
 
     public void caseTWhiteSpaces(TWhiteSpaces node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseTEscSequence(TEscSequence node)
     {
         defaultCase(node);
     }
