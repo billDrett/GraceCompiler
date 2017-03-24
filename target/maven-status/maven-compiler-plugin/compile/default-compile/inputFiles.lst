@@ -40,7 +40,6 @@
 /home/dimitris/git-repos/GraceCompiler/target/generated-sources/sablecc/compiler/node/APlusExpr.java
 /home/dimitris/git-repos/GraceCompiler/target/generated-sources/sablecc/compiler/node/AWithElseIfStmt.java
 /home/dimitris/git-repos/GraceCompiler/target/generated-sources/sablecc/compiler/node/ACondNotCondNot.java
-/home/dimitris/git-repos/GraceCompiler/target/generated-sources/sablecc/compiler/node/ACommandProgram.java
 /home/dimitris/git-repos/GraceCompiler/target/generated-sources/sablecc/compiler/node/PExpr.java
 /home/dimitris/git-repos/GraceCompiler/target/generated-sources/sablecc/compiler/node/TConstString.java
 /home/dimitris/git-repos/GraceCompiler/target/generated-sources/sablecc/compiler/node/PStmtWithElse.java

@@ -146,7 +146,6 @@ compiler/node/PFuncCall.class
 compiler/node/ACommaIdCommaIdentifier.class
 compiler/node/AFuncCallStmtWithElse.class
 compiler/node/PCondPar.class
-compiler/node/ACommandProgram.class
 compiler/node/ACondRelatCondRelat.class
 compiler/node/TFunction.class
 compiler/node/AVarDefLocalDefinition.class
