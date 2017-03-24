@@ -98,11 +98,9 @@ Ignored Tokens
 
 Productions
 
-    program =commd+;
+    program =
         {func_def}  function_definition |
-        {command}   commd+ |
-        {condition} cond |
-        {func_call} func_call;
+        {command}   commd+;
 
     commd =
         stmt;
@@ -206,14 +204,14 @@ Productions
          {greater_equal} greater_equal;
 
 
- /*   //Functions Definition
+    //Functions Definition
     function_definition =
         header local_definition* block;
 
 
     //HEADER
     header =
-            {header} function identifier l_par function_parameters? r_par colon ret_type;
+         {header} function identifier l_par function_parameters? r_par colon ret_type;
 
 
     //Function Parameters
@@ -263,7 +261,7 @@ Productions
     function_declaration =
         {func_decl} header semi;
 
-*/
+
     //Function Call
     func_call =
         {func_call} identifier l_par func_call_expr? r_par;
@@ -279,87 +277,3 @@ Productions
          {string_literal} const_string |
          {l_value} l_value l_bkt expr r_bkt;
 
-//******************************************************************************************
-
-      /*    stmt =
-               {semi} semi |
-               {assignment} l_value assign expr semi |
-               {block} block |
-               {func_call} func_call semi |
-              // {if_cond} if cond then stmt [ else stmt] |
-              // {while} while cond do stmt |
-               {return} return expr semi;
-
-          block =
-               {block} l_brc stmt* r_brc;
-
-
-
-          l_value =
-               {id} identifier |
-               {string_literal} const_string ;//|
-         //      {l_value} l_value l_bkt expr r_bkt;
-
-
-
-
-          cond_relat =
-               {cond} cond_par |
-               {cond_relat} cond_relat relat_oper cond_par;
-
-          cond_par =
-               {cond} l_par cond_or r_par;
-
-
-          relat_oper =
-               {equal} equal |
-               {n_equal} n_equal |
-               {less} less |
-               {less_equal} less_equal |
-               {greater} greater |
-               {greater_equal} greater_equal;
-
-      */
-
-//*********************************************************************************************************
-        /*
-            program = {prog} function_definition;
-
-            function_definition = {func_def} header local_definition* block;
-
-
-            //HEADER
-            header              = {header} function identifier l_par function_parameters* r_par colon ret_type;
-
-            function_parameters = {parameters} fpar_definition semi_fpar_def*;
-
-            semi_fpar_def       = {semi_fpar} semi fpar_definition;
-
-            fpar_definition     = {fpar_def} reference? identifier comma_identifier* colon fpar_type;
-
-            comma_identifier    = {comma_id} comma identifier;
-
-            ret_type            = {data} data_type |
-                                  {noth} nothing;
-
-            data_type           = {int_type} int |
-                                  {char_type} char;
-
-            type                = {type} data_type type_bktconst_def*;
-
-            type_bktconst_def   = {lbkt_int_rbkt} l_bkt const_int r_bkt;
-
-            fpar_type           = {fpar_type} data_type closed_bkt? type_bktconst_def*;
-
-            closed_bkt          = {left_right_bkt} l_bkt r_bkt;
-
-
-            //LOCAL FUNCTION DEFINITION
-            local_definition = {func_def}  function_definition |
-                               {func_decl} function_declaration |
-                               {var_def}   var_definition;
-
-            var_definition = {var} variable identifier comma_identifier* colon type semi;
-
-            function_declaration = {func_decl} header semi;
-        */

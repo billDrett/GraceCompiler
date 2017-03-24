@@ -69,7 +69,12 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseAProgram(AProgram node)
+    public void caseAFuncDefProgram(AFuncDefProgram node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseACommandProgram(ACommandProgram node)
     {
         defaultCase(node);
     }
@@ -84,52 +89,82 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseAMatchedStmt(AMatchedStmt node)
+    public void caseASemiStmt(ASemiStmt node)
     {
         defaultCase(node);
     }
 
-    public void caseAUnmatchedStmt(AUnmatchedStmt node)
+    public void caseAAssignmentStmt(AAssignmentStmt node)
     {
         defaultCase(node);
     }
 
-    public void caseASemiMatched(ASemiMatched node)
+    public void caseABlockStmt(ABlockStmt node)
     {
         defaultCase(node);
     }
 
-    public void caseAAssignmentMatched(AAssignmentMatched node)
+    public void caseAFuncCallStmt(AFuncCallStmt node)
     {
         defaultCase(node);
     }
 
-    public void caseABlockMatched(ABlockMatched node)
+    public void caseAIfStmt(AIfStmt node)
     {
         defaultCase(node);
     }
 
-    public void caseAFuncCallMatched(AFuncCallMatched node)
+    public void caseAWhileStmt(AWhileStmt node)
     {
         defaultCase(node);
     }
 
-    public void caseAIfElseMatched(AIfElseMatched node)
+    public void caseAReturnStmt(AReturnStmt node)
     {
         defaultCase(node);
     }
 
-    public void caseAReturnMatched(AReturnMatched node)
+    public void caseAWithoutElseIfStmt(AWithoutElseIfStmt node)
     {
         defaultCase(node);
     }
 
-    public void caseAIfUnmatched(AIfUnmatched node)
+    public void caseAWithElseIfStmt(AWithElseIfStmt node)
     {
         defaultCase(node);
     }
 
-    public void caseAIfElseUnmatched(AIfElseUnmatched node)
+    public void caseASemiStmtWithElse(ASemiStmtWithElse node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAAssignmentStmtWithElse(AAssignmentStmtWithElse node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseABlockStmtWithElse(ABlockStmtWithElse node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAFuncCallStmtWithElse(AFuncCallStmtWithElse node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAIfElseStmtWithElse(AIfElseStmtWithElse node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAWhileStmtWithElse(AWhileStmtWithElse node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAReturnStmtWithElse(AReturnStmtWithElse node)
     {
         defaultCase(node);
     }
@@ -285,6 +320,101 @@ public class AnalysisAdapter implements Analysis
     }
 
     public void caseAGreaterEqualRelatOper(AGreaterEqualRelatOper node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAFunctionDefinition(AFunctionDefinition node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAHeaderHeader(AHeaderHeader node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAFparFunctionParameters(AFparFunctionParameters node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseASemiFparSemiFunctionParameters(ASemiFparSemiFunctionParameters node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAFparDefFparametersDefinition(AFparDefFparametersDefinition node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseACommaIdCommaIdentifier(ACommaIdCommaIdentifier node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseADataRetType(ADataRetType node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseANothRetType(ANothRetType node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAIntTypeDataType(AIntTypeDataType node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseACharTypeDataType(ACharTypeDataType node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseATypeType(ATypeType node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseATypeFparType(ATypeFparType node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAArrayTypeConstIntBrackets(AArrayTypeConstIntBrackets node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAEmptyEmptyBrackets(AEmptyEmptyBrackets node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAFuncDefLocalDefinition(AFuncDefLocalDefinition node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAFuncDeclLocalDefinition(AFuncDeclLocalDefinition node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAVarDefLocalDefinition(AVarDefLocalDefinition node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAVarVariableDefinition(AVarVariableDefinition node)
+    {
+        defaultCase(node);
+    }
+
+    public void caseAFuncDeclFunctionDeclaration(AFuncDeclFunctionDeclaration node)
     {
         defaultCase(node);
     }
