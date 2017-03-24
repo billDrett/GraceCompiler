@@ -11,6 +11,8 @@ Helpers
     line_terminator = lf | cr | cr lf;
     input_character = [unicode_input_character - [cr + lf]];
 
+    input_string = [input_character - ['"' + '\']];
+
     not_dollar = [input_character - '$'];
 
     white_space = (sp | ht | ff | line_terminator);
@@ -59,7 +61,7 @@ Tokens
   //  number = '0' | [digit-'0'] digit*;
 
     const_char   = ''' (letter | digit | escape_sequence) ''';
-    const_string = '"' (letter | digit | escape_sequence)* '"';
+    const_string = '"' (input_string | escape_sequence)* '"';
 
     char = 'char';
     int = 'int';
@@ -276,4 +278,3 @@ Productions
          {id} identifier |
          {string_literal} const_string |
          {l_value} l_value l_bkt expr r_bkt;
-
