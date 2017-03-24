@@ -99,17 +99,41 @@ Ignored Tokens
 Productions
 
     program =commd+;
-        /*{func_def}  function_definition |
+        {func_def}  function_definition |
         {command}   commd+ |
         {condition} cond |
         {func_call} func_call;
-*/
+
     commd =
         stmt;
 
     block =
         {block} l_brc stmt* r_brc;
 
+    stmt =
+        {semi} semi |
+        {assignment} l_value assign expr semi |
+        {block} block |
+        {func_call} func_call semi |
+        {if} if_stmt |
+        {while} while cond do stmt |
+        {return} return expr? semi;
+
+    if_stmt =
+        {without_else} if cond then stmt |
+        {with_else} if cond then stmt_with_else else stmt;
+
+    stmt_with_else =
+        {semi} semi |
+        {assignment} l_value assign expr semi |
+        {block} block |
+        {func_call} func_call semi |
+        {if_else} if cond then [id1]:stmt_with_else else [id2]: stmt_with_else |
+        {while} while cond do stmt_with_else |
+        {return} return expr? semi;
+
+
+/*
     stmt =
         {matched} matched |
         {unmatched} unmatched;
@@ -121,12 +145,13 @@ Productions
         {block} block |
         {func_call} func_call semi |
         {if_else} if cond then [id1]: matched else [id2]: matched |
+        {while} while cond do stmt |
         {return} return expr? semi;
 
     unmatched =
         {if} if cond then stmt |
         {if_else} if cond then matched else unmatched;
-
+*/
     expr =
         {factor} factor |
         {plus} expr plus factor |
@@ -152,7 +177,6 @@ Productions
          {char_const} const_char |
          {l_value} l_value |
          {func_call} func_call;
-
 
     cond =
          {cond} cond_and |
