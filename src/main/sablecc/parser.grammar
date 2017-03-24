@@ -101,8 +101,7 @@ Ignored Tokens
 Productions
 
     program =
-        {func_def}  function_definition |
-        {command}   commd+;
+        {func_def}  function_definition;
 
     commd =
         stmt;
