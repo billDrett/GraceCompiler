@@ -12,6 +12,7 @@ public class Main {
 
         public static void main(String args[])
         {
+                Start tree;
                 try
                 {
                         System.out.println("Type an expression:");
@@ -27,17 +28,21 @@ public class Main {
 
                         // Parse the input.
 
-                        Start tree = p.parse();
+                        tree = p.parse();
 
                         System.out.println("START");
                         System.out.println(tree.toString());
                         System.out.println("END");
+
+                        tree.apply(new Print());
 
                 }
                 catch(Exception e)
                 {
                         e.printStackTrace();
                 }
+
+
         }
 
 }
