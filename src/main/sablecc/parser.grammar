@@ -17,7 +17,7 @@ Helpers
 
     white_space = (sp | ht | ff | line_terminator);
 
-    traditional_comment = '$$' not_dollar* ('$' (not_dollar)+)* '$$';
+    traditional_comment = '$' '$' not_dollar* ('$' (not_dollar)+)* '$' '$';
 
     end_of_line_comment = '$' (not_dollar input_character*)* line_terminator;
 

@@ -58,6 +58,7 @@ compiler/node/PStmtWithElse.class
 compiler/node/AWhileStmtWithElse.class
 compiler/node/AExprCommaExprFuncCallExpr.class
 compiler/node/TLBkt.class
+compiler/Print.class
 compiler/node/TVariable.class
 compiler/node/AFuncDeclFunctionDeclaration.class
 compiler/node/PCondAnd.class
