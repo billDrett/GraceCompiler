@@ -1,0 +1,107 @@
+Type an expression:
+START
+fun prime ( n : int ) : int { if limit >= 3 then { while ( x < 3 ) do { x <- 1 ; t <- x ; } } counter <- counter + 1 ; geti ( 3 ) ; puts ( "\n" ) ; }  
+END
+Defining A Function
+Fuction Definition
+Fuction header
+Fuction parameter
+Fuction parameters definition
+Fpar Type
+Int datatype
+Return type data
+Int datatype
+Block in
+If statement
+Without Else If Statement 
+Cond Cond
+Cond Cond And 
+Cond Cond Not
+Expr Cond Par
+Cond Relat Cond Relat 
+Factor Expression
+Expression Par Factor
+Term Expression Par
+Term Term Sign limit 
+LValue Term
+L_value id limit 
+Greater_equal operator in condition
+Factor Expression
+Expression Par Factor
+Term Expression Par
+Term Term Sign 3 
+Int Const Term
+Block Statement
+Block in
+While Statement 
+Cond Cond
+Cond Cond And 
+Cond Cond Not
+Cond Cond Par
+Cond Cond
+Cond Cond And 
+Cond Cond Not
+Expr Cond Par
+Cond Relat Cond Relat 
+Factor Expression
+Expression Par Factor
+Term Expression Par
+Term Term Sign x 
+LValue Term
+L_value id x 
+Less operator in condition
+Factor Expression
+Expression Par Factor
+Term Expression Par
+Term Term Sign 3 
+Int Const Term
+Block Statement
+Block in
+Assignment 
+L_value id x 
+Factor Expression
+Expression Par Factor
+Term Expression Par
+Term Term Sign 1 
+Int Const Term
+Assignment 
+L_value id t 
+Factor Expression
+Expression Par Factor
+Term Expression Par
+Term Term Sign x 
+LValue Term
+L_value id x 
+Block out
+Block out
+Assignment 
+L_value id counter 
+Plus Expression + 
+Factor Expression
+Expression Par Factor
+Term Expression Par
+Term Term Sign counter 
+LValue Term
+L_value id counter 
+Expression Par Factor
+Term Expression Par
+Term Term Sign 1 
+Int Const Term
+Function Call
+Fuction call
+Fuction call expration
+Factor Expression
+Expression Par Factor
+Term Expression Par
+Term Term Sign 3 
+Int Const Term
+Function Call
+Fuction call
+Fuction call expration
+Factor Expression
+Expression Par Factor
+Term Expression Par
+Term Term Sign "\n" 
+LValue Term
+L_value string "\n" 
+Block out

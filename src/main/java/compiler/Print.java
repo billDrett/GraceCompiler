@@ -20,7 +20,12 @@ public class Print extends DepthFirstAdapter
 
     @Override
     public void inABlockBlock(ABlockBlock node) {
-        System.out.printf("Block \n");
+        System.out.printf("Block in\n");
+    }
+
+    @Override
+    public void outABlockBlock(ABlockBlock node) {
+        System.out.printf("Block out\n");
     }
 
     @Override
@@ -110,7 +115,7 @@ public class Print extends DepthFirstAdapter
 
     @Override
     public void inAPlusExpr(APlusExpr node) {
-        System.out.printf("Plus Expression\n");
+        System.out.printf("Plus Expression "+node.getPlus()+"\n");
     }
 
     @Override
@@ -150,7 +155,7 @@ public class Print extends DepthFirstAdapter
 
     @Override
     public void inATermTermSign(ATermTermSign node) {
-        System.out.printf("Term Term Sign\n");
+        System.out.printf("Term Term Sign " + node.getTerm()+"\n");
     }
 
     @Override
@@ -285,7 +290,7 @@ public class Print extends DepthFirstAdapter
 
     @Override
     public void inACommaIdCommaIdentifier(ACommaIdCommaIdentifier node){
-        System.out.println("Comma identifier");
+        System.out.println("Comma identifier " + node.getIdentifier());
     }
 
     @Override
@@ -345,7 +350,7 @@ public class Print extends DepthFirstAdapter
 
     @Override
     public void inAVarVariableDefinition(AVarVariableDefinition node){
-        System.out.println("Variable definiton");
+        System.out.println("Variable definiton "+ node.getIdentifier());
     }
 
     @Override
@@ -370,12 +375,12 @@ public class Print extends DepthFirstAdapter
 
     @Override
     public void inAIdLValue(AIdLValue node){
-        System.out.println("L_value id");
+        System.out.println("L_value id "+ node.getIdentifier());
     }
 
     @Override
     public void inAStringLiteralLValue(AStringLiteralLValue node){
-        System.out.println("L_value string");
+        System.out.println("L_value string "+ node.getConstString());
     }
 
     @Override
