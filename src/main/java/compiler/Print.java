@@ -270,7 +270,7 @@ public class Print extends DepthFirstAdapter
 
     @Override
     public void inAHeaderHeader(AHeaderHeader node){
-        System.out.println("Fuction header");
+        System.out.println("Fuction name: "+ node.getIdentifier());
     }
 
     @Override
@@ -285,12 +285,12 @@ public class Print extends DepthFirstAdapter
 
     @Override
     public void inAFparDefFparametersDefinition(AFparDefFparametersDefinition node){
-        System.out.println("Fuction parameters definition");
+        System.out.println("Parameters: "+ node.getReference() +" "+ node.getIdentifier());
     }
 
     @Override
     public void inACommaIdCommaIdentifier(ACommaIdCommaIdentifier node){
-        System.out.println("Comma identifier " + node.getIdentifier());
+        System.out.println("More Parameters" + node.getIdentifier() );
     }
 
     @Override
@@ -305,7 +305,7 @@ public class Print extends DepthFirstAdapter
 
     @Override
     public void inAIntTypeDataType(AIntTypeDataType node){
-        System.out.println("Int datatype");
+        System.out.print("Int ");
     }
 
     @Override
@@ -320,7 +320,7 @@ public class Print extends DepthFirstAdapter
 
     @Override
     public void inATypeFparType(ATypeFparType node){
-        System.out.println("Fpar Type");
+        System.out.println("Fpar Type" + node.getDataType());
     }
 
     @Override
