@@ -12,6 +12,7 @@ Helpers
     input_character = [unicode_input_character - [cr + lf]];
 
     input_string = [input_character - ['"' + '\']];
+    input_char = [input_string - '''];
 
     not_dollar = [input_character - '$'];
 
@@ -60,9 +61,8 @@ Tokens
     colon = ':';
 
     number = digit+;
-  //  number = '0' | [digit-'0'] digit*;
 
-    const_char   = ''' (letter | digit | escape_sequence) ''';
+    const_char   = ''' (input_char | escape_sequence) ''';
     const_string = '"' (input_string | escape_sequence)* '"';
 
     char = 'char';
@@ -91,7 +91,6 @@ Tokens
 
     identifier = letter (letter | digit | '_')*;
 
-   // blank = (' ' |13 | 10 | '\t' | 9 | 32)+;
     white_spaces = white_space+;
 
     esc_sequence = escape_sequence;
@@ -104,9 +103,6 @@ Productions
 
     program =
         {func_def}  function_definition;
-
-    commd =
-        stmt;
 
     block =
         {block} l_brc stmt* r_brc;
@@ -133,26 +129,6 @@ Productions
         {while} while cond do stmt_with_else |
         {return} return expr? semi;
 
-
-/*
-    stmt =
-        {matched} matched |
-        {unmatched} unmatched;
-
-
-    matched =
-        {semi} semi |
-        {assignment} l_value assign expr semi |
-        {block} block |
-        {func_call} func_call semi |
-        {if_else} if cond then [id1]: matched else [id2]: matched |
-        {while} while cond do stmt |
-        {return} return expr? semi;
-
-    unmatched =
-        {if} if cond then stmt |
-        {if_else} if cond then matched else unmatched;
-*/
     expr =
         {factor} factor |
         {plus} expr plus factor |
@@ -209,7 +185,7 @@ Productions
 
     //Functions Definition
     function_definition =
-        header local_definition* block;
+         header local_definition* block;
 
 
     //HEADER

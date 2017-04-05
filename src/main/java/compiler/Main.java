@@ -5,6 +5,8 @@ import compiler.lexer.Lexer;
 import compiler.node.*;
 import java.io.PushbackReader;
 import java.io.InputStreamReader;
+import java.io.InputStream;
+import java.io.FileInputStream;
 import compiler.parser.*;
 
 
@@ -15,24 +17,26 @@ public class Main {
                 Start tree;
                 try
                 {
-                        System.out.println("Type an expression:");
+                        if (args.length != 1)
+                        {
+                                System.out.println("Most have the file name as argument");
+                                return;
+                        }
 
+                            
+                        InputStream inputStream = new FileInputStream(args[0]);
 
                         // Create a Parser instance.
                         Parser p =
                                 new Parser(
                                         new Lexer(
                                                 new PushbackReader(
-                                                        new InputStreamReader(System.in), 1024)));
+                                                        new InputStreamReader(inputStream), 1024)));
 
 
                         // Parse the input.
 
                         tree = p.parse();
-
-                        System.out.println("START");
-                        System.out.println(tree.toString());
-                        System.out.println("END");
 
                         tree.apply(new Print());
 

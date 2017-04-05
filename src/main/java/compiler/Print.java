@@ -2,60 +2,37 @@ package compiler;
 
 import compiler.analysis.DepthFirstAdapter;
 import compiler.node.*;
-/**
- * Created by bill on 26/03/17.
- */
+
 public class Print extends DepthFirstAdapter
 {
 
     @Override
-    public void inAFuncDefProgram(AFuncDefProgram node) {
-        System.out.printf("Defining A Function\n");
-    }
-
-    @Override
-    public void inACommd(ACommd node) {
-        System.out.printf("Command \n");
-    }
-
-    @Override
     public void inABlockBlock(ABlockBlock node) {
-        System.out.printf("Block in\n");
+        System.out.println("Block in");
     }
 
     @Override
     public void outABlockBlock(ABlockBlock node) {
-        System.out.printf("Block out\n");
-    }
-
-    @Override
-    public void inASemiStmt(ASemiStmt node) {
-        System.out.printf("Semicolon Statement \n");
+        System.out.println("Block out");
     }
 
     @Override
     public void inAAssignmentStmt(AAssignmentStmt node) {
-        System.out.printf("Assignment \n");
-    }
-
-    @Override
-    public void inABlockStmt(ABlockStmt node) {
-        System.out.printf("Block Statement\n");
-    }
-
-    @Override
-    public void inAFuncCallStmt(AFuncCallStmt node) {
-        System.out.printf("Function Call\n");
-    }
-
-    @Override
-    public void inAIfStmt(AIfStmt node) {
-        System.out.printf("If statement\n");
+        System.out.println("Assignment: ");
+        System.out.println("\t-name : "+node.getLValue());
+        System.out.println("\t-value: "+node.getExpr());
     }
 
     @Override
     public void inAWhileStmt(AWhileStmt node) {
-        System.out.printf("While Statement \n");
+        System.out.println("Statement: While");
+        System.out.println("-Condition: "+"("+node.getCond()+")");
+        System.out.println("--Enter while Statement");
+    }
+
+    @Override
+    public void outAWhileStmt(AWhileStmt node) {
+        System.out.println("--Exit while Statement");
     }
 
     @Override
@@ -65,292 +42,58 @@ public class Print extends DepthFirstAdapter
 
     @Override
     public void inAWithoutElseIfStmt(AWithoutElseIfStmt node) {
-        System.out.printf("Without Else If Statement \n");
+        System.out.println("Statement: If without Else");
+        System.out.println("-Condition: "+"("+node.getCond()+")");
+        System.out.println("-IfStatement: "+node.getStmt());
+        System.out.println("--EnterIfWithoutElseStatement");
+    }
+
+    @Override
+    public void outAWithoutElseIfStmt(AWithoutElseIfStmt node) {
+        System.out.println("--ExitIfWithoutElseStatement");
     }
 
     @Override
     public void inAWithElseIfStmt(AWithElseIfStmt node) {
-        System.out.printf("With Else If Statement \n");
+        System.out.println("Statement: If with Else");
+        System.out.println("-Condition:      "+"("+node.getCond()+")");
+        System.out.println("-If Statement:   "+node.getStmtWithElse());
+        System.out.println("-Else Statement: "+node.getStmt());
+        System.out.println("--EnterIfWithElseStatement");
     }
 
     @Override
-    public void inASemiStmtWithElse(ASemiStmtWithElse node) {
-        System.out.printf("A semi statement with Else\n");
-    }
-
-    @Override
-    public void inAAssignmentStmtWithElse(AAssignmentStmtWithElse node){
-        System.out.printf("Assignment Statement With Else\n");
-    }
-
-    @Override
-    public void inABlockStmtWithElse(ABlockStmtWithElse node) {
-        System.out.printf("Block Statement With Else\n");
-    }
-
-    @Override
-    public void inAFuncCallStmtWithElse(AFuncCallStmtWithElse node) {
-        System.out.printf("Function Call Statement with Else\n");
-    }
-
-    @Override
-    public void inAIfElseStmtWithElse(AIfElseStmtWithElse node) {
-        System.out.printf("If Else Statement With Else\n");
-    }
-
-    @Override
-    public void inAWhileStmtWithElse(AWhileStmtWithElse node) {
-        System.out.printf("While Statement With Else\n");
-    }
-
-    @Override
-    public void inAReturnStmtWithElse(AReturnStmtWithElse node) {
-        System.out.printf("Return Statement With Else\n");
-    }
-
-    @Override
-    public void inAFactorExpr(AFactorExpr node) {
-        System.out.printf("Factor Expression\n");
-    }
-
-    @Override
-    public void inAPlusExpr(APlusExpr node) {
-        System.out.printf("Plus Expression "+node.getPlus()+"\n");
-    }
-
-    @Override
-    public void inAMinusExpr(AMinusExpr node) {
-        System.out.printf("Minus Expression\n");
-    }
-
-    @Override
-    public void inAExprParFactor(AExprParFactor node) {
-        System.out.printf("Expression Par Factor\n");
-    }
-
-    @Override
-    public void inAMultFactor(AMultFactor node) {
-        System.out.printf("Mult Factor\n");
-    }
-
-    @Override
-    public void inADivFactor(ADivFactor node) {
-        System.out.printf("Division Factor\n");
-    }
-
-    @Override
-    public void inAModFactor(AModFactor node) {
-        System.out.printf("Module Factor\n");
-    }
-
-    @Override
-    public void inATermExprPar(ATermExprPar node) {
-        System.out.printf("Term Expression Par\n");
-    }
-
-    @Override
-    public void inAParExprPar(AParExprPar node) {
-        System.out.printf("Par Expr Par\n");
-    }
-
-    @Override
-    public void inATermTermSign(ATermTermSign node) {
-        System.out.printf("Term Term Sign " + node.getTerm()+"\n");
-    }
-
-    @Override
-    public void inASignPlusTermSign(ASignPlusTermSign node) {
-        System.out.printf("Sign Plus Term Sign\n");
-    }
-
-    @Override
-    public void inASignMinusTermSign(ASignMinusTermSign node) {
-        System.out.printf("Sign Minus Term Sign\n");
-    }
-
-    @Override
-    public void inAIntConstTerm(AIntConstTerm node) {
-        System.out.printf("Int Const Term\n");
-    }
-
-    @Override
-    public void inACharConstTerm(ACharConstTerm node) {
-        System.out.printf("Char Const Term\n");
-    }
-
-    @Override
-    public void inALValueTerm(ALValueTerm node) {
-        System.out.printf("LValue Term\n");
-    }
-
-    @Override
-    public void inAFuncCallTerm(AFuncCallTerm node) {
-        System.out.printf("FunctinCall Term\n");
-    }
-
-    @Override
-    public void inACondCond(ACondCond node) {
-        System.out.printf("Cond Cond\n");
-    }
-
-    @Override
-    public void inACondOrCond(ACondOrCond node) {
-        System.out.printf("Cond Or Cond\n");
-    }
-
-    @Override
-    public void inACondCondAnd(ACondCondAnd node) {
-        System.out.printf("Cond Cond And \n");
-    }
-
-    @Override
-    public void inACondAndCondAnd(ACondAndCondAnd node) {
-        System.out.printf("Cond And Cond And\n");
-    }
-
-    @Override
-    public void inACondCondNot(ACondCondNot node) {
-        System.out.printf("Cond Cond Not\n");
-    }
-
-    @Override
-    public void inACondNotCondNot(ACondNotCondNot node) {
-        System.out.printf("Cond Not Cond Not\n");
-    }
-
-    @Override
-    public void inAExprCondPar(AExprCondPar node) {
-        System.out.printf("Expr Cond Par\n");
-    }
-
-    @Override
-    public void inACondCondPar(ACondCondPar node) {
-        System.out.printf("Cond Cond Par\n");
-    }
-
-    @Override
-    public void inACondRelatCondRelat(ACondRelatCondRelat node) {
-        System.out.printf("Cond Relat Cond Relat \n");
-    }
-
-    @Override
-    public void inAEqualRelatOper(AEqualRelatOper node) {
-        System.out.printf("Cond Relat Oper\n");
-    }
-
-    @Override
-    public void inANEqualRelatOper(ANEqualRelatOper node) {
-        System.out.printf("NEqual Relat Oper\n");
-    }
-
-    @Override
-    public void inALessRelatOper(ALessRelatOper node){
-        System.out.println("Less operator in condition");
-    }
-
-    @Override
-    public void inALessEqualRelatOper(ALessEqualRelatOper node){
-        System.out.println("Less_equal operator in condition");
-    }
-
-    @Override
-    public void inAGreaterRelatOper(AGreaterRelatOper node){
-        System.out.println("Greater operator in condition");
-    }
-
-    @Override
-    public void inAGreaterEqualRelatOper(AGreaterEqualRelatOper node){
-        System.out.println("Greater_equal operator in condition");
-    }
-
-    @Override
-    public void inAFunctionDefinition(AFunctionDefinition node){
-        System.out.println("Fuction Definition");
+    public void outAWithElseIfStmt(AWithElseIfStmt node) {
+        System.out.println("--ExitIfWithElseStatement");
     }
 
     @Override
     public void inAHeaderHeader(AHeaderHeader node){
-        System.out.println("Fuction name: "+ node.getIdentifier());
-    }
-
-    @Override
-    public void inAFparFunctionParameters(AFparFunctionParameters node){
-        System.out.println("Fuction parameter");
-    }
-
-    @Override
-    public void inASemiFparSemiFunctionParameters(ASemiFparSemiFunctionParameters node){
-        System.out.println("Semi fuction parameter");
-    }
-
-    @Override
-    public void inAFparDefFparametersDefinition(AFparDefFparametersDefinition node){
-        System.out.println("Parameters: "+ node.getReference() +" "+ node.getIdentifier());
-    }
-
-    @Override
-    public void inACommaIdCommaIdentifier(ACommaIdCommaIdentifier node){
-        System.out.println("More Parameters" + node.getIdentifier() );
-    }
-
-    @Override
-    public void inADataRetType(ADataRetType node) {
-        System.out.println("Return type data");
-    }
-
-    @Override
-    public void inANothRetType(ANothRetType node){
-        System.out.println("Return type nothing");
-    }
-
-    @Override
-    public void inAIntTypeDataType(AIntTypeDataType node){
-        System.out.print("Int ");
-    }
-
-    @Override
-    public void inACharTypeDataType(ACharTypeDataType node){
-        System.out.println("Char datatype");
-    }
-
-    @Override
-    public void inATypeType(ATypeType node){
-        System.out.println("Type definition");
-    }
-
-    @Override
-    public void inATypeFparType(ATypeFparType node){
-        System.out.println("Fpar Type" + node.getDataType());
-    }
-
-    @Override
-    public void inAArrayTypeConstIntBrackets(AArrayTypeConstIntBrackets node){
-        System.out.println("Array type const int brackets");
-    }
-
-    @Override
-    public void inAEmptyEmptyBrackets(AEmptyEmptyBrackets node){
-        System.out.println("Empty Brackets");
+        System.out.println("Fuction: ");
+        System.out.println("\t-Name       : "+ node.getIdentifier());
+        System.out.println("\t-Parameters : "+ node.getFunctionParameters());
+        System.out.println("\t-return Type: "+ node.getRetType());
     }
 
     @Override
     public void inAFuncDefLocalDefinition(AFuncDefLocalDefinition node){
-        System.out.println("Fuction definition local");
+        System.out.println("Local Fuction definition");
     }
 
     @Override
     public void inAFuncDeclLocalDefinition(AFuncDeclLocalDefinition node){
-        System.out.println("Fuction declaration local");
-    }
-
-    @Override
-    public void inAVarDefLocalDefinition(AVarDefLocalDefinition node){
-        System.out.println("Variable definition local");
+        System.out.println("Local Fuction declaration");
     }
 
     @Override
     public void inAVarVariableDefinition(AVarVariableDefinition node){
-        System.out.println("Variable definiton "+ node.getIdentifier());
+        String cids = (node.getCommaIdentifier()).toString();
+        System.out.println("Variable(s) Definition: ");
+        System.out.print("\t-Name(s): "+ node.getIdentifier());
+        if ((node.getCommaIdentifier()).toString() != "[]")
+            for(int i=1; i<cids.length()-1; i++)
+               System.out.print(cids.charAt(i));
+        System.out.println("\n\t-varType: "+ node.getType());
     }
 
     @Override
@@ -361,32 +104,7 @@ public class Print extends DepthFirstAdapter
     @Override
     public void inAFuncCallFuncCall(AFuncCallFuncCall node){
         System.out.println("Fuction call");
+        System.out.println("\t-Name      : "+node.getIdentifier());
+        System.out.println("\t-Parameters: "+node.getFuncCallExpr());
     }
-
-    @Override
-    public void inAExprCommaExprFuncCallExpr(AExprCommaExprFuncCallExpr node){
-        System.out.println("Fuction call expration");
-    }
-
-    @Override
-    public void inACommaExprCommaExpr(ACommaExprCommaExpr node){
-        System.out.println("A comma Expr ");
-    }
-
-    @Override
-    public void inAIdLValue(AIdLValue node){
-        System.out.println("L_value id "+ node.getIdentifier());
-    }
-
-    @Override
-    public void inAStringLiteralLValue(AStringLiteralLValue node){
-        System.out.println("L_value string "+ node.getConstString());
-    }
-
-    @Override
-    public void inALValueLValue(ALValueLValue node){
-        System.out.println("L_value array");
-    }
-
-
 }

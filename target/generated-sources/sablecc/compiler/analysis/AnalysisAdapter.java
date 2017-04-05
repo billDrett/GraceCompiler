@@ -74,11 +74,6 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
-    public void caseACommd(ACommd node)
-    {
-        defaultCase(node);
-    }
-
     public void caseABlockBlock(ABlockBlock node)
     {
         defaultCase(node);

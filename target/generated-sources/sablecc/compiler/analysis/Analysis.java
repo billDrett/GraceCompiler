@@ -13,7 +13,6 @@ public interface Analysis extends Switch
 
     void caseStart(Start node);
     void caseAFuncDefProgram(AFuncDefProgram node);
-    void caseACommd(ACommd node);
     void caseABlockBlock(ABlockBlock node);
     void caseASemiStmt(ASemiStmt node);
     void caseAAssignmentStmt(AAssignmentStmt node);

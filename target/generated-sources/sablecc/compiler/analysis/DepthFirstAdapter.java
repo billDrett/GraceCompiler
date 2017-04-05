@@ -57,27 +57,6 @@ public class DepthFirstAdapter extends AnalysisAdapter
         outAFuncDefProgram(node);
     }
 
-    public void inACommd(ACommd node)
-    {
-        defaultIn(node);
-    }
-
-    public void outACommd(ACommd node)
-    {
-        defaultOut(node);
-    }
-
-    @Override
-    public void caseACommd(ACommd node)
-    {
-        inACommd(node);
-        if(node.getStmt() != null)
-        {
-            node.getStmt().apply(this);
-        }
-        outACommd(node);
-    }
-
     public void inABlockBlock(ABlockBlock node)
     {
         defaultIn(node);
