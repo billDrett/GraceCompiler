@@ -40,6 +40,8 @@ public class Main {
 
                         tree.apply(new Print());
 
+
+
                 }
                 catch(Exception e)
                 {
