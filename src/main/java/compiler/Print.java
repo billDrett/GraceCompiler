@@ -55,7 +55,7 @@ public class Print extends DepthFirstAdapter
 
         System.out.println(stringSpaces()+"--Exit While Statement");
     }
-/*
+
     @Override
     public void inAWhileStmtWithElse(AWhileStmtWithElse node) {
         System.out.println(stringSpaces()+"Statement: While_ with_else");
@@ -69,7 +69,7 @@ public class Print extends DepthFirstAdapter
         System.out.println(stringSpaces()+"--Exit While_with_else Statement");
     }
 
-*/
+
     @Override
     public void inAReturnStmt(AReturnStmt node) {
         System.out.println(stringSpaces()+"Return");
