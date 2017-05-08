@@ -1,12 +1,7 @@
-fun hello () : nothing
-var i, l : int;
-{
-	if 2 <1 then 
-	while 1 < 2 do 
-		x <- 2;
+fun hello (rings : int; ref source, target, auxiliary : char[][2]; y : int[10][4]) : nothing
 	
-else
-		x<-1;
+{
+	rings <-23+target-43*"ch"*source;
 
           
         
