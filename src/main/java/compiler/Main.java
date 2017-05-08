@@ -23,7 +23,7 @@ public class Main {
                                 return;
                         }
 
-                            
+
                         InputStream inputStream = new FileInputStream(args[0]);
 
                         // Create a Parser instance.
@@ -33,6 +33,13 @@ public class Main {
                                                 new PushbackReader(
                                                         new InputStreamReader(inputStream), 1024)));
 
+                        // Create a Parser instance.
+                 /*       Parser p =
+                                new Parser(
+                                        new Lexer(
+                                                new PushbackReader(
+                                                        new InputStreamReader(System.in), 1024)));
+                        */
 
                         // Parse the input.
 
@@ -40,14 +47,21 @@ public class Main {
 
                         tree.apply(new Print());
 
-
-
                 }
                 catch(Exception e)
                 {
                         e.printStackTrace();
                 }
+/*
+                SymbolTable sm = new SymbolTable();
+                sm.enter();
+                System.out.println(sm.insert(new Record("id1", "Int", "Variable")));
+              //  sm.enter();
+                System.out.println(sm.insert(new Record("id1", "Char", "Variable")));
 
+                Record rec = sm.lookup("id1");
+                System.out.println(rec.getType());
+*/
 
         }
 

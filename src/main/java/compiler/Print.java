@@ -3,419 +3,473 @@ package compiler;
 import compiler.analysis.DepthFirstAdapter;
 import compiler.node.*;
 
-import java.util.Stack;
+import java.util.*;
 
 public class Print extends DepthFirstAdapter
 {
-    private Stack<String> st = new Stack<String>();
-    private int depth =0;
-    private int condDepth =0;
+    private SymbolTable symTable = new SymbolTable();
+    private Deque<Double> stack = new ArrayDeque<>();
+    private ArrayList<String> fparVars = new ArrayList<>();
+    private LinkedList<Integer> dimList = new LinkedList<Integer>();
+    private LinkedList<Record> fParam = new LinkedList<>();
+    private Stack<String> type = new Stack<>();
+    private String tmpVarType;
 
-    public String stringSpaces()
-    {
-        String newString = "";
-        for(int i=0; i<depth; i++)
-            newString = newString + "  ";
-        return newString;
+    @Override
+    public void inAProgram(AProgram node){
+        System.out.println("In program");
     }
 
     @Override
-    public void inABlockBlock(ABlockBlock node) {
-        System.out.println(stringSpaces()+"{");
-        depth++;
+    public void inAFunDefinition(AFunDefinition node) {
+        System.out.println("In FunDefinition");
+        symTable.enter();
     }
 
     @Override
-    public void outABlockBlock(ABlockBlock node) {
-        depth--;
-        System.out.println(stringSpaces()+"}");
+    public void outAFunDefinition(AFunDefinition node) {
+        System.out.println("Out FunDefinition");
+        symTable.printALl();
+        symTable.exit();
     }
 
     @Override
-    public void outAAssignmentStmt(AAssignmentStmt node) {
-        System.out.println(stringSpaces()+"Assignment: ");
-        System.out.println(stringSpaces()+"\t--Name : "+node.getLValue());
-        System.out.println(stringSpaces()+"\t--Value: "+st.pop());
+    public void inASemiStatement(ASemiStatement node) {
+        System.out.println("In SemiStatement");
+    }
+    @Override
+    public void inAAssignStatement(AAssignStatement node) {
+        System.out.println("In AssignStatement");
+    }
+    @Override
+    public void inABlockStatement(ABlockStatement node) {
+        System.out.println("In BlockStatement");
     }
 
     @Override
-    public void outAFuncCallStmt(AFuncCallStmt node) {
-        System.out.println(stringSpaces()+"Function Call: "+st.pop());
+    public void inAFuncCallStatement(AFuncCallStatement node) {
+        System.out.println("In FuncCallStatement");
     }
 
     @Override
-    public void inAWhileStmt(AWhileStmt node) {
-        System.out.println(stringSpaces()+"Statement: While");
-        System.out.println(stringSpaces()+"--Enter While Statement");
-        System.out.print(stringSpaces()+"While "); //condition
+    public void inAIfWithoutElseStatement(AIfWithoutElseStatement node) {
+        System.out.println("In IfWithoutElseStatement");
+    }
+    @Override
+    public void inAIfWithElseStatement(AIfWithElseStatement node) {
+        System.out.println("In IfWithElseStatement");
+    }
+    @Override
+    public void inAWhileStatement(AWhileStatement node) {
+        System.out.println("In WhileStatement");
+    }
+    @Override
+    public void inAReturnStatement(AReturnStatement node) {
+        System.out.println("In ReturnStatement");
     }
 
     @Override
-    public void outAWhileStmt(AWhileStmt node) {
-
-        System.out.println(stringSpaces()+"--Exit While Statement");
+    public void inAFunDefLocalDef(AFunDefLocalDef node) {
+        System.out.println("In FunDefLocalDef");
+    }
+    @Override
+    public void inAFunDeclLocalDef(AFunDeclLocalDef node) {
+        System.out.println("In FunDeclLocalDef");
+    }
+    @Override
+    public void inAVarDefLocalDef(AVarDefLocalDef node) {
+        System.out.println("In AVarDefLocalDef");
+    }
+    @Override
+    public void inAOrCondition(AOrCondition node) {
+        System.out.println("In AOrCondition "+ node.getLeft()+" or "+node.getRight());
     }
 
     @Override
-    public void inAWhileStmtWithElse(AWhileStmtWithElse node) {
-        System.out.println(stringSpaces()+"Statement: While_ with_else");
-        System.out.println(stringSpaces()+"--Enter While_ with_else Statement");
-        System.out.print(stringSpaces()+"While_with_else "); //condition
+    public void inAAndCondition(AAndCondition node) {
+        System.out.println("In AAndCondition "+ node.getLeft()+" and "+node.getRight());
+    }
+    @Override
+    public void inANotCondition(ANotCondition node) {
+        System.out.println("In ANotCondition "+ " not "+node.getCondition());
     }
 
     @Override
-    public void outAWhileStmtWithElse(AWhileStmtWithElse node){
-
-        System.out.println(stringSpaces()+"--Exit While_with_else Statement");
+    public void inARelatCondition(ARelatCondition node) {
+        System.out.println("In ARelatCondition "+node.getLeft()+" "+node.getSymbol()+ ""+node.getRight());
     }
-
-
     @Override
-    public void inAReturnStmt(AReturnStmt node) {
-        System.out.println(stringSpaces()+"Return");
+    public void inAEqualRelationOper(AEqualRelationOper node) {
+        System.out.println("In AEqualRelationOper");
     }
 
     @Override
-    public void inAWithoutElseIfStmt(AWithoutElseIfStmt node) {
-        System.out.println(stringSpaces()+"--Enter IfWithoutElse Statement");
-        System.out.print(stringSpaces()+"-IfWithoutElse "); //condition
+    public void inANEqualRelationOper(ANEqualRelationOper node) {
+        System.out.println("In ANEqualRelationOper");
+    }
+    @Override
+    public void inALessRelationOper(ALessRelationOper node) {
+        System.out.println("In ALessRelationOper");
     }
 
     @Override
-    public void outAWithoutElseIfStmt(AWithoutElseIfStmt node) {
-        System.out.println(stringSpaces()+"-IfStatement: "+node.getStmt());
-        System.out.println(stringSpaces()+"--Exit IfWithoutElse Statement");
+    public void inALessEqualRelationOper(ALessEqualRelationOper node) {
+        System.out.println("In ALessEqualRelationOper");
     }
-
-
     @Override
-    public void inAWithElseIfStmt(AWithElseIfStmt node) {
-        System.out.println(stringSpaces()+"--Enter IfWithElse Statement");
-        System.out.println(stringSpaces()+"Statement: If with Else");
-        System.out.println(stringSpaces()+"-If Statement:   "+node.getStmtWithElse());
-        System.out.println(stringSpaces()+"-Else Statement: "+node.getStmt());
-
-        System.out.print(stringSpaces()+"-IfWithElse "); //condition
+    public void inAGreaterRelationOper(AGreaterRelationOper node) {
+        System.out.println("In AGreaterRelationOper");
     }
 
     @Override
-    public void outAWithElseIfStmt(AWithElseIfStmt node) {
-
-        System.out.println(stringSpaces()+"--Exit IfWithElse Statement");
+    public void inAGreaterEqualRelationOper(AGreaterEqualRelationOper node) {
+        System.out.println("In AGreaterEqualRelationOper");
     }
 
     @Override
-    public void inAHeaderHeader(AHeaderHeader node){
-        System.out.println(stringSpaces()+"Fuction: ");
-        System.out.println(stringSpaces()+"\t--Name       : "+ node.getIdentifier());
-        System.out.println(stringSpaces()+"\t--Parameters : "+ node.getFunctionParameters());
-        System.out.println(stringSpaces()+"\t--Return Type: "+ node.getRetType());
-    }
-
-    @Override
-    public void inAFuncDefLocalDefinition(AFuncDefLocalDefinition node){
-        System.out.println(stringSpaces()+"Local Fuction definition");
-    }
-
-    @Override
-    public void inAFuncDeclLocalDefinition(AFuncDeclLocalDefinition node){
-        System.out.println(stringSpaces()+"Local Fuction declaration");
-    }
-
-    @Override
-    public void inAVarVariableDefinition(AVarVariableDefinition node){
-        String cids = (node.getCommaIdentifier()).toString();
-        System.out.println(stringSpaces()+"Variable(s) Definition: ");
-        System.out.print(stringSpaces()+"\t--Name(s): "+ node.getIdentifier());
-        if ((node.getCommaIdentifier()).toString() != "[]")
-            for(int i=1; i<cids.length()-1; i++)
-               System.out.print(cids.charAt(i));
-        System.out.println(stringSpaces()+"\n\t--varType: "+ node.getType());
-    }
-
-    @Override
-    public void inAFuncDeclFunctionDeclaration(AFuncDeclFunctionDeclaration node){
-        System.out.println(stringSpaces()+"Fuction declaration");
-    }
-
-    /******************************************************************************/
-
-    @Override
-    public void inAPlusExpr(APlusExpr node){
-
-    }
-
-    @Override
-    public void outAPlusExpr(APlusExpr node){
-        String rightChild = st.pop();
-        String newString = "("+ st.pop()+" + "+rightChild+")";
-        st.push(newString);
-
-    }
-
-    @Override
-    public void inAMinusExpr(AMinusExpr node){
-
-    }
-
-    @Override
-    public void outAMinusExpr(AMinusExpr node){
-        String rightChild = st.pop();
-        String newString = "("+ st.pop()+" - "+rightChild+")";
-        st.push(newString);
-
-    }
-
-    @Override
-    public void inAMultFactor(AMultFactor node){
-
-    }
-
-    @Override
-    public void outAMultFactor(AMultFactor node){
-        String rightChild = st.pop();
-        String newString = "("+ st.pop()+" * "+rightChild+")";
-        st.push(newString);
-
-    }
-
-    @Override
-    public void inADivFactor(ADivFactor node){
-
-    }
-
-    @Override
-    public void outADivFactor(ADivFactor node){
-        String rightChild = st.pop();
-        String newString = "("+ st.pop()+" div "+rightChild+")";
-        st.push(newString);
-
-    }
-
-    @Override
-    public void outAModFactor(AModFactor node){
-        String rightChild = st.pop();
-        String newString = "("+ st.pop()+" mod "+rightChild+")";
-        st.push(newString);
-    }
-
-
-    @Override
-    public void outAParExprPar(AParExprPar node){
-
-    }
-
-    @Override
-    public void inATermTermSign(ATermTermSign node){
-
-    }
-
-    @Override
-    public void outATermTermSign(ATermTermSign node){
-        String newString = "term::"+ st.pop();
-        st.push(newString);
-    }
-
-    @Override
-    public void inASignPlusTermSign(ASignPlusTermSign node){
-
-    }
-
-    @Override
-    public void outASignPlusTermSign(ASignPlusTermSign node){
-        String newString = "term:: +"+ st.pop();
-        st.push(newString);
-    }
-
-    @Override
-    public void inASignMinusTermSign(ASignMinusTermSign node){
-
-    }
-
-    @Override
-    public void outASignMinusTermSign(ASignMinusTermSign node){
-        String newString = "term:: -"+ st.pop();
-        st.push(newString);
-    }
-
-    @Override
-    public void inAIntConstTerm(AIntConstTerm node){
-
-    }
-
-    @Override
-    public void outAIntConstTerm(AIntConstTerm node){
-        String newString = "constInt::"+ node.getNumber();
-        st.push(newString);
-    }
-
-    @Override
-    public void inACharConstTerm(ACharConstTerm node){
-
-    }
-
-    @Override
-    public void outACharConstTerm(ACharConstTerm node){
-        String newString = "constChar::"+ node.getConstChar();
-        st.push(newString);
-    }
-
-    @Override
-    public void inALValueTerm(ALValueTerm node){
-
-    }
-
-    @Override
-    public void outALValueTerm(ALValueTerm node){
-        String newString = "lvalue::"+ node.getLValue();
-        st.push(newString);
-    }
-
-    @Override
-    public void outALValueLValue(ALValueLValue node)
-    {
-        st.pop();
-    }
-
-    @Override
-    public void inAFuncCallTerm(AFuncCallTerm node){
-
-    }
-
-    @Override
-    public void outAFuncCallTerm(AFuncCallTerm node){
-        String newString = "funcCall::"+ st.pop();
-        st.push(newString);
-    }
-
-    @Override
-    public void inAFuncCallFuncCall(AFuncCallFuncCall node){
-
-    }
-
-    @Override
-    public void outAFuncCallFuncCall(AFuncCallFuncCall node){
-        String newString;
-        if (node.getFuncCallExpr() == null)
-            newString = "Id::"+node.getIdentifier()+"NoParameters::( )";
-        else
-            newString = "Id::"+node.getIdentifier()+"Parameters::("+ st.pop()+")";
-        st.push(newString);
-    }
-
-    @Override
-    public void inAExprCommaExprFuncCallExpr(AExprCommaExprFuncCallExpr node){
-
-    }
-
-    @Override
-    public void outAExprCommaExprFuncCallExpr(AExprCommaExprFuncCallExpr node){
-        String newString = st.pop();
-        st.push(newString);
-    }
-
-    @Override
-    public void inACommaExprCommaExpr(ACommaExprCommaExpr node){
-
-    }
-
-    @Override
-    public void outACommaExprCommaExpr(ACommaExprCommaExpr node){
-        String rightChild = st.pop();
-        String newString = st.pop()+" , "+rightChild;
-        st.push(newString);
-    }
-
-    /******************************************************************************/
-
-    @Override
-    public void inACondCond(ACondCond node){
-        condDepth++;
-    }
-
-    @Override
-    public void outACondCond(ACondCond node){
-        condDepth--;
-        if(condDepth == 0) {
-            System.out.println("Condition:: " + st.pop());
+    public void inAExprList(AExprList node){
+        System.out.println("In ExprList");
+        for (PExpression expr: node.getExprs())
+        {
+            System.out.println(expr+" ");
         }
     }
 
     @Override
-    public void inACondOrCond(ACondOrCond node){
-        condDepth++;
+    public void outAPlusExpression(APlusExpression node) {
+        System.out.println("Out APlusExpression "+ node.getLeft()+" + " + node.getRight());
+        String leftType, rightType;
+
+        rightType = type.pop();
+        leftType = type.pop();
+
+        System.out.println("Right "+rightType+".");
+        System.out.println("Left "+leftType);
+        if(rightType.equals("char") || leftType.equals("char"))
+        {
+            System.out.println("Confict in plus expression: type char");
+        }
+
+        type.push("int");
     }
 
     @Override
-    public void outACondOrCond(ACondOrCond node){
-        condDepth--;
+    public void outAMinusExpression(AMinusExpression node) {
+        System.out.println("Out AMinusExpression "+ node.getLeft()+" - " + node.getRight());
+        String leftType, rightType;
 
-        String rightChild = st.pop();
-        String newString = "("+ st.pop()+" or "+rightChild+")";
-        if (condDepth == 0) {
-            System.out.println("Condition:: "+newString);
+        rightType = type.pop();
+        leftType = type.pop();
+
+        if(rightType.equals("char") || leftType.equals("char"))
+        {
+            System.out.println("Confict in minus expression: type char");
+        }
+
+        type.push("int");
+    }
+    @Override
+    public void outAMultExpression(AMultExpression node) {
+        System.out.println("Out AMultExpression "+ node.getLeft()+" * " + node.getRight());
+        String leftType, rightType;
+
+        rightType = type.pop();
+        leftType = type.pop();
+
+        if(rightType.equals("char") || leftType.equals("char"))
+        {
+            System.out.println("Confict in mult expression: type char");
+        }
+
+        type.push("int");
+    }
+
+    @Override
+    public void outADivExpression(ADivExpression node) {
+        System.out.println("Out ADivExpression "+ node.getLeft()+" div " + node.getRight());
+        String leftType, rightType;
+
+        rightType = type.pop();
+        leftType = type.pop();
+
+        if(rightType.equals("char") || leftType.equals("char"))
+        {
+            System.out.println("Confict in div expression: type char");
+        }
+
+        type.push("int");
+    }
+    @Override
+    public void outAModExpression(AModExpression node) {
+        System.out.println("Out AModExpression "+ node.getLeft()+" mod " + node.getRight());
+        String leftType, rightType;
+
+        rightType = type.pop();
+        leftType = type.pop();
+
+        if(rightType.equals("char") || leftType.equals("char"))
+        {
+            System.out.println("Confict in mod expression: type char");
+        }
+
+        type.push("int");
+    }
+
+    @Override
+    public void inAIntExpression(AIntExpression node) {
+        System.out.println("In AIntExpression: "+node.getNumber());
+
+        type.push("int");
+    }
+    @Override
+    public void inACharExpression(ACharExpression node) {
+        System.out.println("In ACharExpression: "+node.getConstChar());
+
+        type.push("char");
+    }
+
+    @Override
+    public void inAPosExpression(APosExpression node) {
+        System.out.println("In APosExpression: +"+node.getExpression());
+    }
+    @Override
+    public void inANegExpression(ANegExpression node) {
+        System.out.println("In ANegExpression: -"+node.getExpression());
+    }
+
+    @Override
+    public void inAValExpression(AValExpression node) {
+        System.out.println("In AValExpression: "+node.getLvalue());
+
+
+    }
+
+    @Override
+    public void outAValExpression(AValExpression node) {
+        System.out.println("Out AValExpression: "+node.getLvalue());
+
+    }
+    @Override
+    public void inAFunExpression(AFunExpression node) {
+        System.out.println("In AFunExpression");
+    }
+
+    @Override
+    public void inAHeader(AHeader node) {
+        AFparDefinition Apar;
+        System.out.println("IN Function has name "+ node.getIdentifier());
+        for(PFparDefinition pexr:node.getFparDefinition())
+        {
+            Apar= (AFparDefinition) pexr;
+            System.out.println(Apar.getFparType());
+        }
+
+    }
+
+    @Override
+    public void outAHeader(AHeader node) {
+        Record recFunct;
+        AFparDefinition Apar;
+
+        System.out.println("OUt Function has name "+ node.getIdentifier());
+        for(PFparDefinition pexr:node.getFparDefinition())
+        {
+            Apar= (AFparDefinition) pexr;
+            System.out.println(Apar.getFparType());
+        }
+
+        System.out.println("SO");
+        for(String myString : fparVars)
+        {
+            System.out.println(myString);
+        }
+
+        recFunct = new RecordFunction(node.getIdentifier().toString().trim(), node.getGeneralType().toString().trim(), "Function", fParam);
+        symTable.insert(recFunct);
+
+        fParam.clear();
+    }
+
+    @Override
+    public void outAFparDefinition(AFparDefinition node) {
+        Record tmpRec;
+        boolean ref;
+        System.out.println("In AFparDefinition "+node.getReference()+" number of parameters "+node.getVarIdentifier().size()+ " ");
+
+        if(node.getReference() == null)
+        {
+            ref = false;
         }
         else
         {
-            st.push(newString);
+            ref = true;
         }
 
+        for(PVarIdentifier varId: node.getVarIdentifier())
+        {
+            if(dimList.isEmpty())
+            {
+                tmpRec = new RecordParam(varId.toString().trim(), tmpVarType, "functParam", ref);
+            }
+            else
+            {
+                tmpRec = new RecordParamArray(varId.toString().trim(), tmpVarType, "functParamArray", dimList, ref);
+            }
+
+            symTable.insert(tmpRec);
+
+            fParam.addLast(tmpRec);
+        }
+        dimList.clear();
+    }
+/*
+    @Override
+    public void inAVarDefinition(AVarDefinition node) {
+
+        System.out.print("In AVarDefinition type "+node.getVarType()+ " number of parameters "+node.getVarIdentifier().size()+" Variables ");
+        for(PVarIdentifier Pexr: node.getVarIdentifier())
+        {
+            tmpRec
+            symTable.insert()
+            System.out.print(Pexr+" ");
+        }
+        System.out.println();
+    }
+*/
+    @Override
+    public void outAVarDefinition(AVarDefinition node) {
+        Record tmpRec;
+
+        System.out.print("In AVarDefinition type "+node.getVarType()+ " number of parameters "+node.getVarIdentifier().size()+" Variables ");
+        for(PVarIdentifier varId: node.getVarIdentifier())
+        {
+            if(dimList.isEmpty())
+            {
+                tmpRec = new Record(varId.toString().trim(), tmpVarType, "Variable");
+            }
+            else
+            {
+                tmpRec = new RecordArray(varId.toString().trim(), tmpVarType, "Array", dimList);
+            }
+
+            symTable.insert(tmpRec);
+
+        }
+        dimList.clear();
+
+        System.out.println();
     }
 
     @Override
-    public void inACondCondAnd(ACondCondAnd node){
+    public void inAVarIdentifier(AVarIdentifier node) {
+        System.out.println("In AVarIdentifier");
 
     }
 
     @Override
-    public void inACondAndCondAnd(ACondAndCondAnd node){
+    public void inAFparType(AFparType node) {
+        System.out.println("In AFparType "+node.getEmptyBr()+" ");
+        int tmpInteger;
+        tmpVarType = new String(node.getGeneralType().toString().trim());
+
+        if(node.getEmptyBr() != null) dimList.addLast(0);
+
+        for(PConstIntBr arrayDimensions:node.getConstIntBr())
+        {
+            tmpInteger = Integer.parseInt(arrayDimensions.toString().trim());
+            dimList.addLast(tmpInteger);
+            System.out.println("array Size " + arrayDimensions);
+        }
+    }
+    @Override
+    public void inAVarType(AVarType node) {
+        System.out.println("In AVarType");
+        int tmpInteger;
+        tmpVarType = new String(node.getGeneralType().toString().trim());
+
+        for(PConstIntBr arrayDimensions:node.getConstIntBr())
+        {
+            tmpInteger = Integer.parseInt(arrayDimensions.toString().trim());
+            dimList.addLast(tmpInteger);
+            System.out.println("array Size " + arrayDimensions);
+        }
+    }
+
+    @Override
+    public void inAIntGeneralType(AIntGeneralType node) {
+        System.out.println("In AIntGeneralType");
+    }
+    @Override
+    public void inACharGeneralType(ACharGeneralType node) {
+        System.out.println("In ACharGeneralType");
+    }
+
+    @Override
+    public void inANothGeneralType(ANothGeneralType node) {
+        System.out.println("In ANothGeneralType");
+    }
+    @Override
+    public void inAConstIntBr(AConstIntBr node) {
+        System.out.println("In AConstIntBr");
+    }
+
+    @Override
+    public void inAEmptyBr(AEmptyBr node) {
+        System.out.println("In AEmptyBr");
+    }
+
+    @Override
+    public void inAFunctionCall(AFunctionCall node) {
+        System.out.print("In AFunctionCall: Name: "+ node.getIdentifier()+ " number of Expressions "+node.getExprList());
+        System.out.println();
+    }
+
+    @Override
+    public void inAIdLvalue(AIdLvalue node) {
+        System.out.println("In AIdLvalue : ");
+        Record tmpRec;
+
+        tmpRec = symTable.lookup(node.getIdentifier().toString().trim());
+
+        if(tmpRec == null)
+        {
+            System.out.println("Error undefined variable "+node.getIdentifier());
+            type.push("Null");
+            return;
+        }
+
+        type.push(tmpRec.getType());
+        System.out.println("Var name "+ tmpRec.getName()+" "+ tmpRec.getType());
+    }
+
+    @Override
+    public void inAStrLvalue(AStrLvalue node) {
+        System.out.println("In AStrLvalue: "+node.getConstString());
+
+        type.push("char");
+    }
+
+    @Override
+    public void inAValLvalue(AValLvalue node) {
 
     }
 
     @Override
-    public void outACondAndCondAnd(ACondAndCondAnd node){
-        String rightChild = st.pop();
-        String newString = "("+ st.pop()+" and "+rightChild+")";
-        st.push(newString);
-    }
+    public void outAValLvalue(AValLvalue node) {
+        System.out.println("In AValLvalue");
+        String leftType, rightType;
 
-    @Override
-    public void inACondCondNot(ACondCondNot node){
+        rightType = type.pop();
+        System.out.println("Right "+rightType);
+       /* leftType = type.pop();
+        System.out.println("Left "+leftType);
+        */
 
-    }
+        if(rightType != "int")
+        {
+            System.out.println("Error array index must be int");
+        }
 
-
-    @Override
-    public void inACondNotCondNot(ACondNotCondNot node){
-
-    }
-
-    @Override
-    public void outACondNotCondNot(ACondNotCondNot node){
-        String newString = "( not "+ st.pop()+")";
-        st.push(newString);
-    }
-
-    @Override
-    public void inAExprCondPar(AExprCondPar node){
 
     }
-
-    @Override
-    public void inACondCondPar(ACondCondPar node){
-
-    }
-    
-    @Override
-    public void inACondRelatCondRelat(ACondRelatCondRelat node){
-
-    }
-
-    @Override
-    public void outACondRelatCondRelat(ACondRelatCondRelat node){
-        String rightChild = st.pop();
-        String newString = "("+ st.pop()+node.getRelatOper()+rightChild+")";
-        st.push(newString);
-    }
-
 }

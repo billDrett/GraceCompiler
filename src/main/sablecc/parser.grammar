@@ -100,158 +100,205 @@ Ignored Tokens
 
 
 Productions
-
-    program =
-        {func_def}  function_definition;
-
-    block =
-        {block} l_brc stmt* r_brc;
-
-    stmt =
-        {semi} semi |
-        {assignment} l_value assign expr semi |
-        {block} block |
-        {func_call} func_call semi |
-        {if} if_stmt |
-        {while} while cond do stmt |
-        {return} return expr? semi;
-
-    if_stmt =
-        {without_else} if cond then stmt |
-        {with_else} if cond then stmt_with_else else stmt;
-
-    stmt_with_else =
-        {semi} semi |
-        {assignment} l_value assign expr semi |
-        {block} block |
-        {func_call} func_call semi |
-        {if_else} if cond then [id1]:stmt_with_else else [id2]: stmt_with_else |
-        {while} while cond do stmt_with_else |
-        {return} return expr? semi;
-
-    expr =
-        {factor} factor |
-        {plus} expr plus factor |
-        {minus} expr minus factor;
-
-    factor =
-        {expr_par}  expr_par |
-        {mult} factor mult expr_par |
-        {div} factor div expr_par |
-        {mod} factor mod expr_par;
-
-    expr_par =
-        {term} term_sign |
-        {par} l_par expr r_par;
-
-    term_sign =
-         {term} term |
-         {sign_plus} plus term |
-         {sign_minus} minus term;
-
-    term =
-         {int_const} number |
-         {char_const} const_char |
-         {l_value} l_value |
-         {func_call} func_call;
-
-    cond =
-         {cond} cond_and |
-         {cond_or} cond or cond_and;
-
-    cond_and =
-         {cond} cond_not |
-         {cond_and} cond_and and cond_not;
-
-    cond_not =
-         {cond} cond_par |
-         {cond_not} not cond_not;
-
-    cond_par =
-         {expr} cond_relat |
-         {cond} l_par cond r_par;
-
-    cond_relat =
-         {cond_relat} [id1]: expr relat_oper [id2]: expr;
-
-    relat_oper =
-         {equal} equal |
-         {n_equal} n_equal |
-         {less} less |
-         {less_equal} less_equal |
-         {greater} greater |
-         {greater_equal} greater_equal;
-
+    program {-> program} = function_definition {-> New program(function_definition.fun_definition)};
 
     //Functions Definition
-    function_definition =
-         header local_definition* block;
+    function_definition {-> fun_definition} = header local_definition* block {-> New fun_definition(header.header, [local_definition.local_def], [block.statement])};
 
 
-    //HEADER
-    header =
-         {header} function identifier l_par function_parameters? r_par colon ret_type;
+    block {-> statement*} = l_brc stmt* r_brc     {-> [stmt.statement]};
+
+    stmt {-> statement} = {semi} semi                                            {-> New statement.semi(semi)}
+                        | {assignment} l_value assign expr semi                  {-> New statement.assign(l_value.lvalue, expr.expression)}
+                        | {block} block                                          {-> New statement.block([block.statement])}
+                        | {func_call} func_call semi                             {-> New statement.func_call(func_call.function_call)}
+                        | {if_without_else} if cond then stmt                    {-> New statement.if_without_else(cond.condition, stmt.statement)}
+                        | {if_with_else} if cond then stmt_with_else else stmt   {-> New statement.if_with_else(cond.condition, stmt_with_else.statement, stmt.statement)}
+                        | {while} while cond do stmt                             {-> New statement.while(cond.condition, stmt.statement)}
+                        | {return} return expr? semi                             {-> New statement.return(expr.expression)};
 
 
-    //Function Parameters
-    function_parameters =
-        {fpar} fparameters_definition semi_function_parameters*;
+    stmt_with_else {-> statement} = {semi} semi                                                               {-> New statement.semi(semi)}
+                                  | {assignment} l_value assign expr semi                                     {-> New statement.assign(l_value.lvalue, expr.expression)}
+                                  | {block} block                                                             {-> New statement.block([block.statement])}
+                                  | {func_call} func_call semi                                                {-> New statement.func_call(func_call.function_call)}
+                                  | {if_else} if cond then [id1]:stmt_with_else else [id2]: stmt_with_else  {-> New statement.if_with_else(cond.condition, id1.statement, id2.statement)}
+                                  | {while} while cond do stmt_with_else                                      {-> New statement.while(cond.condition, stmt_with_else.statement)}
+                                  | {return} return expr? semi                                                {-> New statement.return(expr.expression)};
 
-    semi_function_parameters =
-        {semi_fpar} semi fparameters_definition;
+    expr_list {-> expression*} = expr* {-> [expr.expression]};
 
-    fparameters_definition =
-        {fpar_def} reference? identifier comma_identifier* colon fpar_type;
+    expr {-> expression} =  {factor} factor                   {-> factor.expression}
+                         |  {plus} expr plus factor           {-> New expression.plus(expr.expression, factor.expression)}
+                         |  {minus} expr minus factor         {-> New expression.minus(expr.expression, factor.expression)};
 
-    comma_identifier =
-        {comma_id} comma identifier;
+    factor {-> expression} = {expr_par}  expr_par              {-> expr_par.expression}
+                           |  {mult} factor mult expr_par      {-> New expression.mult(factor.expression, expr_par.expression)}
+                           |  {div} factor div expr_par        {-> New expression.div(factor.expression, expr_par.expression)}
+                           |  {mod} factor mod expr_par        {-> New expression.mod(factor.expression, expr_par.expression)};
 
-    //Type
-    ret_type =
-        {data} data_type |
-        {noth} nothing;
+    expr_par {-> expression} = {term} term_sign                {-> term_sign.expression}
+                             | {par} l_par expr r_par          {-> expr.expression};
 
-    data_type =
-        {int_type}  int |
-        {char_type} char;
+    term_sign {-> expression} = {term} term                    {-> term.expression}
+                              | {sign_plus} plus term          {-> New expression.pos(term.expression)}
+                              | {sign_minus} minus term        {-> New expression.neg(term.expression)};
 
-    type =
-        {type} data_type const_int_brackets*;
+    term {-> expression} = {int_const} number                  {-> New expression.int(number)}
+                         | {char_const} const_char             {-> New expression.char(const_char)}
+                         | {l_value}   l_value                 {-> New expression.val(l_value.lvalue)}
+                         | {func_call} func_call               {-> New expression.fun(func_call.function_call)};
 
-    fpar_type =
-        {type} data_type empty_brackets? const_int_brackets*;
+    cond {-> condition} = {cond} cond_and                                    {-> cond_and.condition}
+                        | {cond_or} [left]:cond or [right]:cond_and          {-> New condition.or(left.condition, right.condition)};
 
-    const_int_brackets =
-        {array_type} l_bkt number r_bkt;
+    cond_and {-> condition} = {cond} cond_not                                {-> cond_not.condition}
+                        | {cond_and} [left]:cond_and and [right]:cond_not    {-> New condition.and(left.condition, right.condition)};
 
-    empty_brackets =
-        {empty} l_bkt r_bkt;
+    cond_not {-> condition} = {cond} cond_par                                {-> cond_par.condition}
+                            | {cond_not} not cond_not                        {-> New condition.not(cond_not.condition)};
 
+    cond_par {-> condition} = {expr} cond_relat                              {-> cond_relat.condition}
+                            | {cond} l_par cond r_par                        {-> New condition.par(cond.condition)};
 
-    //LOCAL FUNCTION DEFINITION
-    local_definition =
-        {func_def}  function_definition |
-        {func_decl} function_declaration |
-        {var_def}   variable_definition;
-
-    variable_definition =
-        {var} variable identifier comma_identifier* colon type semi;
-
-    function_declaration =
-        {func_decl} header semi;
+    cond_relat {-> condition} =
+         {cond_relat} [left]:expr [symbol]:relat_oper [right]:expr          {-> New condition.relat(left.expression, symbol.relation_oper, right.expression)};
 
 
-    //Function Call
-    func_call =
-        {func_call} identifier l_par func_call_expr? r_par;
+    relat_oper {-> relation_oper} = {equal} equal                             {-> New relation_oper.equal(equal)}
+                                 | {n_equal} n_equal                          {-> New relation_oper.n_equal(n_equal)}
+                                 | {less} less                                {-> New relation_oper.less(less)}
+                                 | {less_equal} less_equal                    {-> New relation_oper.less_equal(less_equal)}
+                                 | {greater} greater                          {-> New relation_oper.greater(greater)}
+                                 | {greater_equal} greater_equal              {-> New relation_oper.greater_equal(greater_equal)};
 
-    func_call_expr =
-        {expr_comma_expr} expr comma_expr*;
 
-    comma_expr =
-        {comma_expr} comma expr;
+  //HEADER
+    header {-> header} = function identifier l_par function_parameters? r_par colon ret_type                {-> New header(identifier, [function_parameters.fpar_definition], ret_type.general_type)};
 
-    l_value =
-         {id} identifier |
-         {string_literal} const_string |
-         {l_value} l_value l_bkt expr r_bkt;
+    function_parameters        {-> fpar_definition*} = fparameters_definition fparameters_definition_list*  {-> [fparameters_definition.fpar_definition, fparameters_definition_list.fpar_definition]};
+
+    fparameters_definition_list {-> fpar_definition} = semi fparameters_definition                          {-> fparameters_definition.fpar_definition};
+
+    fparameters_definition      {-> fpar_definition} = reference? variable_list colon fpar_type             {-> New fpar_definition(reference, [variable_list.var_identifier], fpar_type.fpar_type)};
+
+
+
+    variable_list        {-> var_identifier*}  = variable_identifier comma_identifier*  {-> [variable_identifier.var_identifier, comma_identifier.var_identifier]};
+
+    comma_identifier     {-> var_identifier}   = comma variable_identifier              {-> variable_identifier.var_identifier};
+
+    variable_identifier  {-> var_identifier}   = identifier                             {-> New var_identifier(identifier)};
+
+
+  //TYPES
+    fpar_type {-> fpar_type}  = data_type empty_brackets? const_int_brackets*  {-> New fpar_type(data_type.general_type, empty_brackets.empty_br, [const_int_brackets.const_int_br])};
+
+    data_type {-> general_type} = {int_type}  int               {-> New general_type.int(int)}
+                                | {char_type} char              {-> New general_type.char(char)};
+
+    ret_type {-> general_type}  = {data} data_type              {-> data_type.general_type}
+                                | {noth} nothing                {-> New general_type.noth(nothing)};
+
+    type {-> var_type}          = data_type const_int_brackets* {-> New var_type(data_type.general_type, [const_int_brackets.const_int_br])};
+
+    empty_brackets {-> empty_br} = l_bkt r_bkt                  {-> New empty_br()};
+
+    const_int_brackets {-> const_int_br} = l_bkt number r_bkt   {-> New const_int_br(number)};
+
+
+  //LOCAL FUNCTION DEFINITION
+    local_definition {-> local_def} = {func_def}  function_definition    {-> New local_def.fun_def(function_definition.fun_definition)}
+                                    | {func_decl} function_declaration   {-> New local_def.fun_decl(function_declaration.header)}
+                                    | {var_def}   variable_definition    {-> New local_def.var_def(variable_definition.var_definition)};
+
+    variable_definition {-> var_definition} = variable variable_list colon type semi {-> New var_definition([variable_list.var_identifier], type.var_type)};
+
+    function_declaration {->header} = header semi  {-> header.header};
+
+  //FUNCTION CALL
+    func_call  {-> function_call} = identifier l_par func_call_expr? r_par  {-> New function_call(identifier, func_call_expr.expr_list)};
+
+    func_call_expr {-> expr_list} = expr comma_expr*                        {-> New expr_list([expr.expression, comma_expr.expression])};
+
+    comma_expr    {-> expression} = comma expr                              {-> expr.expression};
+
+
+    l_value {-> lvalue} = {id} identifier                             {-> New lvalue.id(identifier)}
+                        | {string_literal} const_string               {-> New lvalue.str(const_string)}
+                        | {l_value} l_value l_bkt expr r_bkt          {-> New lvalue.val(l_value.lvalue, expr.expression)};
+
+  //  exp_list {-> exp*} = exp exp_list_tail* {-> [exp exp_list_tail.exp]};
+
+  //  exp_list_tail {-> exp} = comma exp {-> exp};
+
+Abstract Syntax Tree
+    program = fun_definition;
+
+    fun_definition = header local_def* statement*;
+
+    statement = {semi} semi
+              | {assign} lvalue expression
+              | {block} statement*
+              | {func_call} function_call
+              | {if_without_else} condition statement
+              | {if_with_else}    condition [id1]:statement [id2]:statement
+              | {while} condition statement
+              | {return} expression?;
+
+    local_def  = {fun_def}   fun_definition
+               | {fun_decl}  header                                              //because function_declaration = header semi
+               | {var_def}   var_definition;
+
+    condition = {or}     [left]:condition [right]:condition
+              | {and}    [left]:condition [right]:condition
+              | {not}    condition
+              | {par}    condition
+              | {relat}  [left]:expression [symbol]:relation_oper [right]:expression;
+
+    relation_oper = {equal} equal
+                  | {n_equal} n_equal
+                  | {less} less
+                  | {less_equal} less_equal
+                  | {greater} greater
+                  | {greater_equal} greater_equal;
+
+    expr_list = [exprs]:expression*;
+
+    expression = {plus}   [left]:expression [right]:expression
+               | {minus}  [left]:expression [right]:expression
+               | {mult}   [left]:expression [right]:expression
+               | {div}    [left]:expression [right]:expression
+               | {mod}    [left]:expression [right]:expression
+               | {pos}    expression
+               | {neg}    expression
+               | {int}    number
+               | {char}   const_char
+               | {val}    lvalue
+               | {fun}    function_call;
+
+    header = identifier fpar_definition* general_type;
+
+    fpar_definition = reference? var_identifier* fpar_type;
+
+    var_definition  = var_identifier* var_type;
+
+    var_identifier  = identifier;
+
+    fpar_type     = general_type empty_br? const_int_br*;
+
+    var_type      = general_type const_int_br*;
+
+    general_type  = {int}  int
+                  | {char} char
+                  | {noth} nothing;
+
+    const_int_br  = number;
+
+    empty_br      = ;
+
+    function_call = identifier expr_list?;
+
+    lvalue = {id} identifier
+           | {str} const_string
+           | {val} lvalue expression;
