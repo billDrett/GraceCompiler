@@ -23,4 +23,19 @@ public class RecordFunction extends Record
     {
         return fparameters;
     }
+
+    public void Tst()
+    {
+        for(Record rec : fparameters)
+        {
+            if(rec instanceof RecordParam)
+            {
+                System.out.println("IS parameter simple");
+            }
+            else if (rec instanceof RecordParamArray)
+            {
+                System.out.println("IS parameter Array");
+            }
+        }
+    }
 }
