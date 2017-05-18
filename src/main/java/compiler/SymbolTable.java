@@ -13,6 +13,7 @@ public class SymbolTable {
     public SymbolTable()
     {
         scopes = new ArrayDeque<>();
+        this.enter(); //starting scope
     }
 
     public void enter()

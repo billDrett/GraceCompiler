@@ -10,12 +10,83 @@ public class Print extends DepthFirstAdapter
 {
     private SymbolTable symTable = new SymbolTable();
     private ArrayList<String> fparVars = new ArrayList<>();
-    private LinkedList<Integer> dimList = new LinkedList<Integer>();
+    private LinkedList<Integer> dimList = new LinkedList<>();
     private LinkedList<Record> fParam = new LinkedList<>();
     private String tmpVarType;
     private Stack<RecType> typeStack = new Stack<>();
     private Stack<String> returnStatement = new Stack<>();
+    private LinkedList<Record> currentFunctionHeader = new LinkedList<>();
     boolean returnFound =false;
+    boolean functDeclaration = true;
+
+    Print()
+    {
+        LinkedList<Integer> dimList = new LinkedList<>();
+        dimList.addLast(0); //no dimensions given
+
+        insertFunction("puti", "nothing", new RecordParam("n", "int", null, false), null);
+        insertFunction("putc", "nothing", new RecordParam("c", "char", null, false), null);
+
+        insertFunction("puts", "nothing", new RecordParamArray("s", "char", null, dimList, true), null);
+
+        insertFunction("geti", "int", null, null);
+        insertFunction("getc", "char", null, null);
+
+        Record rec1Gets = new RecordParam("n", "int", null, false);
+        Record rec2Gets = new RecordParamArray("s", "char", null, dimList, true);
+        insertFunction("geti", "nothing", rec1Gets, rec2Gets);
+
+        insertFunction("abs", "int", new RecordParam("n", "int", null, false), null);
+        insertFunction("ord", "int", new RecordParam("c", "char", null, false), null);
+        insertFunction("chr", "char", new RecordParam("n", "int", null, false), null);
+
+        insertStrFunction("strlen", "int", "char", null);
+        insertStrFunction("strcmp", "int", "char", "char");
+        insertStrFunction("strcpy", "nothing", "char", "char");
+        insertStrFunction("strcat", "nothing", "char", "char");
+    }
+
+    //insert a function at the symbol table
+    void insertFunction(String name, String returnType, Record rec1, Record rec2)
+    {
+        RecordFunction newFunctRecord;
+        LinkedList<Record> functParameters = new LinkedList<>();
+
+        if(rec1 != null)
+        {
+            functParameters.addLast(rec1);
+        }
+
+        if(rec2 != null)
+        {
+            functParameters.addLast(rec2);
+        }
+
+        newFunctRecord = new RecordFunction(name, returnType, "Function", functParameters); //create function record
+        newFunctRecord.setDeclared(true);
+        symTable.insert(newFunctRecord);
+
+    }
+
+    //inserts the str fuction at the symbol table, all the parameters are with ref and type of array with one dimension.
+    void insertStrFunction(String name, String returnType, String rec1Type, String rec2Type)
+    {
+        LinkedList<Integer> dimList = new LinkedList<>();
+        dimList.addLast(0); //no dimensions given
+        Record rec1 = null, rec2= null;
+
+        if(rec1Type != null)
+        {
+            rec1 = new RecordParamArray("s1", "char", null, dimList, true);
+        }
+
+        if(rec2Type != null)
+        {
+            rec2 = new RecordParamArray("s2", "char", null, dimList, true);
+        }
+
+        insertFunction(name, returnType, rec1, rec2);
+    }
 
     @Override
     public void inAProgram(AProgram node){
@@ -35,16 +106,59 @@ public class Print extends DepthFirstAdapter
     @Override
     public void inAFunDefinition(AFunDefinition node) {
         System.out.println("In FunDefinition");
-        symTable.enter();
+        symTable.enter(); //function header will be placed in the functions scope we fix that at the AFunDefinitionOut
+
+        functDeclaration = true;
     }
+
+    @Override
+    public void inAFunDeclaration(AFunDeclaration node) {
+        System.out.println("In FunDeclaration");
+
+        functDeclaration = false;
+    }
+
+    /*
+    @Override
+    public void caseAFunDefinition(AFunDefinition node)
+    {
+        inAFunDefinition(node);
+        if(node.getHeader() != null)
+        {
+            node.getHeader().apply(this);
+        }
+
+        functDeclaration = true;
+
+        {
+            List<PLocalDef> copy = new ArrayList<PLocalDef>(node.getLocalDef());
+            for(PLocalDef e : copy)
+            {
+                e.apply(this);
+            }
+        }
+        {
+            List<PStatement> copy = new ArrayList<PStatement>(node.getStatement());
+            for(PStatement e : copy)
+            {
+                e.apply(this);
+            }
+        }
+        outAFunDefinition(node);
+    }
+    */
 
     @Override
     public void outAFunDefinition(AFunDefinition node) {
         System.out.println("Out FunDefinition");
         String returnType;
+        Record currentHeader;
 
         symTable.printALl();
         symTable.exit();
+
+        currentHeader = currentFunctionHeader.pop();
+        symTable.insert(currentHeader); //the function definition was placed in the functions scope, we want to place it in the parents functions scope
 
         returnType = returnStatement.pop();
         if(!returnFound && !returnType.equals("nothing")) //return not found and the type return type was int or char
@@ -590,6 +704,7 @@ public class Print extends DepthFirstAdapter
         System.out.println("Out header: Function has name "+ node.getIdentifier());
         Record recFunct;
         AFparDefinition Apar;
+        boolean functMatch;
 
         for(PFparDefinition pexr:node.getFparDefinition())
         {
@@ -603,9 +718,97 @@ public class Print extends DepthFirstAdapter
         }
 
         recFunct = new RecordFunction(node.getIdentifier().toString().trim(), node.getGeneralType().toString().trim(), "Function", fParam);
-        symTable.insert(recFunct);
+
+        if(functDeclaration) ((RecordFunction)recFunct).setDeclared(true); //if its a declaration set it true
+
+        if(!symTable.insert(recFunct)) //Record already exists
+        {
+            Record rec = symTable.lookup(node.getIdentifier().toString().trim());
+            if(rec instanceof RecordFunction)
+            {
+                RecordFunction recInTable = (RecordFunction) rec;
+                RecordFunction recFunction = (RecordFunction) recFunct;
+
+                functMatch = functionMatch(recFunction, recInTable); //check if function have the same parameters
+                if(functMatch)
+                {
+                    if(functDeclaration && recInTable.getDeclared() == false) //we have declaration and the function is undeclared
+                    {
+                        currentFunctionHeader.addLast(recInTable); //last header is the new
+                        recInTable.setDeclared(true);
+                    }
+                    else
+                    {
+                        System.out.println("Error function already declared");
+                    }
+                }
+                else //function is not the same
+                {
+                    System.out.println("Error function already exists but with differnt parameters");
+                }
+            }
+            else
+            {
+                System.out.println("Error function name already exists as variable name");
+            }
+
+        }
+        else
+        {
+            currentFunctionHeader.addLast(recFunct); //last header is the new
+        }
+
         returnStatement.push(node.getGeneralType().toString().trim());
         fParam.clear();
+    }
+
+    private boolean functionMatch(RecordFunction recFunct1, RecordFunction recFunct2)
+    {
+        Iterator<Record> iter1, iter2;
+        Record rec1, rec2;
+
+        if(recFunct1.getFparameters().size() != recFunct2.getFparameters().size()) //differnt number of parameters
+        {
+            return false;
+        }
+
+        iter1 = recFunct1.getFparameters().iterator();
+        iter2 = recFunct2.getFparameters().iterator();
+        while (iter1.hasNext())
+        {
+            rec1 = iter1.next();
+            rec2 = iter2.next();
+
+            if(rec1 instanceof RecordParam && rec2 instanceof RecordParam)
+            {
+                RecordParam recParam1, recParam2;
+
+                recParam1 = (RecordParam) rec1;
+                recParam2 = (RecordParam) rec2;
+                if(recParam1.getType() != recParam2.getType() && recParam1.getReference() != recParam2.getReference()) return false; //different type of argument or reference
+
+            }
+            else if (rec1 instanceof RecordParamArray && rec2 instanceof RecordParamArray)
+            {
+                RecordParamArray recParam1, recParam2;
+
+                recParam1 = (RecordParamArray) rec1;
+                recParam2 = (RecordParamArray) rec2;
+
+                if(recParam1.getType() != recParam2.getType()) return false; //different type of array
+
+                if(recParam1.getDimensions().size() != recParam2.getDimensions().size()) return false; //different size of array
+
+
+            }
+            else //different type of argument
+            {
+                return false;
+            }
+
+        }
+
+        return true;
     }
 
     @Override
@@ -639,7 +842,11 @@ public class Print extends DepthFirstAdapter
                 tmpRec = new RecordParamArray(varId.toString().trim(), tmpVarType, "functParamArray", dimList, ref);
             }
 
-            symTable.insert(tmpRec);
+            if(!symTable.insert(tmpRec)) //check if parameter already exists
+            {
+                System.out.println("Error variable already declared in the same scope");
+            }
+
             fParam.addLast(tmpRec);
         }
         dimList.clear();
@@ -666,7 +873,10 @@ public class Print extends DepthFirstAdapter
                 tmpRec = new RecordArray(varId.toString().trim(), tmpVarType, "Array", dimList);
             }
 
-            symTable.insert(tmpRec);
+            if(!symTable.insert(tmpRec)) //check if variable already exists
+            {
+                System.out.println("Error variable already declared in the same scope");
+            }
 
         }
         dimList.clear();
@@ -859,9 +1069,7 @@ public class Print extends DepthFirstAdapter
 
         if (tmpRec instanceof RecordArray)
         {
-            System.out.println("Here");
             RecordArray recArray = (RecordArray) tmpRec;
-            System.out.println("Size "+recArray.getDimensions().size());
             arraySize = recArray.getDimensions().size();
         }
 

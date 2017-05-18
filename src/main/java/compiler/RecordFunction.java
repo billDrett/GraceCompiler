@@ -8,10 +8,13 @@ import java.util.LinkedList;
 public class RecordFunction extends Record
 {
     private LinkedList<Record> fparameters;
+    boolean declared;
+
     public RecordFunction(String nameId, String vartp, String deftp, LinkedList<Record> fparam)
     {
         super(nameId, vartp, deftp);
         fparameters = new LinkedList<>(fparam);
+        declared = false;
     }
 
     public int getNoParameters()
@@ -24,18 +27,14 @@ public class RecordFunction extends Record
         return fparameters;
     }
 
-    public void Tst()
+    public boolean getDeclared()
     {
-        for(Record rec : fparameters)
-        {
-            if(rec instanceof RecordParam)
-            {
-                System.out.println("IS parameter simple");
-            }
-            else if (rec instanceof RecordParamArray)
-            {
-                System.out.println("IS parameter Array");
-            }
-        }
+        return declared;
+    }
+
+    public void setDeclared(boolean Declared)
+    {
+        declared = Declared;
     }
 }
+
