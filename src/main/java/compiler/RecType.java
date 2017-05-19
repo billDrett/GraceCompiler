@@ -6,8 +6,10 @@ package compiler;
 
 public class RecType {
 
+    //private String varName;
     private String type;
     private int dimensions;
+    //private int line;
 
 
     public RecType(String tp, int dim)

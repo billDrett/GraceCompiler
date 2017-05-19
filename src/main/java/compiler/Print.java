@@ -15,7 +15,7 @@ public class Print extends DepthFirstAdapter
     private String tmpVarType;
     private Stack<RecType> typeStack = new Stack<>();
     private Stack<String> returnStatement = new Stack<>();
-    private LinkedList<Record> currentFunctionHeader = new LinkedList<>();
+    //private LinkedList<Record> currentFunctionHeader = new LinkedList<>();
     boolean returnFound =false;
     boolean functDeclaration = true;
 
@@ -106,7 +106,6 @@ public class Print extends DepthFirstAdapter
     @Override
     public void inAFunDefinition(AFunDefinition node) {
         System.out.println("In FunDefinition");
-        symTable.enter(); //function header will be placed in the functions scope we fix that at the AFunDefinitionOut
 
         functDeclaration = true;
     }
@@ -118,7 +117,7 @@ public class Print extends DepthFirstAdapter
         functDeclaration = false;
     }
 
-    /*
+
     @Override
     public void caseAFunDefinition(AFunDefinition node)
     {
@@ -128,7 +127,8 @@ public class Print extends DepthFirstAdapter
             node.getHeader().apply(this);
         }
 
-        functDeclaration = true;
+       // functDeclaration = true;
+        symTable.enter(); //function header will be placed in the functions scope we fix that at the AFunDefinitionOut
 
         {
             List<PLocalDef> copy = new ArrayList<PLocalDef>(node.getLocalDef());
@@ -146,7 +146,7 @@ public class Print extends DepthFirstAdapter
         }
         outAFunDefinition(node);
     }
-    */
+
 
     @Override
     public void outAFunDefinition(AFunDefinition node) {
@@ -156,9 +156,6 @@ public class Print extends DepthFirstAdapter
 
         symTable.printALl();
         symTable.exit();
-
-        currentHeader = currentFunctionHeader.pop();
-        symTable.insert(currentHeader); //the function definition was placed in the functions scope, we want to place it in the parents functions scope
 
         returnType = returnStatement.pop();
         if(!returnFound && !returnType.equals("nothing")) //return not found and the type return type was int or char
@@ -206,6 +203,19 @@ public class Print extends DepthFirstAdapter
     @Override
     public void inAFuncCallStatement(AFuncCallStatement node) {
       //  System.out.println("In FuncCallStatement");
+    }
+
+    //in functionStatement the functioncall return type must be nothing
+    @Override
+    public void outAFuncCallStatement(AFuncCallStatement node)
+    {
+        RecType recType = typeStack.pop();
+
+        if(!recType.getType().equals("nothing"))
+        {
+            System.out.println("Error function return type must be nothing in function call statement");
+        }
+        //  System.out.println("In FuncCallStatement");
     }
 
     @Override
@@ -721,9 +731,10 @@ public class Print extends DepthFirstAdapter
 
         if(functDeclaration) ((RecordFunction)recFunct).setDeclared(true); //if its a declaration set it true
 
+        //insert the fuction record at the symbol table
         if(!symTable.insert(recFunct)) //Record already exists
         {
-            Record rec = symTable.lookup(node.getIdentifier().toString().trim());
+           /* Record rec = symTable.lookup(node.getIdentifier().toString().trim());
             if(rec instanceof RecordFunction)
             {
                 RecordFunction recInTable = (RecordFunction) rec;
@@ -734,7 +745,7 @@ public class Print extends DepthFirstAdapter
                 {
                     if(functDeclaration && recInTable.getDeclared() == false) //we have declaration and the function is undeclared
                     {
-                        currentFunctionHeader.addLast(recInTable); //last header is the new
+                        //currentFunctionHeader.addLast(recInTable); //last header is the new
                         recInTable.setDeclared(true);
                     }
                     else
@@ -751,11 +762,12 @@ public class Print extends DepthFirstAdapter
             {
                 System.out.println("Error function name already exists as variable name");
             }
+            */
 
         }
         else
         {
-            currentFunctionHeader.addLast(recFunct); //last header is the new
+            //currentFunctionHeader.addLast(recFunct); //last header is the new
         }
 
         returnStatement.push(node.getGeneralType().toString().trim());

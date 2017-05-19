@@ -45,8 +45,8 @@ public class Main {
 
                         tree = p.parse();
 
-                       // tree.apply(new Print());
-                        tree.apply(new VisitorIR());
+                        tree.apply(new Print());
+                        //tree.apply(new VisitorIR());
 
                 }
                 catch(Exception e)
