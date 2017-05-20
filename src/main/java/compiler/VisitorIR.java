@@ -477,15 +477,30 @@ public class VisitorIR extends DepthFirstAdapter{
     @Override
     public void caseAOrCondition(AOrCondition node)
     {
+        Condition leftCond, rightCond;
+
         inAOrCondition(node);
         if(node.getLeft() != null)
         {
             node.getLeft().apply(this);
         }
+
+        leftCond = extrCond;
+        backPatch(leftCond.getFalseList(), quadList.NextQuad());
+
         if(node.getRight() != null)
         {
             node.getRight().apply(this);
         }
+
+        rightCond = extrCond;
+
+        extrCond = new Condition();
+        extrCond.mergeLists(leftCond.getTrueList(), true);
+        extrCond.mergeLists(rightCond.getTrueList(), true);
+
+        extrCond.mergeLists(rightCond.getFalseList(), false);
+
         outAOrCondition(node);
     }
 
