@@ -61,6 +61,18 @@ public class QuadList
         return id;
     }
 
+    public Quad getQuad(int label)
+    {
+        return qList.get(label);
+    }
     //public void BackPatch(LinkedList<Integer> labels, )
+
+    public void printAll()
+    {
+        for (Quad quad: qList)
+        {
+            System.out.println(quad.getLabel()+": "+quad.getOperator()+",\t" +quad.getOpt1()+",\t"+ quad.getOpt2()+",\t" + quad.getOpt3());
+        }
+    }
 
 }

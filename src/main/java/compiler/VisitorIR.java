@@ -58,6 +58,8 @@ class RecordLValue
 
 }
 
+
+
 public class VisitorIR extends DepthFirstAdapter{
     private LinkedList<Integer> dimList = new LinkedList<>();
 
@@ -67,7 +69,18 @@ public class VisitorIR extends DepthFirstAdapter{
     Stack<RecordLValue> stackLValue = new Stack<>();
     boolean idFound;
     private String tmpVarType;
+    Condition extrCond;
 
+    public void backPatch(List<Integer> backList, int newLabel) //backList is a true or false list for u cocksuckers
+    {
+        Quad currentQuad;
+        for(int label :backList)
+        {
+            currentQuad = quadList.getQuad(label);
+            System.out.println("backpatch "+label+" "+newLabel);
+            currentQuad.setOpt3(Integer.toString(newLabel));
+        }
+    }
 
     public void inStart(Start node)
     {
@@ -96,6 +109,8 @@ public class VisitorIR extends DepthFirstAdapter{
         node.getPProgram().apply(this);
         node.getEOF().apply(this);
         outStart(node);
+        System.out.println("END");
+        quadList.printAll();
     }
 
     public void inAProgram(AProgram node)
@@ -154,15 +169,6 @@ public class VisitorIR extends DepthFirstAdapter{
         outAFunDefinition(node);
     }
 
-    public void inAFunDeclaration(AFunDeclaration node)
-    {
-        defaultIn(node);
-    }
-
-    public void outAFunDeclaration(AFunDeclaration node)
-    {
-        defaultOut(node);
-    }
 
 
     public void inAVarType(AVarType node) {
@@ -176,16 +182,7 @@ public class VisitorIR extends DepthFirstAdapter{
             dimList.addLast(tmpInteger);
         }
     }
-    @Override
-    public void caseAFunDeclaration(AFunDeclaration node)
-    {
-        inAFunDeclaration(node);
-        if(node.getHeader() != null)
-        {
-            node.getHeader().apply(this);
-        }
-        outAFunDeclaration(node);
-    }
+
 
     public void inASemiStatement(ASemiStatement node)
     {
@@ -413,9 +410,9 @@ public class VisitorIR extends DepthFirstAdapter{
     public void caseAFunDeclLocalDef(AFunDeclLocalDef node)
     {
         inAFunDeclLocalDef(node);
-        if(node.getFunDeclaration() != null)
+        if(node.getHeader() != null)
         {
-            node.getFunDeclaration().apply(this);
+            node.getHeader().apply(this);
         }
         outAFunDeclLocalDef(node);
     }
@@ -505,15 +502,30 @@ public class VisitorIR extends DepthFirstAdapter{
     @Override
     public void caseAAndCondition(AAndCondition node)
     {
+        Condition leftCond, rightCond;
+
         inAAndCondition(node);
         if(node.getLeft() != null)
         {
             node.getLeft().apply(this);
         }
+
+        leftCond = extrCond;
+        backPatch(leftCond.getTrueList(), quadList.NextQuad());
+
         if(node.getRight() != null)
         {
             node.getRight().apply(this);
         }
+
+        rightCond = extrCond;
+
+        extrCond = new Condition();
+        extrCond.mergeLists(leftCond.getFalseList(), false);
+        extrCond.mergeLists(rightCond.getFalseList(), false);
+
+        extrCond.mergeLists(rightCond.getTrueList(), true);
+
         outAAndCondition(node);
     }
 
@@ -530,11 +542,16 @@ public class VisitorIR extends DepthFirstAdapter{
     @Override
     public void caseANotCondition(ANotCondition node)
     {
+        Condition currentCond;
         inANotCondition(node);
         if(node.getCondition() != null)
         {
             node.getCondition().apply(this);
         }
+
+        //currentCond = extrCond;
+        extrCond.swapLists();
+
         outANotCondition(node);
     }
 
@@ -572,19 +589,38 @@ public class VisitorIR extends DepthFirstAdapter{
     @Override
     public void caseARelatCondition(ARelatCondition node)
     {
+        String leftChild, rightChild, tmpValue, operator;
+
         inARelatCondition(node);
         if(node.getLeft() != null)
         {
             node.getLeft().apply(this);
         }
+
+        leftChild = extrChild;
+
         if(node.getSymbol() != null)
         {
             node.getSymbol().apply(this);
         }
+
+        operator = node.getSymbol().toString();
+
         if(node.getRight() != null)
         {
             node.getRight().apply(this);
         }
+
+        rightChild = extrChild;
+
+        extrCond = new Condition();
+
+        extrCond.addLabelTrue(quadList.NextQuad());
+        quadList.GenQuad(leftChild, operator, rightChild, "*");
+
+        extrCond.addLabelFalse(quadList.NextQuad());
+        quadList.GenQuad("jump", "-", "-", "*");
+
         outARelatCondition(node);
     }
 
@@ -1316,6 +1352,8 @@ public class VisitorIR extends DepthFirstAdapter{
         {
             node.getNothing().apply(this);
         }
+
+
         outANothGeneralType(node);
     }
 

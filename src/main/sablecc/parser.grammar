@@ -62,8 +62,6 @@ Tokens
 
     number = digit+;
 
-    erroneous_number = (digit)+ (letter|'_')+;
-
     const_char   = ''' (input_char | escape_sequence) ''';
     const_string = '"' (input_string | escape_sequence)* '"';
 
@@ -143,8 +141,8 @@ Productions
                              | {par} l_par expr r_par          {-> expr.expression};
 
     term_sign {-> expression} = {term} term                    {-> term.expression}
-                              | {sign_plus} plus expr_par      {-> New expression.pos(expr_par.expression)}
-                              | {sign_minus} minus expr_par    {-> New expression.neg(expr_par.expression)};
+                              | {sign_plus} plus term          {-> New expression.pos(term.expression)}
+                              | {sign_minus} minus term        {-> New expression.neg(term.expression)};
 
     term {-> expression} = {int_const} number                  {-> New expression.int(number)}
                          | {char_const} const_char             {-> New expression.char(const_char)}
@@ -211,12 +209,12 @@ Productions
 
   //LOCAL FUNCTION DEFINITION
     local_definition {-> local_def} = {func_def}  function_definition    {-> New local_def.fun_def(function_definition.fun_definition)}
-                                    | {func_decl} function_declaration   {-> New local_def.fun_decl(function_declaration.fun_declaration)}
+                                    | {func_decl} function_declaration   {-> New local_def.fun_decl(function_declaration.header)}
                                     | {var_def}   variable_definition    {-> New local_def.var_def(variable_definition.var_definition)};
 
     variable_definition {-> var_definition} = variable variable_list colon type semi {-> New var_definition([variable_list.var_identifier], type.var_type)};
 
-    function_declaration {->fun_declaration} = header semi  {-> New fun_declaration(header.header)};
+    function_declaration {->header} = header semi  {-> header.header};
 
   //FUNCTION CALL
     func_call  {-> function_call} = identifier l_par func_call_expr? r_par  {-> New function_call(identifier, func_call_expr.expr_list)};
@@ -239,8 +237,6 @@ Abstract Syntax Tree
 
     fun_definition = header local_def* statement*;
 
-    fun_declaration = header;
-
     statement = {semi} semi
               | {assign} lvalue expression
               | {block} statement*
@@ -251,7 +247,7 @@ Abstract Syntax Tree
               | {return} expression?;
 
     local_def  = {fun_def}   fun_definition
-               | {fun_decl}  fun_declaration                                              //because function_declaration = header semi
+               | {fun_decl}  header                                              //because function_declaration = header semi
                | {var_def}   var_definition;
 
     condition = {or}     [left]:condition [right]:condition

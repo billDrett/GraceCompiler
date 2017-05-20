@@ -1,0 +1,529 @@
+!! 0
+!! 0
+!! 0
+!! 0
+!! 0
+!! 0
+!! 0
+!! 0
+!! 0
+In program
+In FunDefinition
+In Header: Function has name main 
+Out header: Function has name main 
+the record depth -1 found null
+In FunDefinition
+In Header: Function has name prime 
+int 
+In AVarIdentifier
+In AFparType null 
+Out AFparDefinition null number of parameters 1 
+Out header: Function has name prime 
+the record depth -1 found null
+In AVarIdentifier
+In AVarType
+Out AVarDefinition type int  number of parameters 1 Variables 
+In AValExpression: n 
+In AIdLvalue
+the record depth 2 found compiler.RecordParam@368239c8
+rectype type int 0
+Out AValExpression
+In AIntExpression: 0 
+Out ARelatCondition n  < 0 
+Condition Relat is Correct
+In AFunctionCall: Name: prime  number of Expressions 1 In AIntExpression: 1 
+In ANegExpression: -1 
+out AFunctionCall: Name: prime  number of Expressions 1 the record depth 1 found compiler.RecordFunction@16f65612
+functionCall is fine
+Out ReturnStatement
+REturn stack 2
+REturn stack type bool
+REturn stack type int
+The return is correct int
+In AValExpression: n 
+In AIdLvalue
+the record depth 2 found compiler.RecordParam@368239c8
+rectype type int 0
+Out AValExpression
+In AIntExpression: 2 
+Out ARelatCondition n  < 2 
+Condition Relat is Correct
+In AIntExpression: 0 
+Out ReturnStatement
+REturn stack 3
+REturn stack type bool
+REturn stack type bool
+REturn stack type int
+The return is correct int
+In AValExpression: n 
+In AIdLvalue
+the record depth 2 found compiler.RecordParam@368239c8
+rectype type int 0
+Out AValExpression
+In AIntExpression: 2 
+Out ARelatCondition n  = 2 
+Condition Relat is Correct
+In AIntExpression: 1 
+Out ReturnStatement
+REturn stack 4
+REturn stack type bool
+REturn stack type bool
+REturn stack type bool
+REturn stack type int
+The return is correct int
+In AValExpression: n 
+In AIdLvalue
+the record depth 2 found compiler.RecordParam@368239c8
+rectype type int 0
+Out AValExpression
+In AIntExpression: 2 
+Out AModExpression n  mod 2 
+In AIntExpression: 0 
+Out ARelatCondition n 2  = 0 
+Condition Relat is Correct
+In AIntExpression: 0 
+Out ReturnStatement
+REturn stack 5
+REturn stack type bool
+REturn stack type bool
+REturn stack type bool
+REturn stack type bool
+REturn stack type int
+The return is correct int
+In AssignStatement
+In AIdLvalue
+the record depth 2 found compiler.Record@311d617d
+rectype type int 0
+In AIntExpression: 3 
+Out AssignStatement
+6
+Compatible types
+In AValExpression: i 
+In AIdLvalue
+the record depth 2 found compiler.Record@311d617d
+rectype type int 0
+Out AValExpression
+In AValExpression: n 
+In AIdLvalue
+the record depth 2 found compiler.RecordParam@368239c8
+rectype type int 0
+Out AValExpression
+In AIntExpression: 2 
+Out ADivExpression n  div 2 
+Out ARelatCondition i  <= n 2 
+Condition Relat is Correct
+In AValExpression: n 
+In AIdLvalue
+the record depth 2 found compiler.RecordParam@368239c8
+rectype type int 0
+Out AValExpression
+In AValExpression: i 
+In AIdLvalue
+the record depth 2 found compiler.Record@311d617d
+rectype type int 0
+Out AValExpression
+Out AModExpression n  mod i 
+In AIntExpression: 0 
+Out ARelatCondition n i  = 0 
+Condition Relat is Correct
+In AIntExpression: 0 
+Out ReturnStatement
+REturn stack 7
+REturn stack type bool
+REturn stack type bool
+REturn stack type bool
+REturn stack type bool
+REturn stack type bool
+REturn stack type bool
+REturn stack type int
+The return is correct int
+Out IfWithoutElseStatement
+Condition ifWithoutElse is Correct
+Condition is bool
+In AssignStatement
+In AIdLvalue
+the record depth 2 found compiler.Record@311d617d
+rectype type int 0
+In AValExpression: i 
+In AIdLvalue
+the record depth 2 found compiler.Record@311d617d
+rectype type int 0
+Out AValExpression
+In AIntExpression: 2 
+Out APlusExpression i  + 2 
+Out AssignStatement
+7
+Compatible types
+Out WhileStatement
+Condition WhileStatement is Correct
+Condition is bool
+In AIntExpression: 1 
+Out ReturnStatement
+REturn stack 5
+REturn stack type bool
+REturn stack type bool
+REturn stack type bool
+REturn stack type bool
+REturn stack type int
+The return is correct int
+Out IfWithElseStatement
+RecType 0  bool
+RecType 2  bool
+RecType 2  bool
+RecType 0  bool
+Condition IfWithElseStatement is Correct
+Condition is bool
+Out IfWithElseStatement
+RecType 0  bool
+RecType 2  bool
+RecType 2  bool
+Condition IfWithElseStatement is Correct
+Condition is bool
+Out IfWithElseStatement
+RecType 0  bool
+RecType 2  bool
+Condition IfWithElseStatement is Correct
+Condition is bool
+Out IfWithElseStatement
+RecType 0  bool
+Condition IfWithElseStatement is Correct
+Condition is bool
+Out FunDefinition
+Record i int Variable 3
+Record n int functParam 3
+Record prime int Function 2
+Function noParam1
+Function RecordParam n int functParam 3
+Record putc nothing Function 1
+Function noParam1
+Function RecordParam c char null 0
+Record ord int Function 1
+Function noParam1
+Function RecordParam c char null 0
+Record strcmp int Function 1
+Function noParam2
+Function RecordParam s1 char null 0
+Function RecordParam s2 char null 0
+Record geti int Function 1
+Function noParam0
+Record main nothing Function 1
+Function noParam0
+Record chr char Function 1
+Function noParam1
+Function RecordParam n int null 0
+Record puti nothing Function 1
+Function noParam1
+Function RecordParam n int null 0
+Record strcpy nothing Function 1
+Function noParam2
+Function RecordParam s1 char null 0
+Function RecordParam s2 char null 0
+Record puts nothing Function 1
+Function noParam1
+Function RecordParam s char null 0
+Record strcat nothing Function 1
+Function noParam2
+Function RecordParam s1 char null 0
+Function RecordParam s2 char null 0
+Record strlen int Function 1
+Function noParam1
+Function RecordParam s1 char null 0
+Record abs int Function 1
+Function noParam1
+Function RecordParam n int null 0
+Record getc char Function 1
+Function noParam0
+In AVarIdentifier
+In AVarIdentifier
+In AVarIdentifier
+In AVarType
+Out AVarDefinition type int  number of parameters 3 Variables 
+In AFunctionCall: Name: puts  number of Expressions "Limit: " In AValExpression: "Limit: " 
+Out AValExpression
+out AFunctionCall: Name: puts  number of Expressions "Limit: " the record depth 0 found compiler.RecordFunction@7c53a9eb
+functionCall is fine
+In AssignStatement
+In AIdLvalue
+the record depth 1 found compiler.Record@ed17bee
+rectype type int 0
+In AFunctionCall: Name: geti  number of Expressions nullout AFunctionCall: Name: geti  number of Expressions nullthe record depth 0 found compiler.RecordFunction@2a33fae0
+functionCall is fine
+Out AssignStatement
+2
+Compatible types
+In AFunctionCall: Name: puts  number of Expressions "Primes:\n" In AValExpression: "Primes:\n" 
+Out AValExpression
+out AFunctionCall: Name: puts  number of Expressions "Primes:\n" the record depth 0 found compiler.RecordFunction@7c53a9eb
+functionCall is fine
+In AssignStatement
+In AIdLvalue
+the record depth 1 found compiler.Record@707f7052
+rectype type int 0
+In AIntExpression: 0 
+Out AssignStatement
+2
+Compatible types
+In AValExpression: limit 
+In AIdLvalue
+the record depth 1 found compiler.Record@ed17bee
+rectype type int 0
+Out AValExpression
+In AIntExpression: 2 
+Out ARelatCondition limit  >= 2 
+Condition Relat is Correct
+In AssignStatement
+In AIdLvalue
+the record depth 1 found compiler.Record@707f7052
+rectype type int 0
+In AValExpression: counter 
+In AIdLvalue
+the record depth 1 found compiler.Record@707f7052
+rectype type int 0
+Out AValExpression
+In AIntExpression: 1 
+Out APlusExpression counter  + 1 
+Out AssignStatement
+3
+Compatible types
+In AFunctionCall: Name: geti  number of Expressions 2 In AIntExpression: 2 
+out AFunctionCall: Name: geti  number of Expressions 2 the record depth 0 found compiler.RecordFunction@2a33fae0
+Error wrong number of Arguments in function geti expects 0 line:29
+Error function return type must be nothing in function call statement
+In AFunctionCall: Name: puts  number of Expressions "\n" In AValExpression: "\n" 
+Out AValExpression
+out AFunctionCall: Name: puts  number of Expressions "\n" the record depth 0 found compiler.RecordFunction@7c53a9eb
+functionCall is fine
+Out IfWithoutElseStatement
+Condition ifWithoutElse is Correct
+Condition is bool
+In AValExpression: limit 
+In AIdLvalue
+the record depth 1 found compiler.Record@ed17bee
+rectype type int 0
+Out AValExpression
+In AIntExpression: 3 
+Out ARelatCondition limit  >= 3 
+Condition Relat is Correct
+In AssignStatement
+In AIdLvalue
+the record depth 1 found compiler.Record@707f7052
+rectype type int 0
+In AValExpression: counter 
+In AIdLvalue
+the record depth 1 found compiler.Record@707f7052
+rectype type int 0
+Out AValExpression
+In AIntExpression: 1 
+Out APlusExpression counter  + 1 
+Out AssignStatement
+3
+Compatible types
+In AFunctionCall: Name: geti  number of Expressions 3 In AIntExpression: 3 
+out AFunctionCall: Name: geti  number of Expressions 3 the record depth 0 found compiler.RecordFunction@2a33fae0
+Error wrong number of Arguments in function geti expects 0 line:34
+Error function return type must be nothing in function call statement
+In AFunctionCall: Name: puts  number of Expressions "\n" In AValExpression: "\n" 
+Out AValExpression
+out AFunctionCall: Name: puts  number of Expressions "\n" the record depth 0 found compiler.RecordFunction@7c53a9eb
+functionCall is fine
+Out IfWithoutElseStatement
+Condition ifWithoutElse is Correct
+Condition is bool
+In AssignStatement
+In AIdLvalue
+the record depth 1 found compiler.Record@11028347
+rectype type int 0
+In AIntExpression: 6 
+Out AssignStatement
+2
+Compatible types
+In AValExpression: number 
+In AIdLvalue
+the record depth 1 found compiler.Record@11028347
+rectype type int 0
+Out AValExpression
+In AValExpression: limit 
+In AIdLvalue
+the record depth 1 found compiler.Record@ed17bee
+rectype type int 0
+Out AValExpression
+Out ARelatCondition number  <= limit 
+Condition Relat is Correct
+In AFunctionCall: Name: prime  number of Expressions number 1 In AValExpression: number 
+In AIdLvalue
+the record depth 1 found compiler.Record@11028347
+rectype type int 0
+Out AValExpression
+In AIntExpression: 1 
+Out AMinusExpression number  - 1 
+out AFunctionCall: Name: prime  number of Expressions number 1 the record depth 1 found compiler.RecordFunction@16f65612
+functionCall is fine
+In AIntExpression: 1 
+Out ARelatCondition prime number 1  = 1 
+Condition Relat is Correct
+In AssignStatement
+In AIdLvalue
+the record depth 1 found compiler.Record@707f7052
+rectype type int 0
+In AValExpression: counter 
+In AIdLvalue
+the record depth 1 found compiler.Record@707f7052
+rectype type int 0
+Out AValExpression
+In AIntExpression: 1 
+Out APlusExpression counter  + 1 
+Out AssignStatement
+4
+Compatible types
+In AFunctionCall: Name: puti  number of Expressions number 1 In AValExpression: number 
+In AIdLvalue
+the record depth 1 found compiler.Record@11028347
+rectype type int 0
+Out AValExpression
+In AIntExpression: 1 
+Out AMinusExpression number  - 1 
+out AFunctionCall: Name: puti  number of Expressions number 1 the record depth 0 found compiler.RecordFunction@14899482
+functionCall is fine
+In AFunctionCall: Name: puts  number of Expressions "\n" In AValExpression: "\n" 
+Out AValExpression
+out AFunctionCall: Name: puts  number of Expressions "\n" the record depth 0 found compiler.RecordFunction@7c53a9eb
+functionCall is fine
+Out IfWithoutElseStatement
+Condition ifWithoutElse is Correct
+Condition is bool
+In AValExpression: number 
+In AIdLvalue
+the record depth 1 found compiler.Record@11028347
+rectype type int 0
+Out AValExpression
+In AValExpression: limit 
+In AIdLvalue
+the record depth 1 found compiler.Record@ed17bee
+rectype type int 0
+Out AValExpression
+Out ARelatCondition number  # limit 
+Condition Relat is Correct
+In AFunctionCall: Name: prime  number of Expressions number 1 In AValExpression: number 
+In AIdLvalue
+the record depth 1 found compiler.Record@11028347
+rectype type int 0
+Out AValExpression
+In AIntExpression: 1 
+Out APlusExpression number  + 1 
+out AFunctionCall: Name: prime  number of Expressions number 1 the record depth 1 found compiler.RecordFunction@16f65612
+functionCall is fine
+In AIntExpression: 1 
+Out ARelatCondition prime number 1  = 1 
+Condition Relat is Correct
+Out AAndCondition number # limit  and prime number 1 = 1 
+Condition And is Correct
+In AssignStatement
+In AIdLvalue
+the record depth 1 found compiler.Record@707f7052
+rectype type int 0
+In AValExpression: counter 
+In AIdLvalue
+the record depth 1 found compiler.Record@707f7052
+rectype type int 0
+Out AValExpression
+In AIntExpression: 1 
+Out APlusExpression counter  + 1 
+Out AssignStatement
+4
+Compatible types
+In AFunctionCall: Name: puti  number of Expressions number 1 In AValExpression: number 
+In AIdLvalue
+the record depth 1 found compiler.Record@11028347
+rectype type int 0
+Out AValExpression
+In AIntExpression: 1 
+Out APlusExpression number  + 1 
+out AFunctionCall: Name: puti  number of Expressions number 1 the record depth 0 found compiler.RecordFunction@14899482
+functionCall is fine
+In AFunctionCall: Name: puts  number of Expressions "\n" In AValExpression: "\n" 
+Out AValExpression
+out AFunctionCall: Name: puts  number of Expressions "\n" the record depth 0 found compiler.RecordFunction@7c53a9eb
+functionCall is fine
+Out IfWithoutElseStatement
+Condition ifWithoutElse is Correct
+Condition is bool
+In AssignStatement
+In AIdLvalue
+the record depth 1 found compiler.Record@11028347
+rectype type int 0
+In AValExpression: number 
+In AIdLvalue
+the record depth 1 found compiler.Record@11028347
+rectype type int 0
+Out AValExpression
+In AIntExpression: 6 
+Out APlusExpression number  + 6 
+Out AssignStatement
+3
+Compatible types
+Out WhileStatement
+Condition WhileStatement is Correct
+Condition is bool
+In AFunctionCall: Name: puts  number of Expressions "\nTotal: " In AValExpression: "\nTotal: " 
+Out AValExpression
+out AFunctionCall: Name: puts  number of Expressions "\nTotal: " the record depth 0 found compiler.RecordFunction@7c53a9eb
+functionCall is fine
+In AFunctionCall: Name: puti  number of Expressions counter In AValExpression: counter 
+In AIdLvalue
+the record depth 1 found compiler.Record@707f7052
+rectype type int 0
+Out AValExpression
+out AFunctionCall: Name: puti  number of Expressions counter the record depth 0 found compiler.RecordFunction@14899482
+functionCall is fine
+In AFunctionCall: Name: puts  number of Expressions "\n" In AValExpression: "\n" 
+Out AValExpression
+out AFunctionCall: Name: puts  number of Expressions "\n" the record depth 0 found compiler.RecordFunction@7c53a9eb
+functionCall is fine
+Out FunDefinition
+Record prime int Function 2
+Function noParam1
+Function RecordParam n int functParam 3
+Record number int Variable 2
+Record limit int Variable 2
+Record counter int Variable 2
+Record putc nothing Function 1
+Function noParam1
+Function RecordParam c char null 0
+Record ord int Function 1
+Function noParam1
+Function RecordParam c char null 0
+Record strcmp int Function 1
+Function noParam2
+Function RecordParam s1 char null 0
+Function RecordParam s2 char null 0
+Record geti int Function 1
+Function noParam0
+Record main nothing Function 1
+Function noParam0
+Record chr char Function 1
+Function noParam1
+Function RecordParam n int null 0
+Record puti nothing Function 1
+Function noParam1
+Function RecordParam n int null 0
+Record strcpy nothing Function 1
+Function noParam2
+Function RecordParam s1 char null 0
+Function RecordParam s2 char null 0
+Record puts nothing Function 1
+Function noParam1
+Function RecordParam s char null 0
+Record strcat nothing Function 1
+Function noParam2
+Function RecordParam s1 char null 0
+Function RecordParam s2 char null 0
+Record strlen int Function 1
+Function noParam1
+Function RecordParam s1 char null 0
+Record abs int Function 1
+Function noParam1
+Function RecordParam n int null 0
+Record getc char Function 1
+Function noParam0
+Type Stack contains 0 elements
+Out program

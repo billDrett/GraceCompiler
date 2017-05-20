@@ -110,4 +110,9 @@ public class SymbolTable {
         }
     }
 
+    public int getCurrentDepth()
+    {
+        return scopes.size();
+    }
+
 }

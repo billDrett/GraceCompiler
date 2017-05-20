@@ -8,13 +8,13 @@ import java.util.LinkedList;
 public class RecordFunction extends Record
 {
     private LinkedList<Record> fparameters;
-    boolean declared;
+    boolean defined;
 
     public RecordFunction(String nameId, String vartp, String deftp, LinkedList<Record> fparam)
     {
         super(nameId, vartp, deftp);
         fparameters = new LinkedList<>(fparam);
-        declared = false;
+        defined = false;
     }
 
     public int getNoParameters()
@@ -27,14 +27,14 @@ public class RecordFunction extends Record
         return fparameters;
     }
 
-    public boolean getDeclared()
+    public boolean getDefined()
     {
-        return declared;
+        return defined;
     }
 
-    public void setDeclared(boolean Declared)
+    public void setDefined(boolean Defined)
     {
-        declared = Declared;
+        defined = Defined;
     }
 }
 
