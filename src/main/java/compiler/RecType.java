@@ -12,6 +12,7 @@ public class RecType {
     private int line;
 
 
+
     public RecType(String name, String tp, int dim, int Line)
     {
         varName = name; //name of the variable

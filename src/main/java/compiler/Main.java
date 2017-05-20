@@ -48,6 +48,8 @@ public class Main {
                         //tree.apply(new Print());
                         tree.apply(new VisitorIR());
 
+
+
                 }
                 catch(Exception e)
                 {

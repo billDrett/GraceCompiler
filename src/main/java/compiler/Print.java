@@ -110,15 +110,6 @@ public class Print extends DepthFirstAdapter
         functDefinition = true;
     }
 
-    /*
-    @Override
-    public void inAFunDeclaration(AFunDeclaration node) {
-        System.out.println("In FunDeclaration");
-
-        functDeclaration = false;
-    }
-    */
-
 
     @Override
     public void caseAFunDefinition(AFunDefinition node)
@@ -129,7 +120,6 @@ public class Print extends DepthFirstAdapter
             node.getHeader().apply(this);
         }
 
-       // functDeclaration = true;
         symTable.enter(); //function header will be placed in the functions scope we fix that at the AFunDefinitionOut
 
 
@@ -814,9 +804,10 @@ public class Print extends DepthFirstAdapter
         /*
         symTable.getCurrentDepth();
 
+        //insert the fuction record at the symbol table
         if(!symTable.insert(recFunct)) //Record already exists
         {
-            Record rec = symTable.lookup(node.getIdentifier().toString().trim());
+           /* Record rec = symTable.lookup(node.getIdentifier().toString().trim());
             if(rec instanceof RecordFunction)
             {
                 RecordFunction recInTable = (RecordFunction) rec;
@@ -844,14 +835,8 @@ public class Print extends DepthFirstAdapter
             {
 
             }
+            */
 
-
-        }
-        else
-        {
-            //currentFunctionHeader.addLast(recFunct); //last header is the new
-        }
-        */
 
         returnStatement.push(node.getGeneralType().toString().trim());
        // fParam.clear();
