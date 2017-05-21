@@ -70,6 +70,7 @@ public class VisitorIR extends DepthFirstAdapter{
     boolean idFound;
     private String tmpVarType;
     Condition extrCond;
+    boolean getValueOfAddress;
 
     public void backPatch(List<Integer> backList, int newLabel) //backList is a true or false list for u cocksuckers
     {
@@ -218,15 +219,46 @@ public class VisitorIR extends DepthFirstAdapter{
     @Override
     public void caseAAssignStatement(AAssignStatement node)
     {
+        RecordLValue recordLValue;
+        String tmpValue, newValue;
+
+        String leftChild, rightChild;
         inAAssignStatement(node);
         if(node.getLvalue() != null)
         {
             node.getLvalue().apply(this);
         }
+
+        recordLValue = stackLValue.pop();
+        System.out.println("name is "+recordLValue.getRecord().getName());
+        if(recordLValue.getRecord() instanceof RecordArray)             //RecordArray
+        {
+            System.out.println("Its a RecordARray!");
+            tmpValue = recordLValue.getAddressIndex();
+
+            newValue = quadList.NewTemp("pointer");
+            quadList.GenQuad("array", recordLValue.getRecord().getName(), tmpValue, newValue);
+            extrChild = "["+newValue+"]";
+        }
+        else
+        {
+            System.out.println("Its a Record!");
+            extrChild = recordLValue.getRecord().getName();
+        }
+
+        leftChild = extrChild;
         if(node.getExpression() != null)
         {
             node.getExpression().apply(this);
         }
+
+
+
+        rightChild = extrChild;
+
+        System.out.println("Left "+ leftChild+" right "+ rightChild);
+
+        quadList.GenQuad(":=", rightChild, "-", leftChild);
         outAAssignStatement(node);
     }
 
@@ -288,15 +320,22 @@ public class VisitorIR extends DepthFirstAdapter{
     @Override
     public void caseAIfWithoutElseStatement(AIfWithoutElseStatement node)
     {
+        Condition condition;
         inAIfWithoutElseStatement(node);
         if(node.getCondition() != null)
         {
             node.getCondition().apply(this);
         }
+
+        condition = extrCond;
+        backPatch(condition.getTrueList(), quadList.NextQuad());
+
         if(node.getStatement() != null)
         {
             node.getStatement().apply(this);
         }
+
+        backPatch(condition.getFalseList(), quadList.NextQuad());
         outAIfWithoutElseStatement(node);
     }
 
@@ -1098,8 +1137,16 @@ public class VisitorIR extends DepthFirstAdapter{
             tmpValue = recordLValue.getAddressIndex();
 
             newValue = quadList.NewTemp("pointer");
-            quadList.GenQuad("array", recordLValue.getRecord().getName(), "[" +tmpValue+"]", newValue);
-            extrChild = newValue;
+
+            if(recordLValue.getAddressIndex() != null)
+            {
+                quadList.GenQuad("array", recordLValue.getRecord().getName(), tmpValue, newValue);
+                extrChild = "["+newValue+"]";
+            }
+            else
+            {
+                extrChild = recordLValue.getRecord().getName();
+            }
         }
         else
         {
