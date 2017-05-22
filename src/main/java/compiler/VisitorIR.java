@@ -148,10 +148,12 @@ public class VisitorIR extends DepthFirstAdapter{
     @Override
     public void caseAFunDefinition(AFunDefinition node)
     {
+        String functName ="";
         inAFunDefinition(node);
         if(node.getHeader() != null)
         {
             node.getHeader().apply(this);
+            functName = extrChild;
         }
         {
             List<PLocalDef> copy = new ArrayList<PLocalDef>(node.getLocalDef());
@@ -160,6 +162,10 @@ public class VisitorIR extends DepthFirstAdapter{
                 e.apply(this);
             }
         }
+
+        //unit
+        quadList.GenQuad("unit", functName, "-", "-");
+
         {
             List<PStatement> copy = new ArrayList<PStatement>(node.getStatement());
             for(PStatement e : copy)
@@ -167,7 +173,11 @@ public class VisitorIR extends DepthFirstAdapter{
                 e.apply(this);
             }
         }
+        //
+        quadList.GenQuad("endu", functName, "-", "-");
         outAFunDefinition(node);
+
+
     }
 
 
@@ -352,19 +362,35 @@ public class VisitorIR extends DepthFirstAdapter{
     @Override
     public void caseAIfWithElseStatement(AIfWithElseStatement node)
     {
+        Condition condition;
+        ArrayList<Integer> jumpList = new ArrayList<>();
         inAIfWithElseStatement(node);
         if(node.getCondition() != null)
         {
             node.getCondition().apply(this);
         }
+
+        condition = extrCond;
+        backPatch(condition.getTrueList(), quadList.NextQuad());
+
+        //if statements
         if(node.getId1() != null)
         {
             node.getId1().apply(this);
         }
+
+        jumpList.add(quadList.NextQuad());
+        quadList.GenQuad("jump", "-", "-", "*");
+
+        backPatch(condition.getFalseList(), quadList.NextQuad());
+        //else statements
         if(node.getId2() != null)
         {
             node.getId2().apply(this);
         }
+
+        backPatch(jumpList, quadList.NextQuad());
+
         outAIfWithElseStatement(node);
     }
 
@@ -381,15 +407,30 @@ public class VisitorIR extends DepthFirstAdapter{
     @Override
     public void caseAWhileStatement(AWhileStatement node)
     {
+        //ArrayList<Integer> jumpList = new ArrayList<>();
+        Condition condition;
+        int startLabel;
+
         inAWhileStatement(node);
+
+        startLabel = quadList.NextQuad();
         if(node.getCondition() != null)
         {
             node.getCondition().apply(this);
         }
+        condition = extrCond;
+        backPatch(condition.getTrueList(), quadList.NextQuad());
+
+
         if(node.getStatement() != null)
         {
             node.getStatement().apply(this);
         }
+
+        //jumpList.add(quadList.NextQuad());
+        quadList.GenQuad("jump", "-", "-", Integer.toString(startLabel));
+        backPatch(condition.getFalseList(), quadList.NextQuad());
+
         outAWhileStatement(node);
     }
 
@@ -1210,6 +1251,8 @@ public class VisitorIR extends DepthFirstAdapter{
         {
             node.getGeneralType().apply(this);
         }
+
+        extrChild = node.getIdentifier().toString().trim();
         outAHeader(node);
     }
 

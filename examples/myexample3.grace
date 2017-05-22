@@ -1,11 +1,37 @@
-fun hello (rings : int; ref source, target, auxiliary : char[][2]; y : int[10][4]) : nothing
-var mitsos : int[10];
-var kaka : int;
+fun solve () : nothing 
+var i,n :int;
+      fun hanoi (rings : int; ref source, target, auxiliary : char[]) : nothing 
+         fun move (ref source, target : char[]) : nothing{ i <-1;}
+	{i <-2;}
 {
-	mitsos[1] <-mitsos[12];
-	
-          
+   $$   if n<0              then 
+	    i<- 0;
+      else 
+	    if n<2         then 
+		i<- 1;
+      	    else
+	    {
+		if n=2         then 
+			i<- 2;
+      		else 
+			if n mod 2 = 0 then 
+				i<- 3;
+      			else {
+        			i <- 4;
         
+       
+      			}
+          
+        	i<-100;
+	   }
 
+	i<-10000;
+$$
+	i <-12;
+	while not(n < 10)  do
+	{
+		n <- n+1;
+	}
+	i<-1;
 }
 
