@@ -18,6 +18,7 @@ public class Print extends DepthFirstAdapter
     //private LinkedList<Record> currentFunctionHeader = new LinkedList<>();
     boolean returnFound =false;
     boolean functDefinition = true;
+    VisitorIR intermediateCode = new VisitorIR(symTable);
 
     Print()
     {
@@ -147,6 +148,9 @@ public class Print extends DepthFirstAdapter
                 e.apply(this);
             }
         }
+
+        intermediateCode.caseAFunDefinition(node);
+
         outAFunDefinition(node);
     }
 

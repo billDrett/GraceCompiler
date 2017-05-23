@@ -61,16 +61,22 @@ class RecordLValue
 
 
 public class VisitorIR extends DepthFirstAdapter{
-    private LinkedList<Integer> dimList = new LinkedList<>();
+   // private LinkedList<Integer> dimList = new LinkedList<>();
 
     QuadList quadList = new QuadList();
-    SymbolTable symTable = new SymbolTable();
+    SymbolTable symTable;
     String extrChild;
     Stack<RecordLValue> stackLValue = new Stack<>();
     boolean idFound;
     private String tmpVarType;
     Condition extrCond;
     boolean getValueOfAddress;
+
+
+    public VisitorIR(SymbolTable symbolTable)
+    {
+        symTable = symbolTable;
+    }
 
     public void backPatch(List<Integer> backList, int newLabel) //backList is a true or false list for u cocksuckers
     {
@@ -155,14 +161,14 @@ public class VisitorIR extends DepthFirstAdapter{
             node.getHeader().apply(this);
             functName = extrChild;
         }
-        {
+       /* {
             List<PLocalDef> copy = new ArrayList<PLocalDef>(node.getLocalDef());
             for(PLocalDef e : copy)
             {
                 e.apply(this);
             }
         }
-
+*/
         //unit
         quadList.GenQuad("unit", functName, "-", "-");
 
@@ -177,9 +183,16 @@ public class VisitorIR extends DepthFirstAdapter{
         quadList.GenQuad("endu", functName, "-", "-");
         outAFunDefinition(node);
 
+        /*
+        Print c = new Print();
+        c.caseAFunDefinition(node);
+        */
 
+        System.out.println("END");
+        quadList.printAll();
+        System.out.println("END");
     }
-
+/*
 
 
     public void inAVarType(AVarType node) {
@@ -192,7 +205,7 @@ public class VisitorIR extends DepthFirstAdapter{
             tmpInteger = Integer.parseInt(arrayDimensions.toString().trim());
             dimList.addLast(tmpInteger);
         }
-    }
+    }*/
 
 
     public void inASemiStatement(ASemiStatement node)
@@ -508,7 +521,7 @@ public class VisitorIR extends DepthFirstAdapter{
     }
 
 
-    public void outAVarDefinition(AVarDefinition node) {
+    /*public void outAVarDefinition(AVarDefinition node) {
         Record tmpRec;
 
         System.out.print("Out AVarDefinition type "+node.getVarType()+ " number of parameters "+node.getVarIdentifier().size()+" Variables ");
@@ -531,7 +544,7 @@ public class VisitorIR extends DepthFirstAdapter{
         }
         dimList.clear();
         System.out.println();
-    }
+    }*/
 
     @Override
     public void caseAVarDefLocalDef(AVarDefLocalDef node)
