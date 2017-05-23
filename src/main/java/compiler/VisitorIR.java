@@ -11,9 +11,9 @@ import java.util.*;
 
 class RecordLValue
 {
-    private Record record;
-    private Iterator<Integer> currentDimension;
-    private String addressIndex;
+    protected Record record;
+    protected Iterator<Integer> currentDimension;
+    protected String addressIndex;
 
     public RecordLValue(Record rec)
     {
@@ -32,6 +32,14 @@ class RecordLValue
         }
     }
 
+    public RecordLValue() //string literal
+    {
+        record = null;
+        addressIndex = null;
+        currentDimension = null;
+    }
+
+
     public Record getRecord()
     {
         if(record instanceof RecordArray)
@@ -44,6 +52,16 @@ class RecordLValue
     public int getDimension()
     {
         return currentDimension.next();
+    }
+
+    public boolean emptyDimension()
+    {
+        if(record == null) //string literal
+        {
+            return addressIndex != null;
+        }
+
+        return !currentDimension.hasNext();
     }
 
     public String getAddressIndex()
@@ -71,6 +89,7 @@ public class VisitorIR extends DepthFirstAdapter{
     private String tmpVarType;
     Condition extrCond;
     boolean getValueOfAddress;
+    RecordFunction extrRecordFunction;
 
 
     public VisitorIR(SymbolTable symbolTable)
@@ -161,6 +180,7 @@ public class VisitorIR extends DepthFirstAdapter{
             node.getHeader().apply(this);
             functName = extrChild;
         }
+
        /* {
             List<PLocalDef> copy = new ArrayList<PLocalDef>(node.getLocalDef());
             for(PLocalDef e : copy)
@@ -182,11 +202,6 @@ public class VisitorIR extends DepthFirstAdapter{
         //
         quadList.GenQuad("endu", functName, "-", "-");
         outAFunDefinition(node);
-
-        /*
-        Print c = new Print();
-        c.caseAFunDefinition(node);
-        */
 
         System.out.println("END");
         quadList.printAll();
@@ -871,12 +886,34 @@ public class VisitorIR extends DepthFirstAdapter{
     @Override
     public void caseAExprList(AExprList node)
     {
+        RecordFunction currentFunct = extrRecordFunction;
+        Iterator<Record> iterRec = currentFunct.getFparameters().iterator();
+        String tmpVar;
+        Record tmpParam;
+        String paraMode;
+
+
         inAExprList(node);
         {
             List<PExpression> copy = new ArrayList<PExpression>(node.getExprs());
             for(PExpression e : copy)
             {
                 e.apply(this);
+                tmpVar = extrChild;
+
+                tmpParam = iterRec.next();
+                if(tmpParam instanceof RecordParam)
+                {
+                    RecordParam param = (RecordParam)tmpParam;
+                    if(param.getReference()) paraMode = "R";
+                    else paraMode = "V";
+                }
+                else //Array
+                {
+                    paraMode = "R";
+                }
+
+                quadList.GenQuad("par", tmpVar, paraMode, "-");
             }
         }
         outAExprList(node);
@@ -1175,7 +1212,7 @@ public class VisitorIR extends DepthFirstAdapter{
     public void caseAValExpression(AValExpression node)
     {
         RecordLValue recordLValue;
-        String tmpValue, newValue;
+        String arrayName, tmpValue, newValue;
 
         inAValExpression(node);
         if(node.getLvalue() != null)
@@ -1183,24 +1220,17 @@ public class VisitorIR extends DepthFirstAdapter{
             node.getLvalue().apply(this);
         }
 
-        recordLValue = stackLValue.pop();
-        System.out.println("name is "+recordLValue.getRecord().getName());
-        if(recordLValue.getRecord() instanceof RecordArray)             //RecordArray
+        recordLValue = stackLValue.pop(); //get lvalue record
+
+        if(recordLValue instanceof StringLiteral)
+        {
+            arrayName = ((StringLiteral) recordLValue).getLiteralId();
+            createArrayQuad(recordLValue, arrayName);
+        }
+        else if(recordLValue.getRecord() instanceof RecordArray)             //RecordArray
         {
             System.out.println("Its a RecordARray!");
-            tmpValue = recordLValue.getAddressIndex();
-
-            newValue = quadList.NewTemp("pointer");
-
-            if(recordLValue.getAddressIndex() != null)
-            {
-                quadList.GenQuad("array", recordLValue.getRecord().getName(), tmpValue, newValue);
-                extrChild = "["+newValue+"]";
-            }
-            else
-            {
-                extrChild = recordLValue.getRecord().getName();
-            }
+            createArrayQuad(recordLValue, recordLValue.getRecord().getName());
         }
         else
         {
@@ -1209,6 +1239,32 @@ public class VisitorIR extends DepthFirstAdapter{
         }
 
         outAValExpression(node);
+    }
+
+    //create an array/StringLiteral Quad
+    public void createArrayQuad(RecordLValue recordLValue, String arrayName)
+    {
+        String tmpValue, newValue;
+        tmpValue = recordLValue.getAddressIndex();
+
+        newValue = quadList.NewTemp("pointer");
+
+        if(recordLValue.getAddressIndex() != null)
+        {
+            quadList.GenQuad("array", arrayName, tmpValue, newValue);
+            if(recordLValue.emptyDimension())
+            {
+                extrChild = "["+newValue+"]";
+            }
+            else
+            {
+                extrChild = newValue;
+            }
+        }
+        else
+        {
+            extrChild = recordLValue.getRecord().getName();
+        }
     }
 
     public void inAFunExpression(AFunExpression node)
@@ -1526,23 +1582,35 @@ public class VisitorIR extends DepthFirstAdapter{
     @Override
     public void caseAFunctionCall(AFunctionCall node)
     {
-        String tmpName;
+        String functionName, tmpVar="";
+        RecordFunction localRecordFunction;
         inAFunctionCall(node);
         if(node.getIdentifier() != null)
         {
             node.getIdentifier().apply(this);
         }
 
-        tmpName = node.getIdentifier().toString().trim();
-        quadList.GenQuad("call", "-", "-", tmpName);
+        functionName = node.getIdentifier().toString().trim();
+
+        localRecordFunction = (RecordFunction)symTable.lookup(functionName);
+        extrRecordFunction = localRecordFunction;
 
         if(node.getExprList() != null)
         {
             node.getExprList().apply(this);
         }
+
+        if(! localRecordFunction.getType().equals("nothing"))
+        {
+            tmpVar = quadList.NewTemp(localRecordFunction.getType());
+            quadList.GenQuad("par", "RET", tmpVar, "-");
+        }
+
+
+        quadList.GenQuad("call", "-", "-", functionName);
         outAFunctionCall(node);
 
-        extrChild = tmpName;
+        extrChild = tmpVar;
     }
 
     public void inAIdLvalue(AIdLvalue node)
@@ -1586,11 +1654,22 @@ public class VisitorIR extends DepthFirstAdapter{
     @Override
     public void caseAStrLvalue(AStrLvalue node)
     {
+        String tmpVar;
+
         inAStrLvalue(node);
         if(node.getConstString() != null)
         {
             node.getConstString().apply(this);
         }
+
+        tmpVar = quadList.NewTemp("pointer");
+        quadList.GenQuad(":=", node.getConstString().toString().trim(), "-", tmpVar);
+
+        RecordLValue lVar = new StringLiteral(tmpVar);
+        stackLValue.push(lVar);
+        idFound = true;
+
+
         outAStrLvalue(node);
     }
 

@@ -122,6 +122,7 @@ compiler/node/AConstIntBr.class
 compiler/node/TMinus.class
 compiler/RecordFunction.class
 compiler/node/TDivision.class
+compiler/StringLiteral.class
 compiler/node/AEqualRelationOper.class
 compiler/node/AVarIdentifier.class
 compiler/node/TFunction.class
