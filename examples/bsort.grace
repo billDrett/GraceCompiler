@@ -32,7 +32,7 @@ fun main () : nothing
       puts(msg);
       i <- 0;
       while i < n do {
-        if i > 0 then writeString(", ");
+        if i > 0 then 
         puti(x[i]);
         i <- i+1;
       }

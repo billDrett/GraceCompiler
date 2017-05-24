@@ -108,7 +108,7 @@ public class VisitorIR extends DepthFirstAdapter{
         }
     }
 
-    public void inStart(Start node)
+   /* public void inStart(Start node)
     {
         defaultIn(node);
     }
@@ -159,7 +159,7 @@ public class VisitorIR extends DepthFirstAdapter{
         }
         outAProgram(node);
     }
-
+*/
     public void inAFunDefinition(AFunDefinition node)
     {
         defaultIn(node);
@@ -222,7 +222,7 @@ public class VisitorIR extends DepthFirstAdapter{
         }
     }*/
 
-
+/*
     public void inASemiStatement(ASemiStatement node)
     {
         defaultIn(node);
@@ -243,7 +243,7 @@ public class VisitorIR extends DepthFirstAdapter{
         }
         outASemiStatement(node);
     }
-
+*/
     public void inAAssignStatement(AAssignStatement node)
     {
         defaultIn(node);
@@ -258,7 +258,7 @@ public class VisitorIR extends DepthFirstAdapter{
     public void caseAAssignStatement(AAssignStatement node)
     {
         RecordLValue recordLValue;
-        String tmpValue, newValue;
+        String tmpValue, newValue, arrayName;
 
         String leftChild, rightChild;
         inAAssignStatement(node);
@@ -268,7 +268,7 @@ public class VisitorIR extends DepthFirstAdapter{
         }
 
         recordLValue = stackLValue.pop();
-        System.out.println("name is "+recordLValue.getRecord().getName());
+        /*System.out.println("name is "+recordLValue.getRecord().getName());
         if(recordLValue.getRecord() instanceof RecordArray)             //RecordArray
         {
             System.out.println("Its a RecordARray!");
@@ -277,6 +277,22 @@ public class VisitorIR extends DepthFirstAdapter{
             newValue = quadList.NewTemp("pointer");
             quadList.GenQuad("array", recordLValue.getRecord().getName(), tmpValue, newValue);
             extrChild = "["+newValue+"]";
+        }
+        else
+        {
+            System.out.println("Its a Record!");
+            extrChild = recordLValue.getRecord().getName();
+        }*/
+
+        if(recordLValue instanceof StringLiteral)
+        {
+            arrayName = ((StringLiteral) recordLValue).getLiteralId();
+            createArrayQuad(recordLValue, arrayName);
+        }
+        else if(recordLValue.getRecord() instanceof RecordArray)             //RecordArray
+        {
+            System.out.println("Its a RecordARray!");
+            createArrayQuad(recordLValue, recordLValue.getRecord().getName());
         }
         else
         {
@@ -299,7 +315,7 @@ public class VisitorIR extends DepthFirstAdapter{
         quadList.GenQuad(":=", rightChild, "-", leftChild);
         outAAssignStatement(node);
     }
-
+/*
     public void inABlockStatement(ABlockStatement node)
     {
         defaultIn(node);
@@ -323,7 +339,7 @@ public class VisitorIR extends DepthFirstAdapter{
         }
         outABlockStatement(node);
     }
-
+*/
     public void inAFuncCallStatement(AFuncCallStatement node)
     {
         defaultIn(node);
@@ -480,9 +496,12 @@ public class VisitorIR extends DepthFirstAdapter{
         {
             node.getExpression().apply(this);
         }
+
+        quadList.GenQuad(":=", extrChild, "-", "$$");
+
         outAReturnStatement(node);
     }
-
+/*
     public void inAFunDefLocalDef(AFunDefLocalDef node)
     {
         defaultIn(node);
@@ -535,7 +554,7 @@ public class VisitorIR extends DepthFirstAdapter{
         defaultOut(node);
     }
 
-
+*/
     /*public void outAVarDefinition(AVarDefinition node) {
         Record tmpRec;
 
@@ -560,7 +579,7 @@ public class VisitorIR extends DepthFirstAdapter{
         dimList.clear();
         System.out.println();
     }*/
-
+/*
     @Override
     public void caseAVarDefLocalDef(AVarDefLocalDef node)
     {
@@ -571,7 +590,7 @@ public class VisitorIR extends DepthFirstAdapter{
         }
         outAVarDefLocalDef(node);
     }
-
+*/
     public void inAOrCondition(AOrCondition node)
     {
         defaultIn(node);
@@ -677,28 +696,28 @@ public class VisitorIR extends DepthFirstAdapter{
 
         outANotCondition(node);
     }
-
-    public void inAParCondition(AParCondition node)
-    {
-        defaultIn(node);
-    }
-
-    public void outAParCondition(AParCondition node)
-    {
-        defaultOut(node);
-    }
-
-    @Override
-    public void caseAParCondition(AParCondition node)
-    {
-        inAParCondition(node);
-        if(node.getCondition() != null)
+    /*
+        public void inAParCondition(AParCondition node)
         {
-            node.getCondition().apply(this);
+            defaultIn(node);
         }
-        outAParCondition(node);
-    }
 
+        public void outAParCondition(AParCondition node)
+        {
+            defaultOut(node);
+        }
+
+        @Override
+        public void caseAParCondition(AParCondition node)
+        {
+            inAParCondition(node);
+            if(node.getCondition() != null)
+            {
+                node.getCondition().apply(this);
+            }
+            outAParCondition(node);
+        }
+    */
     public void inARelatCondition(ARelatCondition node)
     {
         defaultIn(node);
@@ -746,7 +765,7 @@ public class VisitorIR extends DepthFirstAdapter{
 
         outARelatCondition(node);
     }
-
+/*
     public void inAEqualRelationOper(AEqualRelationOper node)
     {
         defaultIn(node);
@@ -872,7 +891,7 @@ public class VisitorIR extends DepthFirstAdapter{
         }
         outAGreaterEqualRelationOper(node);
     }
-
+*/
     public void inAExprList(AExprList node)
     {
         defaultIn(node);
@@ -888,7 +907,8 @@ public class VisitorIR extends DepthFirstAdapter{
     {
         RecordFunction currentFunct = extrRecordFunction;
         Iterator<Record> iterRec = currentFunct.getFparameters().iterator();
-        String tmpVar;
+        List<String> allParameters = new ArrayList<>();
+        //String tmpVar;
         Record tmpParam;
         String paraMode;
 
@@ -899,8 +919,27 @@ public class VisitorIR extends DepthFirstAdapter{
             for(PExpression e : copy)
             {
                 e.apply(this);
-                tmpVar = extrChild;
+                allParameters.add(extrChild); //add the parameters temp value with the right order
+                /*tmpVar = extrChild;
 
+                tmpParam = iterRec.next();
+                if(tmpParam instanceof RecordParam)
+                {
+                    RecordParam param = (RecordParam)tmpParam;
+                    if(param.getReference()) paraMode = "R";
+                    else paraMode = "V";
+                }
+                else //Array
+                {
+                    paraMode = "R";
+                }
+
+                quadList.GenQuad("par", tmpVar, paraMode, "-");*/
+            }
+
+            //we want all the parameters of the function to be one under the other
+            for(String tmpVar : allParameters)
+            {
                 tmpParam = iterRec.next();
                 if(tmpParam instanceof RecordParam)
                 {
@@ -1102,7 +1141,7 @@ public class VisitorIR extends DepthFirstAdapter{
 
         outAModExpression(node);
     }
-
+/*
     public void inAPosExpression(APosExpression node)
     {
         defaultIn(node);
@@ -1123,7 +1162,7 @@ public class VisitorIR extends DepthFirstAdapter{
         }
         outAPosExpression(node);
     }
-
+*/
     public void inANegExpression(ANegExpression node)
     {
         defaultIn(node);
@@ -1263,7 +1302,7 @@ public class VisitorIR extends DepthFirstAdapter{
         }
         else
         {
-            extrChild = recordLValue.getRecord().getName();
+            extrChild = arrayName;
         }
     }
 
@@ -1324,7 +1363,7 @@ public class VisitorIR extends DepthFirstAdapter{
         extrChild = node.getIdentifier().toString().trim();
         outAHeader(node);
     }
-
+/*
     public void inAFparDefinition(AFparDefinition node)
     {
         defaultIn(node);
@@ -1362,11 +1401,11 @@ public class VisitorIR extends DepthFirstAdapter{
         defaultIn(node);
     }
 
-  /*  public void outAVarDefinition(AVarDefinition node)
+    public void outAVarDefinition(AVarDefinition node)
     {
         defaultOut(node);
     }
-*/
+
     @Override
     public void caseAVarDefinition(AVarDefinition node)
     {
@@ -1438,10 +1477,10 @@ public class VisitorIR extends DepthFirstAdapter{
         outAFparType(node);
     }
 
-    /*public void inAVarType(AVarType node)
+    public void inAVarType(AVarType node)
     {
         defaultIn(node);
-    }*/
+    }
 
     public void outAVarType(AVarType node)
     {
@@ -1568,7 +1607,7 @@ public class VisitorIR extends DepthFirstAdapter{
         inAEmptyBr(node);
         outAEmptyBr(node);
     }
-
+*/
     public void inAFunctionCall(AFunctionCall node)
     {
         defaultIn(node);
