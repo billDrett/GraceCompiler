@@ -761,6 +761,20 @@ public class Print extends DepthFirstAdapter
         }
         */
 
+        if(symTable.getCurrentDepth() ==1) //main function
+        {
+            if(!node.getGeneralType().toString().trim().equals("nothing"))
+            {
+                System.out.println("Error main function must be nothing ");
+            }
+
+            if(fParam.size() != 0)
+            {
+                System.out.println("Error main function must have zero arguments");
+            }
+
+        }
+
         recFunct = new RecordFunction(node.getIdentifier().toString().trim(), node.getGeneralType().toString().trim(), "Function", fParam);
 
         if(functDefinition) ((RecordFunction)recFunct).setDefined(true); //if its a declaration set it true
