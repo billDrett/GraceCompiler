@@ -10,13 +10,15 @@ public class Record {
     private String type;
     private String deftype;
     private int depth;
+    private int Line;
 
 
-    public Record(String nameId, String vartp, String deftp)
+    public Record(String nameId, String vartp, String deftp, int line)
     {
         name = new String(nameId);
         type = vartp;
         deftype = deftp;
+        Line = line;
     }
 
     public String getName() {
@@ -39,5 +41,10 @@ public class Record {
     public void setDepth(int depth1)
     {
         depth = depth1;
+    }
+
+    public int getLine()
+    {
+        return Line;
     }
 }

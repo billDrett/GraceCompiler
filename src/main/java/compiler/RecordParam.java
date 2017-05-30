@@ -7,9 +7,9 @@ public class RecordParam extends Record
 {
     private boolean reference;
 
-    public RecordParam(String nameId, String vartp, String deftp, boolean ref)
+    public RecordParam(String nameId, String vartp, String deftp, boolean ref, int line)
     {
-        super(nameId, vartp, deftp);
+        super(nameId, vartp, deftp, line);
 
         reference =ref;
     }

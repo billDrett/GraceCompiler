@@ -54,6 +54,7 @@ compiler/node/TDo.class
 compiler/node/Switch.class
 compiler/node/TAnd.class
 compiler/node/TNothing.class
+compiler/Error.class
 compiler/node/AEmptyBr.class
 compiler/node/ANEqualRelationOper.class
 compiler/node/TOr.class

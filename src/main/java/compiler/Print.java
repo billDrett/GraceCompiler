@@ -19,27 +19,29 @@ public class Print extends DepthFirstAdapter
     boolean returnFound =false;
     boolean functDefinition = true;
     VisitorIR intermediateCode = new VisitorIR(symTable);
+    Error error = new Error();
+    Record extrFunction;
 
     Print()
     {
         LinkedList<Integer> dimList = new LinkedList<>();
         dimList.addLast(0); //no dimensions given
 
-        insertFunction("puti", "nothing", new RecordParam("n", "int", null, false), null);
-        insertFunction("putc", "nothing", new RecordParam("c", "char", null, false), null);
+        insertFunction("puti", "nothing", new RecordParam("n", "int", null, false, 0), null);
+        insertFunction("putc", "nothing", new RecordParam("c", "char", null, false, 0), null);
 
-        insertFunction("puts", "nothing", new RecordParamArray("s", "char", null, dimList, true), null);
+        insertFunction("puts", "nothing", new RecordParamArray("s", "char", null, dimList, true, 0), null);
 
         insertFunction("geti", "int", null, null);
         insertFunction("getc", "char", null, null);
 
-        Record rec1Gets = new RecordParam("n", "int", null, false);
-        Record rec2Gets = new RecordParamArray("s", "char", null, dimList, true);
+        Record rec1Gets = new RecordParam("n", "int", null, false, 0);
+        Record rec2Gets = new RecordParamArray("s", "char", null, dimList, true, 0);
         insertFunction("geti", "nothing", rec1Gets, rec2Gets);
 
-        insertFunction("abs", "int", new RecordParam("n", "int", null, false), null);
-        insertFunction("ord", "int", new RecordParam("c", "char", null, false), null);
-        insertFunction("chr", "char", new RecordParam("n", "int", null, false), null);
+        insertFunction("abs", "int", new RecordParam("n", "int", null, false, 0), null);
+        insertFunction("ord", "int", new RecordParam("c", "char", null, false, 0), null);
+        insertFunction("chr", "char", new RecordParam("n", "int", null, false, 0), null);
 
         insertStrFunction("strlen", "int", "char", null);
         insertStrFunction("strcmp", "int", "char", "char");
@@ -63,7 +65,7 @@ public class Print extends DepthFirstAdapter
             functParameters.addLast(rec2);
         }
 
-        newFunctRecord = new RecordFunction(name, returnType, "Function", functParameters); //create function record
+        newFunctRecord = new RecordFunction(name, returnType, "Function", functParameters, 0); //create function record
         newFunctRecord.setDefined(true);
         symTable.insert(newFunctRecord);
 
@@ -78,12 +80,12 @@ public class Print extends DepthFirstAdapter
 
         if(rec1Type != null)
         {
-            rec1 = new RecordParamArray("s1", "char", null, dimList, true);
+            rec1 = new RecordParamArray("s1", "char", null, dimList, true, 0);
         }
 
         if(rec2Type != null)
         {
-            rec2 = new RecordParamArray("s2", "char", null, dimList, true);
+            rec2 = new RecordParamArray("s2", "char", null, dimList, true, 0);
         }
 
         insertFunction(name, returnType, rec1, rec2);
@@ -115,12 +117,14 @@ public class Print extends DepthFirstAdapter
     @Override
     public void caseAFunDefinition(AFunDefinition node)
     {
+        Record localFunct;
         inAFunDefinition(node);
         if(node.getHeader() != null)
         {
             node.getHeader().apply(this);
         }
 
+        localFunct = extrFunction;
         symTable.enter(); //function header will be placed in the functions scope we fix that at the AFunDefinitionOut
 
 
@@ -128,7 +132,7 @@ public class Print extends DepthFirstAdapter
         {
             if(!symTable.insert(rec))
             {
-                System.out.println("Error variable already declared in the same scope");
+                error.varDeclaration(rec);
             }
         }
 
@@ -151,6 +155,7 @@ public class Print extends DepthFirstAdapter
 
         intermediateCode.caseAFunDefinition(node);
 
+        extrFunction = localFunct;
         outAFunDefinition(node);
     }
 
@@ -167,7 +172,7 @@ public class Print extends DepthFirstAdapter
         returnType = returnStatement.pop();
         if(!returnFound && !returnType.equals("nothing")) //return not found and the type return type was int or char
         {
-            System.out.println("Error no return statement found");
+            error.returnStatement(extrFunction);
         }
 
         returnFound = false;
@@ -220,7 +225,7 @@ public class Print extends DepthFirstAdapter
 
         if(!recType.getType().equals("nothing"))
         {
-            System.out.println("Error function return type must be nothing in function call statement");
+            error.nothingFunctCall(recType);
         }
         //  System.out.println("In FuncCallStatement");
     }
@@ -289,10 +294,10 @@ public class Print extends DepthFirstAdapter
         System.out.println("Out ReturnStatement");
         String returnType = returnStatement.pop();
 
-        System.out.println("REturn stack "+typeStack.size());
+        System.out.println("Return stack "+typeStack.size());
         for(RecType rec : typeStack)
         {
-            System.out.println("REturn stack type "+rec.getType());
+            System.out.println("Return stack type "+rec.getType());
         }
 
         if(node.getExpression() == null)
@@ -303,7 +308,7 @@ public class Print extends DepthFirstAdapter
             }
             else
             {
-                System.out.println("Error the return has different type "+returnType+ " not nothing");
+                error.returnDiffType(returnType);
             }
         }
         else
@@ -311,11 +316,11 @@ public class Print extends DepthFirstAdapter
             RecType recType = typeStack.pop();
             if(recType.getDimensions() != 0)
             {
-                System.out.println("Error the return has dimensions");
+                error.returnDiffType(recType, returnType);
             }
             else if (!recType.getType().equals(returnType))
             {
-                System.out.println("Error the return has different type "+recType.getType());
+                error.returnDiffType(recType, returnType);
             }
             else
             {
@@ -761,21 +766,21 @@ public class Print extends DepthFirstAdapter
         }
         */
 
+        recFunct = new RecordFunction(node.getIdentifier().toString().trim(), node.getGeneralType().toString().trim(), "Function", fParam, node.getIdentifier().getLine());
+
         if(symTable.getCurrentDepth() ==1) //main function
         {
             if(!node.getGeneralType().toString().trim().equals("nothing"))
             {
-                System.out.println("Error main function must be nothing ");
+                error.mainFunctType(recFunct);
             }
 
             if(fParam.size() != 0)
             {
-                System.out.println("Error main function must have zero arguments");
+                error.mainFunctArgs(recFunct);
             }
 
         }
-
-        recFunct = new RecordFunction(node.getIdentifier().toString().trim(), node.getGeneralType().toString().trim(), "Function", fParam);
 
         if(functDefinition) ((RecordFunction)recFunct).setDefined(true); //if its a declaration set it true
 
@@ -819,6 +824,8 @@ public class Print extends DepthFirstAdapter
                 System.out.println("Error function name already exists as variable name");
             }
         }
+
+        extrFunction = recFunct;
         /*
         symTable.getCurrentDepth();
 
@@ -924,6 +931,7 @@ public class Print extends DepthFirstAdapter
 
     @Override
     public void outAFparDefinition(AFparDefinition node) {
+        AVarIdentifier aVarId;
         Record tmpRec;
         boolean ref;
         System.out.println("Out AFparDefinition "+node.getReference()+" number of parameters "+node.getVarIdentifier().size()+ " ");
@@ -939,13 +947,15 @@ public class Print extends DepthFirstAdapter
 
         for(PVarIdentifier varId: node.getVarIdentifier())
         {
+            aVarId = (AVarIdentifier) varId;
+
             if(dimList.isEmpty())
             {
-                tmpRec = new RecordParam(varId.toString().trim(), tmpVarType, "functParam", ref);
+                tmpRec = new RecordParam(varId.toString().trim(), tmpVarType, "functParam", ref, aVarId.getIdentifier().getLine());
             }
             else
             {
-                tmpRec = new RecordParamArray(varId.toString().trim(), tmpVarType, "functParamArray", dimList, ref);
+                tmpRec = new RecordParamArray(varId.toString().trim(), tmpVarType, "functParamArray", dimList, ref, aVarId.getIdentifier().getLine());
             }
 
            /* if(!symTable.insert(tmpRec)) //check if parameter already exists
@@ -966,23 +976,26 @@ public class Print extends DepthFirstAdapter
 
     @Override
     public void outAVarDefinition(AVarDefinition node) {
+        AVarIdentifier aVarId;
         Record tmpRec;
 
         System.out.print("Out AVarDefinition type "+node.getVarType()+ " number of parameters "+node.getVarIdentifier().size()+" Variables ");
         for(PVarIdentifier varId: node.getVarIdentifier())
         {
+            aVarId = (AVarIdentifier) varId;
             if(dimList.isEmpty())
             {
-                tmpRec = new Record(varId.toString().trim(), tmpVarType, "Variable");
+                tmpRec = new Record(varId.toString().trim(), tmpVarType, "Variable", aVarId.getIdentifier().getLine());
             }
             else
             {
-                tmpRec = new RecordArray(varId.toString().trim(), tmpVarType, "Array", dimList);
+                tmpRec = new RecordArray(varId.toString().trim(), tmpVarType, "Array", dimList, aVarId.getIdentifier().getLine());
             }
 
             if(!symTable.insert(tmpRec)) //check if variable already exists
             {
-                System.out.println("Error variable already declared in the same scope");
+               // System.out.println("Error variable already declared in the same scope");
+                error.varDeclaration(tmpRec);
             }
 
         }
@@ -1060,7 +1073,7 @@ public class Print extends DepthFirstAdapter
         RecType recordType, paramType;
         Iterator<Record> iterRec;
 
-        boolean referable;
+        boolean referable, errorFound = false;
         AExprList arguments = null;
         Iterator<PExpression> iterReferenceAllowed;
         int numberOfArguments=0;
@@ -1082,7 +1095,9 @@ public class Print extends DepthFirstAdapter
 
         if(tmpFunct == null) //if function doesnt exists
         {
-            System.out.println("Error function  "+node.getIdentifier().toString()+" undeclared line:"+currentLine);
+            //System.out.println("Error function  "+node.getIdentifier().toString()+" undeclared line:"+currentLine);
+            error.undeclaredFunct(node.getIdentifier().toString(), currentLine);
+
             recordType = new RecType(null, "null", 0, currentLine);
             while (numberOfArguments > 0)
             {
@@ -1100,7 +1115,9 @@ public class Print extends DepthFirstAdapter
         }
         else
         {
-            System.out.println("Error "+node.getIdentifier().toString()+ " is a variable not a function line:"+currentLine);
+           // System.out.println("Error "+node.getIdentifier().toString()+ " is a variable not a function line:"+currentLine);
+            error.callFunctionVarInsted(tmpFunct, currentLine);
+
             recordType = new RecType(null, "null", 0, currentLine);
             while (numberOfArguments > 0)
             {
@@ -1116,7 +1133,8 @@ public class Print extends DepthFirstAdapter
 
         if(recFunct.getFparameters().size() != numberOfArguments) //if not the same parameters
         {
-            System.out.println("Error wrong number of Arguments in function "+functName+" expects "+recFunct.getFparameters().size()+" line:"+currentLine);
+           // System.out.println("Error wrong number of Arguments in function "+functName+" expects "+recFunct.getFparameters().size()+" line:"+currentLine);
+            error.callFunctionArguments(recFunct, currentLine);
             recordType = new RecType(functName, recFunct.getType(), 0, currentLine);
             while (numberOfArguments > 0)
             {
@@ -1151,12 +1169,17 @@ public class Print extends DepthFirstAdapter
                     RecordParam recParameter = (RecordParam) recParam;
                     if(recParameter.getReference() == true && referable == false)
                     {
-                        System.out.println("Error the "+i+" argument must be lvalue");
+                        errorFound = true;
+                        error.callFunctionParamRef(i, currentLine);
+
+                        //System.out.println("Error the "+i+" argument must be lvalue");
                     }
 
                     if(!paramType.getType().equals(recParam.getType()) || paramType.getDimensions() !=0)
                     {
-                        System.out.println("Error the "+i+" argument must be "+recParam.getType()+" and dimensions are "+ paramType.getDimensions());
+                        errorFound = true;
+                        //System.out.println("Error the "+i+" argument must be "+recParam.getType()+" and dimensions are "+ paramType.getDimensions());
+                        error.callFunctionParamType(i, currentLine, recParam, 0, paramType.getType(),paramType.getDimensions());
                     }
                 }
                 else if (recParam instanceof RecordArray)
@@ -1164,14 +1187,23 @@ public class Print extends DepthFirstAdapter
                     RecordParamArray recParameter = (RecordParamArray) recParam;
                     if(recParameter.getReference() == true && referable == false)
                     {
-                        System.out.println("Error the "+i+" argument must be lvalue");
+                        errorFound = true;
+                        error.callFunctionParamRef(i, currentLine);
+                        //System.out.println("Error the "+i+" argument must be lvalue");
                     }
 
                     if(!paramType.getType().equals(recParam.getType()) || paramType.getDimensions() != recParameter.getDimensions().size())
                     {
-                        System.out.println("Error the "+i+" argument must be "+recParam.getType()+" and "+recParameter.getDimensions().size()+" dimensions");
+                        errorFound = true;
+                        //System.out.println("Error the "+i+" argument must be "+recParam.getType()+" and "+recParameter.getDimensions().size()+" dimensions");
+                        error.callFunctionParamType(i, currentLine, recParam, recParameter.getDimensions().size(), paramType.getType(),paramType.getDimensions());
                     }
                 }
+            }
+
+            if(errorFound)
+            {
+                error.callFunctionArguments(recFunct, currentLine);
             }
         }
 
@@ -1186,14 +1218,18 @@ public class Print extends DepthFirstAdapter
         System.out.println("In AIdLvalue");
         Record tmpRec;
         RecType rectype;
-        int arraySize=0;
+        String varName;
+        int currentLine, arraySize=0;
 
-        tmpRec = symTable.lookup(node.getIdentifier().toString().trim());
+        varName = node.getIdentifier().toString().trim();
+        currentLine = node.getIdentifier().getLine();
+        tmpRec = symTable.lookup(varName);
 
         if(tmpRec == null)
         {
-            System.out.println("Error undefined variable "+node.getIdentifier());
-            rectype = new RecType(node.getIdentifier().toString(), "null", 0, node.getIdentifier().getLine());
+            //System.out.println("Error undefined variable "+node.getIdentifier());
+            error.varUndefined(varName, currentLine);
+            rectype = new RecType(varName, "null", 0, currentLine);
             typeStack.push(rectype);
             return;
         }
@@ -1204,7 +1240,7 @@ public class Print extends DepthFirstAdapter
             arraySize = recArray.getDimensions().size();
         }
 
-        rectype = new RecType(node.getIdentifier().toString(), tmpRec.getType().trim(), arraySize, node.getIdentifier().getLine());
+        rectype = new RecType(varName, tmpRec.getType().trim(), arraySize, currentLine);
         typeStack.push(rectype);
 
         System.out.println("rectype type "+ rectype.getType()+" "+ arraySize);
@@ -1238,7 +1274,8 @@ public class Print extends DepthFirstAdapter
 
         if (!rightType.getType().equals("int") || rightType.getDimensions() !=0)
         {
-            System.out.println("Error array index must be int");
+           // System.out.println("Error array index must be int");
+            error.arrayIndex(rightType.getType(), rightType.getLine());
         }
         leftType.setDimensions(leftType.getDimensions()-1);
         typeStack.push(leftType);

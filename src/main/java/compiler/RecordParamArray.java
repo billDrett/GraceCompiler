@@ -9,9 +9,9 @@ public class RecordParamArray extends RecordArray
 {
     private boolean reference;
 
-    public RecordParamArray(String nameId, String vartp, String deftp, LinkedList<Integer> dim, boolean ref)
+    public RecordParamArray(String nameId, String vartp, String deftp, LinkedList<Integer> dim, boolean ref, int line)
     {
-        super(nameId, vartp, deftp, dim);
+        super(nameId, vartp, deftp, dim, line);
 
         reference = ref;
     }

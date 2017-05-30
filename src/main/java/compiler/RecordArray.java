@@ -10,9 +10,9 @@ public class RecordArray extends Record
 {
     private LinkedList<Integer> dimensions;
 
-    public RecordArray(String nameId, String vartp, String deftp, LinkedList<Integer> dim)
+    public RecordArray(String nameId, String vartp, String deftp, LinkedList<Integer> dim, int line)
     {
-        super(nameId, vartp, deftp);
+        super(nameId, vartp, deftp, line);
         dimensions =new LinkedList<>(dim);
 
         for(Integer i : dimensions)
