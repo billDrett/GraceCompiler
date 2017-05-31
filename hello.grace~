@@ -1,4 +1,9 @@
 fun hello () : nothing
+var x:int;
+var y:int[2];
+var z: char;
 {
-  puts("Hello world!\n");
+    if (x < y) then
+        x <- y + y[0];
+    x <- z + (z*y) - (-z);
 }

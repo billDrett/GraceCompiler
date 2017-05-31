@@ -203,7 +203,7 @@ public class Print extends DepthFirstAdapter
         }
         else
         {
-            System.out.println("Conflict in assignment: Cannot convert "+rightType.getType().trim()+" "+rightType.getDimensions()+ " to "+leftType.getType().trim()+" "+leftType.getDimensions());
+            error.varAssignment(leftType, rightType);
         }
     }
 
@@ -241,7 +241,7 @@ public class Print extends DepthFirstAdapter
         }
         else
         {
-            System.out.println("Conflict in ifWithoutElse Condition :"+recType.getType());
+            error.condStatement(recType);
         }
 
         System.out.println("Condition is "+recType.getType());
@@ -266,7 +266,7 @@ public class Print extends DepthFirstAdapter
         }
         else
         {
-            System.out.println("Conflict in IfWithElseStatement Condition :"+recType.getType()+" "+node.getCondition()+" ");
+            error.condStatement(recType);
         }
 
         System.out.println("Condition is "+recType.getType());
@@ -283,7 +283,7 @@ public class Print extends DepthFirstAdapter
         }
         else
         {
-            System.out.println("Conflict in WhileStatement Condition :"+recType.getType());
+            error.condStatement(recType);
         }
 
         System.out.println("Condition is "+recType.getType());
@@ -368,7 +368,7 @@ public class Print extends DepthFirstAdapter
         }
         else
         {
-            System.out.println("Conflict in Or Condition :"+rightType.getType()+" "+leftType.getType());
+            error.conditionOR(leftType, rightType);
         }
 
         recType = new RecType(node.getRight().toString(), "bool", 0, rightType.getLine());
@@ -389,7 +389,7 @@ public class Print extends DepthFirstAdapter
         }
         else
         {
-            System.out.println("Conflict in And Condition :"+rightType.getType()+" "+leftType.getType());
+            error.conditionAND(leftType, rightType);
         }
 
         recType = new RecType(node.getRight().toString(), "bool", 0, rightType.getLine());
@@ -409,7 +409,7 @@ public class Print extends DepthFirstAdapter
         }
         else
         {
-            System.out.println("Conflict in Not Condition :"+tempType.getType());
+            error.conditionNOT(tempType);
         }
 
         recType = new RecType(node.getCondition().toString(), "bool", 0, tempType.getLine());
@@ -442,7 +442,7 @@ public class Print extends DepthFirstAdapter
         }
         else
         {
-            System.out.println("Conflict in Condition Relat :"+rightType.getType()+" "+rightType.getDimensions()+" _ "+leftType.getType()+" "+leftType.getDimensions());
+            error.conditionRelat(leftType, rightType, node.getSymbol().toString().trim());
         }
 
         recType = new RecType(node.getRight().toString(), "bool", 0, rightType.getLine());
@@ -503,20 +503,20 @@ public class Print extends DepthFirstAdapter
 
         if(rightType.getType().trim().equals("char"))
         {
-            System.out.println("Conflict in plus expression: type char");
+            error.exprOperationType(rightType, "+");
         }
         else if(rightType.getDimensions() != 0)
         {
-            System.out.println("Conflict in plus expression: type array");
+            error.exprOperationArray(rightType, "+");
         }
 
         if(leftType.getType().trim().equals("char"))
         {
-            System.out.println("Conflict in plus expression: type char");
+            error.exprOperationType(leftType, "+");
         }
         else if(leftType.getDimensions() != 0)
         {
-            System.out.println("Conflict in plus expression: type array");
+            error.exprOperationArray(leftType, "+");
         }
 
         recType = new RecType(node.getLeft().toString(), "int", 0, leftType.getLine());
@@ -538,20 +538,20 @@ public class Print extends DepthFirstAdapter
 
         if(rightType.getType().trim().equals("char"))
         {
-            System.out.println("Conflict in minus expression: type char");
+            error.exprOperationType(rightType, "-");
         }
         else if(rightType.getDimensions() != 0)
         {
-            System.out.println("Conflict in minus expression: type array");
+            error.exprOperationArray(rightType, "-");
         }
 
         if(leftType.getType().trim().equals("char"))
         {
-            System.out.println("Conflict in minus expression: type char");
+            error.exprOperationType(leftType, "-");
         }
         else if(leftType.getDimensions() != 0)
         {
-            System.out.println("Conflict in minus expression: type array");
+            error.exprOperationArray(leftType, "-");
         }
 
         recType = new RecType(node.getLeft().toString(), "int", 0, leftType.getLine());
@@ -574,20 +574,20 @@ public class Print extends DepthFirstAdapter
 
         if(rightType.getType().trim().equals("char"))
         {
-            System.out.println("Conflict in mult expression: type char");
+            error.exprOperationType(rightType, "*");
         }
         else if(rightType.getDimensions() != 0)
         {
-            System.out.println("Conflict in mult expression: type array");
+            error.exprOperationArray(rightType, "*");
         }
 
         if(leftType.getType().trim().equals("char"))
         {
-            System.out.println("Conflict in mult expression: type char");
+            error.exprOperationType(leftType, "*");
         }
         else if(leftType.getDimensions() != 0)
         {
-            System.out.println("Conflict in mult expression: type array");
+            error.exprOperationArray(leftType, "*");
         }
 
         recType = new RecType(node.getLeft().toString(), "int", 0, leftType.getLine());
@@ -610,21 +610,22 @@ public class Print extends DepthFirstAdapter
 
         if(rightType.getType().trim().equals("char"))
         {
-            System.out.println("Conflict in div expression: type char");
+            error.exprOperationType(rightType, "div");
         }
         else if(rightType.getDimensions() != 0)
         {
-            System.out.println("Conflict in div expression: type array");
+            error.exprOperationArray(rightType, "div");
         }
 
         if(leftType.getType().trim().equals("char"))
         {
-            System.out.println("Conflict in div expression: type char");
+            error.exprOperationType(leftType, "div");
         }
         else if(leftType.getDimensions() != 0)
         {
-            System.out.println("Conflict in div expression: type array");
+            error.exprOperationArray(leftType, "div");
         }
+
 
         recType = new RecType(node.getLeft().toString(), "int", 0, leftType.getLine());
         typeStack.push(recType);
@@ -645,20 +646,20 @@ public class Print extends DepthFirstAdapter
 
         if(rightType.getType().trim().equals("char"))
         {
-            System.out.println("Conflict in mod expression: type char");
+            error.exprOperationType(rightType, "mod");
         }
         else if(rightType.getDimensions() != 0)
         {
-            System.out.println("Conflict in mod expression: type array");
+            error.exprOperationArray(rightType, "mod");
         }
 
         if(leftType.getType().trim().equals("char"))
         {
-            System.out.println("Conflict in mod expression: type char");
+            error.exprOperationType(leftType, "mod");
         }
         else if(leftType.getDimensions() != 0)
         {
-            System.out.println("Conflict in mod expression: type array");
+            error.exprOperationArray(leftType, "mod");
         }
 
         recType = new RecType(node.getLeft().toString(), "int", 0, leftType.getLine());
@@ -682,11 +683,11 @@ public class Print extends DepthFirstAdapter
 
         if(tempType.getType().trim().equals("char"))
         {
-            System.out.println("Conflict in mod expression: type char");
+            error.exprOperationType(tempType, "pos +");
         }
         else if(tempType.getDimensions() != 0)
         {
-            System.out.println("Conflict in mod expression: type array");
+            error.exprOperationArray(tempType, "pos +");
         }
 
         recType = new RecType(node.getExpression().toString(), "int", 0, tempType.getLine());
@@ -702,11 +703,11 @@ public class Print extends DepthFirstAdapter
 
         if(tempType.getType().trim().equals("char"))
         {
-            System.out.println("Conflict in mod expression: type char");
+            error.exprOperationType(tempType, "neg -");
         }
         else if(tempType.getDimensions() != 0)
         {
-            System.out.println("Conflict in mod expression: type array");
+            error.exprOperationArray(tempType, "neg +");
         }
 
         recType = new RecType(node.getExpression().toString(), "int", 0, tempType.getLine());

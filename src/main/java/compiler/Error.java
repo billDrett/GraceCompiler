@@ -31,6 +31,10 @@ public class Error
         System.out.println("[line:"+recType.getLine()+"]:Error return type expects "+type+", but you gave "+recType.getType()+" "+recType.getDimensions());
     }
 
+    public void varAssignment(RecType leftType, RecType rightType)
+    {
+        System.out.println("[line:"+leftType.getLine()+"]:Error cannot convert "+rightType.getType().trim()+" "+rightType.getDimensions()+ " to "+leftType.getType().trim()+" "+leftType.getDimensions());
+    }
 
     public void nothingFunctCall(RecType recType)
     {
@@ -76,5 +80,40 @@ public class Error
     public void arrayIndex(String type , int line)
     {
         System.out.println("[line:"+line+"]:Error array index must be int not "+type);
+    }
+
+    public void condStatement(RecType recType)
+    {
+        System.out.println("[line:"+recType.getLine()+"]:Error return type expects boolean, but you gave "+recType.getType()+" "+recType.getDimensions());
+    }
+
+    public void conditionAND(RecType leftType, RecType rightType)
+    {
+        System.out.println("[line:"+leftType.getLine()+"]:Error operation AND expects 2 booleans, but you gave "+leftType.getType()+" "+leftType.getDimensions()+" AND "+rightType.getType()+" "+rightType.getDimensions());
+    }
+
+    public void conditionOR(RecType leftType, RecType rightType)
+    {
+        System.out.println("[line:"+leftType.getLine()+"]:Error operation OR expects 2 booleans, but you gave "+leftType.getType()+" "+leftType.getDimensions()+" OR "+rightType.getType()+" "+rightType.getDimensions());
+    }
+
+    public void conditionNOT(RecType recType)
+    {
+        System.out.println("[line:"+recType.getLine()+"]:Error operation NOT expects boolean, but you gave NOT "+recType.getType()+" "+recType.getDimensions());
+    }
+
+    public void conditionRelat(RecType leftType, RecType rightType, String operator)
+    {
+        System.out.println("[line:"+leftType.getLine()+"]:Error operation "+operator+" expects same types, but you gave "+leftType.getType()+" "+leftType.getDimensions()+" "+operator+" "+rightType.getType()+" "+rightType.getDimensions());
+    }
+
+    public void exprOperationType(RecType recType, String operator)
+    {
+        System.out.println("[line:"+recType.getLine()+"]:Error operation "+operator+" expects int, but you gave char type "+recType.getType()+" "+recType.getDimensions());
+    }
+
+    public void exprOperationArray(RecType recType, String operator)
+    {
+        System.out.println("[line:"+recType.getLine()+"]:Error operation "+operator+" expects int, but you gave array type "+recType.getType()+" "+recType.getDimensions());
     }
 }
