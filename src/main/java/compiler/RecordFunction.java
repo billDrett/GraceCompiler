@@ -48,24 +48,34 @@ public class RecordFunction extends Record
                 {
                     System.out.print("ref ");
                 }
+
+                System.out.print(i.getName()+" : "+i.getType()+";");
             }
             else
             {
+                RecordParamArray recParamArray = (RecordParamArray) i;
+
                 if(((RecordParamArray) i).getReference())
                 {
                     System.out.print("ref ");
                 }
+
+                System.out.print(i.getName()+" : "+i.getType()+" ");
+                for(Integer dim : recParamArray.getDimensions())
+                {
+                    System.out.print("[");
+                    if(dim != 0)
+                    {
+                        System.out.print(dim);
+                    }
+                    System.out.print("]");
+                }
+                System.out.print(";");
             }
 
-            System.out.print(i.getName()+" : "+i.getType()+";");
+           // System.out.print(i.getName()+" : "+i.getType()+" dim " +dimensions+";");
         }
         System.out.println(")");
     }
-
-    /*public void kkat()
-    {
-        System.out.println("HEy you");
-        printHeader();
-    }*/
 }
 

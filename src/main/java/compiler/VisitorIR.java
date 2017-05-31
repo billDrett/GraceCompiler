@@ -97,6 +97,11 @@ public class VisitorIR extends DepthFirstAdapter{
         symTable = symbolTable;
     }
 
+    public void clearIR()
+    {
+        quadList.clearIntermidateCode();
+    }
+
     public void backPatch(List<Integer> backList, int newLabel) //backList is a true or false list for u cocksuckers
     {
         Quad currentQuad;

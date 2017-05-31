@@ -91,25 +91,9 @@ public class Print extends DepthFirstAdapter
         insertFunction(name, returnType, rec1, rec2);
     }
 
-    @Override
-    public void inAProgram(AProgram node){
-        System.out.println("In program");
-    }
-
-    @Override
-    public void outAProgram(AProgram node){
-        System.out.println("Type Stack contains "+typeStack.size()+" elements");
-        for(RecType recType : typeStack)
-        {
-            System.out.println("\t"+recType.getType()+" "+recType.getDimensions());
-        }
-        System.out.println("Out program");
-    }
 
     @Override
     public void inAFunDefinition(AFunDefinition node) {
-        System.out.println("In FunDefinition");
-
         functDefinition = true;
     }
 
@@ -153,21 +137,30 @@ public class Print extends DepthFirstAdapter
             }
         }
 
-        intermediateCode.caseAFunDefinition(node);
-
         extrFunction = localFunct;
         outAFunDefinition(node);
+
+        if(!error.getErrorFound())
+        {
+            intermediateCode.caseAFunDefinition(node);
+        }
+        else
+        {
+            intermediateCode.clearIR();
+        }
+
+        symTable.exit();
+
+
     }
 
 
     @Override
     public void outAFunDefinition(AFunDefinition node) {
-        System.out.println("Out FunDefinition");
         String returnType;
         Record currentHeader;
 
         symTable.printALl();
-        symTable.exit();
 
         returnType = returnStatement.pop();
         if(!returnFound && !returnType.equals("nothing")) //return not found and the type return type was int or char
@@ -175,46 +168,22 @@ public class Print extends DepthFirstAdapter
             error.returnStatement(extrFunction);
         }
 
+        symTable.checkDefinedFunct(error);
+
         returnFound = false;
     }
 
     @Override
-    public void inASemiStatement(ASemiStatement node) {
-        System.out.println("In SemiStatement");
-    }
-    @Override
-    public void inAAssignStatement(AAssignStatement node) {
-        System.out.println("In AssignStatement");
-    }
-
-    @Override
     public void outAAssignStatement(AAssignStatement node) {
-        System.out.println("Out AssignStatement");
         RecType leftType, rightType, recType;
-
-        System.out.println(typeStack.size());
 
         rightType = typeStack.pop();
         leftType = typeStack.pop();
 
-        if(rightType.getType().trim().equals(leftType.getType().trim()) && rightType.getDimensions() == leftType.getDimensions())
-        {
-            System.out.println("Compatible types");
-        }
-        else
+        if(!(rightType.getType().trim().equals(leftType.getType().trim()) && rightType.getDimensions() == leftType.getDimensions()))
         {
             error.varAssignment(leftType, rightType);
         }
-    }
-
-    @Override
-    public void inABlockStatement(ABlockStatement node) {
-      //  System.out.println("In BlockStatement");
-    }
-
-    @Override
-    public void inAFuncCallStatement(AFuncCallStatement node) {
-      //  System.out.println("In FuncCallStatement");
     }
 
     //in functionStatement the functioncall return type must be nothing
@@ -227,86 +196,45 @@ public class Print extends DepthFirstAdapter
         {
             error.nothingFunctCall(recType);
         }
-        //  System.out.println("In FuncCallStatement");
     }
 
     @Override
     public void outAIfWithoutElseStatement(AIfWithoutElseStatement node) {
-        System.out.println("Out IfWithoutElseStatement");
         RecType recType = typeStack.pop();
 
-        if(recType.getType().equals("bool"))
-        {
-            System.out.println("Condition ifWithoutElse is Correct");
-        }
-        else
+        if(!(recType.getType().equals("bool")))
         {
             error.condStatement(recType);
         }
-
-        System.out.println("Condition is "+recType.getType());
-
     }
 
     @Override
     public void outAIfWithElseStatement(AIfWithElseStatement node) {
-        System.out.println("Out IfWithElseStatement");
-
-
-        for(RecType iter : typeStack)
-        {
-            System.out.println("RecType "+iter.getVarName()+" "+iter.getType());
-        }
-
         RecType recType = typeStack.pop();
-        if(recType.getType().equals("bool"))
-        {
-            System.out.println("Condition IfWithElseStatement is Correct");
 
-        }
-        else
+        if(!(recType.getType().equals("bool")))
         {
             error.condStatement(recType);
         }
-
-        System.out.println("Condition is "+recType.getType());
     }
 
     @Override
     public void outAWhileStatement(AWhileStatement node) {
-        System.out.println("Out WhileStatement");
         RecType recType = typeStack.pop();
 
-        if(recType.getType().equals("bool"))
-        {
-            System.out.println("Condition WhileStatement is Correct");
-        }
-        else
+        if(!(recType.getType().equals("bool")))
         {
             error.condStatement(recType);
         }
-
-        System.out.println("Condition is "+recType.getType());
     }
 
     @Override
     public void outAReturnStatement(AReturnStatement node) {
-        System.out.println("Out ReturnStatement");
         String returnType = returnStatement.pop();
-
-        System.out.println("Return stack "+typeStack.size());
-        for(RecType rec : typeStack)
-        {
-            System.out.println("Return stack type "+rec.getType());
-        }
 
         if(node.getExpression() == null)
         {
-            if(returnType.equals("nothing"))
-            {
-                System.out.println("The return is correct "+returnType);
-            }
-            else
+            if(!(returnType.equals("nothing")))
             {
                 error.returnDiffType(returnType);
             }
@@ -314,6 +242,7 @@ public class Print extends DepthFirstAdapter
         else
         {
             RecType recType = typeStack.pop();
+
             if(recType.getDimensions() != 0)
             {
                 error.returnDiffType(recType, returnType);
@@ -322,10 +251,6 @@ public class Print extends DepthFirstAdapter
             {
                 error.returnDiffType(recType, returnType);
             }
-            else
-            {
-                System.out.println("The return is correct "+returnType);
-            }
         }
         returnStatement.push(returnType);
         returnFound = true;
@@ -333,40 +258,24 @@ public class Print extends DepthFirstAdapter
     }
 
     @Override
-    public void inAFunDefLocalDef(AFunDefLocalDef node) {
-    //    System.out.println("In FunDefLocalDef");
-    }
-
-    @Override
     public void inAFunDeclLocalDef(AFunDeclLocalDef node) {
-        functDefinition = true;
+        functDefinition = false;
     }
 
     @Override
     public void outAFunDeclLocalDef(AFunDeclLocalDef node) {
-        System.out.println("Out FunDeclLocalDef");
         returnStatement.pop();
         returnFound = false;
     }
 
     @Override
-    public void inAVarDefLocalDef(AVarDefLocalDef node) {
-      //  System.out.println("In AVarDefLocalDef");
-    }
-
-    @Override
     public void outAOrCondition(AOrCondition node) {
-        System.out.println("Out AOrCondition "+ node.getLeft()+" or "+node.getRight());
-
         RecType rightType, leftType, recType;
+
         rightType = typeStack.pop();
         leftType = typeStack.pop();
 
-        if(rightType.getType().equals("bool") && leftType.getType().equals("bool"))
-        {
-            System.out.println("Condition Or is Correct");
-        }
-        else
+        if(!(rightType.getType().equals("bool") && leftType.getType().equals("bool")))
         {
             error.conditionOR(leftType, rightType);
         }
@@ -377,17 +286,12 @@ public class Print extends DepthFirstAdapter
 
     @Override
     public void outAAndCondition(AAndCondition node) {
-        System.out.println("Out AAndCondition "+ node.getLeft()+" and "+node.getRight());
-
         RecType rightType, leftType, recType;
+
         rightType = typeStack.pop();
         leftType = typeStack.pop();
 
-        if(rightType.getType().equals("bool") && leftType.getType().equals("bool"))
-        {
-            System.out.println("Condition And is Correct");
-        }
-        else
+        if(!(rightType.getType().equals("bool") && leftType.getType().equals("bool")))
         {
             error.conditionAND(leftType, rightType);
         }
@@ -398,16 +302,10 @@ public class Print extends DepthFirstAdapter
 
     @Override
     public void outANotCondition(ANotCondition node) {
-        System.out.println("Out ANotCondition "+ " not "+node.getCondition());
-
         RecType tempType, recType;
         tempType = typeStack.pop();
 
-        if(tempType.getType().equals("bool"))
-        {
-            System.out.println("Condition Not is Correct");
-        }
-        else
+        if(!(tempType.getType().equals("bool")))
         {
             error.conditionNOT(tempType);
         }
@@ -418,29 +316,13 @@ public class Print extends DepthFirstAdapter
     }
 
     @Override
-    public void inARelatCondition(ARelatCondition node) {
-      //  System.out.println("In ARelatCondition "+node.getLeft()+" "+node.getSymbol()+ ""+node.getRight());
-    }
-
-    @Override
     public void outARelatCondition(ARelatCondition node) {
-        System.out.println("Out ARelatCondition "+node.getLeft()+" "+node.getSymbol()+ ""+node.getRight());
-
         RecType rightType, leftType, recType;
-
-        for(RecType rec : typeStack)
-        {
-
-        }
 
         rightType = typeStack.pop();
         leftType = typeStack.pop();
 
-        if((rightType.getType().equals(leftType.getType())) && rightType.getDimensions() == 0 && leftType.getDimensions() == 0)
-        {
-            System.out.println("Condition Relat is Correct");
-        }
-        else
+        if(!((rightType.getType().equals(leftType.getType())) && rightType.getDimensions() == 0 && leftType.getDimensions() == 0))
         {
             error.conditionRelat(leftType, rightType, node.getSymbol().toString().trim());
         }
@@ -449,59 +331,15 @@ public class Print extends DepthFirstAdapter
         typeStack.push(recType);
 
     }
-    @Override
-    public void inAEqualRelationOper(AEqualRelationOper node) {
-      //  System.out.println("In AEqualRelationOper");
-    }
-
-    @Override
-    public void inANEqualRelationOper(ANEqualRelationOper node) {
-      //  System.out.println("In ANEqualRelationOper");
-    }
-    @Override
-    public void inALessRelationOper(ALessRelationOper node) {
-    //    System.out.println("In ALessRelationOper");
-    }
-
-    @Override
-    public void inALessEqualRelationOper(ALessEqualRelationOper node) {
-      //  System.out.println("In ALessEqualRelationOper");
-    }
-    @Override
-    public void inAGreaterRelationOper(AGreaterRelationOper node) {
-      //  System.out.println("In AGreaterRelationOper");
-    }
-
-    @Override
-    public void inAGreaterEqualRelationOper(AGreaterEqualRelationOper node) {
-      //  System.out.println("In AGreaterEqualRelationOper");
-    }
-
-    @Override
-    public void inAExprList(AExprList node){
-      //  System.out.println("In ExprList");
-    }
-
-    @Override
-    public void outAExprList(AExprList node){
-      //  System.out.println("Out ExprList");
-    }
-
-
-    @Override
-    public void inAPlusExpression(APlusExpression node) {
-    //    System.out.println("In APlusExpression ");
-    }
 
     @Override
     public void outAPlusExpression(APlusExpression node) {
-        System.out.println("Out APlusExpression "+ node.getLeft()+" + " + node.getRight());
         RecType leftType, rightType, recType;
 
         rightType = typeStack.pop();
         leftType = typeStack.pop();
 
-        if(rightType.getType().trim().equals("char"))
+        if(rightType.getType().equals("char"))
         {
             error.exprOperationType(rightType, "+");
         }
@@ -510,7 +348,7 @@ public class Print extends DepthFirstAdapter
             error.exprOperationArray(rightType, "+");
         }
 
-        if(leftType.getType().trim().equals("char"))
+        if(leftType.getType().equals("char"))
         {
             error.exprOperationType(leftType, "+");
         }
@@ -524,19 +362,13 @@ public class Print extends DepthFirstAdapter
     }
 
     @Override
-    public void inAMinusExpression(AMinusExpression node) {
-      //  System.out.println("In AMinusExpression ");
-    }
-
-    @Override
     public void outAMinusExpression(AMinusExpression node) {
-        System.out.println("Out AMinusExpression "+ node.getLeft()+" - " + node.getRight());
         RecType leftType, rightType, recType;
 
         rightType = typeStack.pop();
         leftType = typeStack.pop();
 
-        if(rightType.getType().trim().equals("char"))
+        if(rightType.getType().equals("char"))
         {
             error.exprOperationType(rightType, "-");
         }
@@ -545,7 +377,7 @@ public class Print extends DepthFirstAdapter
             error.exprOperationArray(rightType, "-");
         }
 
-        if(leftType.getType().trim().equals("char"))
+        if(leftType.getType().equals("char"))
         {
             error.exprOperationType(leftType, "-");
         }
@@ -558,21 +390,14 @@ public class Print extends DepthFirstAdapter
         typeStack.push(recType);
     }
 
-
-    @Override
-    public void inAMultExpression(AMultExpression node) {
-      //  System.out.println("In AMultExpression");
-    }
-
     @Override
     public void outAMultExpression(AMultExpression node) {
-        System.out.println("Out AMultExpression "+ node.getLeft()+" * " + node.getRight());
         RecType leftType, rightType, recType;
 
         rightType = typeStack.pop();
         leftType = typeStack.pop();
 
-        if(rightType.getType().trim().equals("char"))
+        if(rightType.getType().equals("char"))
         {
             error.exprOperationType(rightType, "*");
         }
@@ -581,7 +406,7 @@ public class Print extends DepthFirstAdapter
             error.exprOperationArray(rightType, "*");
         }
 
-        if(leftType.getType().trim().equals("char"))
+        if(leftType.getType().equals("char"))
         {
             error.exprOperationType(leftType, "*");
         }
@@ -594,21 +419,14 @@ public class Print extends DepthFirstAdapter
         typeStack.push(recType);
     }
 
-
-    @Override
-    public void inADivExpression(ADivExpression node) {
-      //  System.out.println("In ADivExpression");
-    }
-
     @Override
     public void outADivExpression(ADivExpression node) {
-        System.out.println("Out ADivExpression "+ node.getLeft()+" div " + node.getRight());
         RecType leftType, rightType, recType;
 
         rightType = typeStack.pop();
         leftType = typeStack.pop();
 
-        if(rightType.getType().trim().equals("char"))
+        if(rightType.getType().equals("char"))
         {
             error.exprOperationType(rightType, "div");
         }
@@ -617,7 +435,7 @@ public class Print extends DepthFirstAdapter
             error.exprOperationArray(rightType, "div");
         }
 
-        if(leftType.getType().trim().equals("char"))
+        if(leftType.getType().equals("char"))
         {
             error.exprOperationType(leftType, "div");
         }
@@ -626,25 +444,18 @@ public class Print extends DepthFirstAdapter
             error.exprOperationArray(leftType, "div");
         }
 
-
         recType = new RecType(node.getLeft().toString(), "int", 0, leftType.getLine());
         typeStack.push(recType);
     }
 
     @Override
-    public void inAModExpression(AModExpression node) {
-      //  System.out.println("In AModExpression");
-    }
-
-    @Override
     public void outAModExpression(AModExpression node) {
-        System.out.println("Out AModExpression "+ node.getLeft()+" mod " + node.getRight());
         RecType leftType, rightType, recType;
 
         rightType = typeStack.pop();
         leftType = typeStack.pop();
 
-        if(rightType.getType().trim().equals("char"))
+        if(rightType.getType().equals("char"))
         {
             error.exprOperationType(rightType, "mod");
         }
@@ -653,7 +464,7 @@ public class Print extends DepthFirstAdapter
             error.exprOperationArray(rightType, "mod");
         }
 
-        if(leftType.getType().trim().equals("char"))
+        if(leftType.getType().equals("char"))
         {
             error.exprOperationType(leftType, "mod");
         }
@@ -668,20 +479,18 @@ public class Print extends DepthFirstAdapter
 
     @Override
     public void inAIntExpression(AIntExpression node) {
-        System.out.println("In AIntExpression: "+node.getNumber());
-
         RecType recType = new RecType(node.getNumber().toString(), "int", 0, node.getNumber().getLine());
+
         typeStack.push(recType);
     }
 
     @Override
     public void outAPosExpression(APosExpression node) {
-        System.out.println("In APosExpression: +"+node.getExpression());
         RecType tempType, recType;
 
         tempType = typeStack.pop();
 
-        if(tempType.getType().trim().equals("char"))
+        if(tempType.getType().equals("char"))
         {
             error.exprOperationType(tempType, "pos +");
         }
@@ -696,12 +505,11 @@ public class Print extends DepthFirstAdapter
 
     @Override
     public void outANegExpression(ANegExpression node) {
-        System.out.println("In ANegExpression: -"+node.getExpression());
         RecType tempType, recType;
 
         tempType = typeStack.pop();
 
-        if(tempType.getType().trim().equals("char"))
+        if(tempType.getType().equals("char"))
         {
             error.exprOperationType(tempType, "neg -");
         }
@@ -716,56 +524,16 @@ public class Print extends DepthFirstAdapter
 
     @Override
     public void inACharExpression(ACharExpression node) {
-        System.out.println("In ACharExpression: "+node.getConstChar());
-
         RecType recType = new RecType(node.getConstChar().toString(), "char", 0, node.getConstChar().getLine());
+
         typeStack.push(recType);
     }
 
     @Override
-    public void inAValExpression(AValExpression node) {
-        System.out.println("In AValExpression: "+node.getLvalue());
-    }
-
-    @Override
-    public void outAValExpression(AValExpression node) {
-        System.out.println("Out AValExpression");
-    }
-
-    @Override
-    public void inAFunExpression(AFunExpression node) {
-      //  System.out.println("In AFunExpression");
-    }
-
-    @Override
-    public void inAHeader(AHeader node) {
-        AFparDefinition Apar;
-        System.out.println("In Header: Function has name "+ node.getIdentifier());
-        for(PFparDefinition pexr:node.getFparDefinition())
-        {
-            Apar= (AFparDefinition) pexr;
-            System.out.println(Apar.getFparType());
-        }
-    }
-
-    @Override
     public void outAHeader(AHeader node) {
-        System.out.println("Out header: Function has name "+ node.getIdentifier());
         Record recFunct, tmpRec;
         AFparDefinition Apar;
         boolean functMatch;
-
-       /* for(PFparDefinition pexr:node.getFparDefinition())
-        {
-            Apar= (AFparDefinition) pexr;
-            System.out.println(Apar.getFparType());
-        }
-
-        for(String myString : fparVars)
-        {
-            System.out.println(myString);
-        }
-        */
 
         recFunct = new RecordFunction(node.getIdentifier().toString().trim(), node.getGeneralType().toString().trim(), "Function", fParam, node.getIdentifier().getLine());
 
@@ -785,87 +553,42 @@ public class Print extends DepthFirstAdapter
 
         if(functDefinition) ((RecordFunction)recFunct).setDefined(true); //if its a declaration set it true
 
-        //insert the fuction record at the symbol table
-        tmpRec = symTable.lookup(node.getIdentifier().toString().trim());
-        if(tmpRec == null) //den exw provlima
+        //insert the function record at the symbol table
+        if(!symTable.insert(recFunct)) //name already exists
         {
-            symTable.insert(recFunct);
-        }
-        else //if already exists in must be a function definition at the same scope as the new record function, and the new record function must be a declaration
-        {
+            tmpRec = symTable.lookup(recFunct.getName()); //find if its a function declaration
+
             if(tmpRec instanceof RecordFunction) //must be a function
             {
                 RecordFunction recInTable = (RecordFunction) tmpRec;
                 RecordFunction recFunction = (RecordFunction) recFunct;
 
-                if(symTable.getCurrentDepth() == tmpRec.getDepth()) //must be in the same scope
+                if(functDefinition && recInTable.getDefined() == false) //must have function declaration and the function is only defined
                 {
-                    if(functDefinition && recInTable.getDefined() == false) //must have function declaration and the function is only defined
+                    functMatch = functionMatch(recFunction, recInTable); //check if function have the same parameters
+
+                    if(functMatch)
                     {
-                        functMatch = functionMatch(recFunction, recInTable); //check if function have the same parameters
-
-                        if(functMatch)
-                        {
-                            recInTable.setDefined(true);
-
-                        }
-                        else
-                        {
-                            System.out.println("Error function already exists but with differnt parameters");
-                        }
+                        recInTable.setDefined(true);
                     }
                     else
                     {
-                        System.out.println("Error function already declared or its already defined");
+                        error.functMatch(recInTable, recFunction);
                     }
+                }
+                else
+                {
+                    error.functReDefinition(recFunction);
                 }
             }
             else
             {
-                System.out.println("Error function name already exists as variable name");
+                error.functDeclarVar(recFunct, recFunct.getLine());
             }
         }
 
-        extrFunction = recFunct;
-        /*
-        symTable.getCurrentDepth();
-
-        //insert the fuction record at the symbol table
-        if(!symTable.insert(recFunct)) //Record already exists
-        {
-           /* Record rec = symTable.lookup(node.getIdentifier().toString().trim());
-            if(rec instanceof RecordFunction)
-            {
-                RecordFunction recInTable = (RecordFunction) rec;
-                RecordFunction recFunction = (RecordFunction) recFunct;
-
-                functMatch = functionMatch(recFunction, recInTable); //check if function have the same parameters
-                if(functMatch)
-                {
-                    if(functDeclaration && recInTable.getDeclared() == false) //we have declaration and the function is undeclared
-                    {
-                        //currentFunctionHeader.addLast(recInTable); //last header is the new
-                        recInTable.setDeclared(true);
-                    }
-                    else
-                    {
-                        System.out.println("Error function already declared");
-                    }
-                }
-                else //function is not the same
-                {
-                    System.out.println("Error function already exists but with differnt parameters");
-                }
-            }
-            else
-            {
-
-            }
-            */
-
 
         returnStatement.push(node.getGeneralType().toString().trim());
-       // fParam.clear();
     }
 
     private boolean functionMatch(RecordFunction recFunct1, RecordFunction recFunct2)
@@ -875,13 +598,11 @@ public class Print extends DepthFirstAdapter
 
         if(!recFunct1.getType().equals(recFunct2.getType()))
         {
-            System.out.println("");
             return false;
         }
 
         if(recFunct1.getFparameters().size() != recFunct2.getFparameters().size()) //differnt number of parameters
         {
-            System.out.println("2");
             return false;
         }
 
@@ -904,6 +625,8 @@ public class Print extends DepthFirstAdapter
             else if (rec1 instanceof RecordParamArray && rec2 instanceof RecordParamArray)
             {
                 RecordParamArray recParam1, recParam2;
+                Iterator<Integer> dimIter2;
+                int dim2;
 
                 recParam1 = (RecordParamArray) rec1;
                 recParam2 = (RecordParamArray) rec2;
@@ -912,11 +635,17 @@ public class Print extends DepthFirstAdapter
 
                 if(recParam1.getDimensions().size() != recParam2.getDimensions().size()) return false; //different size of array
 
+                dimIter2 = recParam2.getDimensions().listIterator();
+                for(Integer dim1 : recParam1.getDimensions())
+                {
+                    dim2 = dimIter2.next();
+                    if(dim1 != dim2) return false; //arrays must have same dimensions
+                }
+
 
             }
             else //different type of argument
             {
-                System.out.println("3");
                 return false;
             }
 

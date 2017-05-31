@@ -75,4 +75,9 @@ public class QuadList
         }
     }
 
+    public void clearIntermidateCode()
+    {
+        qList.clear();
+    }
+
 }

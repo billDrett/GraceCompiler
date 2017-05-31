@@ -63,6 +63,28 @@ public class SymbolTable {
         scopes.pollLast();
     }
 
+    public void checkDefinedFunct(Error error)
+    {
+        Record record;
+        RecordFunction recFunct;
+
+        HashMap<String, Record> currentScope = scopes.getLast();
+
+        for(Map.Entry<String, Record> entry : currentScope.entrySet())
+        {
+            record = entry.getValue();
+
+            if(record instanceof RecordFunction)
+            {
+                recFunct = (RecordFunction) record;
+                if(!recFunct.getDefined())
+                {
+                    error.functNotDefined(recFunct);
+                }
+            }
+        }
+    }
+
     public void printALl()
     {
         Set set;
