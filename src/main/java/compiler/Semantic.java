@@ -6,7 +6,7 @@ import compiler.node.*;
 
 import java.util.*;
 
-public class Print extends DepthFirstAdapter
+public class Semantic extends DepthFirstAdapter
 {
     private SymbolTable symTable = new SymbolTable();
     private ArrayList<String> fparVars = new ArrayList<>();
@@ -22,11 +22,12 @@ public class Print extends DepthFirstAdapter
     Error error = new Error();
     Record extrFunction;
 
-    Print()
+    Semantic()
     {
         LinkedList<Integer> dimList = new LinkedList<>();
         dimList.addLast(0); //no dimensions given
 
+        //insert all the library functions at the symbol table
         insertFunction("puti", "nothing", new RecordParam("n", "int", null, false, 0), null);
         insertFunction("putc", "nothing", new RecordParam("c", "char", null, false, 0), null);
 
@@ -49,7 +50,7 @@ public class Print extends DepthFirstAdapter
         insertStrFunction("strcat", "nothing", "char", "char");
     }
 
-    //insert a function at the symbol table
+    //insert a library function at the symbol table
     void insertFunction(String name, String returnType, Record rec1, Record rec2)
     {
         RecordFunction newFunctRecord;
@@ -108,8 +109,8 @@ public class Print extends DepthFirstAdapter
             node.getHeader().apply(this);
         }
 
-        localFunct = extrFunction;
-        symTable.enter(); //function header will be placed in the functions scope we fix that at the AFunDefinitionOut
+        localFunct = extrFunction; //keep the header of the function
+        symTable.enter(); //create a scope for the parameters and local variables
 
 
         for(Record rec: fParam) //push all function parameters in the symbol table
@@ -120,7 +121,7 @@ public class Print extends DepthFirstAdapter
             }
         }
 
-        fParam.clear();
+        fParam.clear(); //empty the list for the next function header
 
         {
             List<PLocalDef> copy = new ArrayList<PLocalDef>(node.getLocalDef());
@@ -140,17 +141,16 @@ public class Print extends DepthFirstAdapter
         extrFunction = localFunct;
         outAFunDefinition(node);
 
-        if(!error.getErrorFound())
+        if(!error.getErrorFound()) //there wasnt any semantic error
         {
             intermediateCode.caseAFunDefinition(node);
         }
-        else
+        else //semantic error found, delete the intermediateCode
         {
             intermediateCode.clearIR();
         }
 
-        symTable.exit();
-
+        symTable.exit(); //function block is finished, delete the current scope
 
     }
 
@@ -160,15 +160,13 @@ public class Print extends DepthFirstAdapter
         String returnType;
         Record currentHeader;
 
-        symTable.printALl();
-
         returnType = returnStatement.pop();
         if(!returnFound && !returnType.equals("nothing")) //return not found and the type return type was int or char
         {
             error.returnStatement(extrFunction);
         }
 
-        symTable.checkDefinedFunct(error);
+        symTable.checkDefinedFunct(error); //check for all functions of the scope if they are defined
 
         returnFound = false;
     }
@@ -180,7 +178,8 @@ public class Print extends DepthFirstAdapter
         rightType = typeStack.pop();
         leftType = typeStack.pop();
 
-        if(!(rightType.getType().trim().equals(leftType.getType().trim()) && rightType.getDimensions() == leftType.getDimensions()))
+        //check if the assigment is the same type and they are literals int/char
+        if(!(rightType.getType().equals(leftType.getType()) && rightType.getDimensions() == leftType.getDimensions()) && rightType.getDimensions() == 0)
         {
             error.varAssignment(leftType, rightType);
         }
@@ -232,27 +231,27 @@ public class Print extends DepthFirstAdapter
     public void outAReturnStatement(AReturnStatement node) {
         String returnType = returnStatement.pop();
 
-        if(node.getExpression() == null)
+        if(node.getExpression() == null) //empty return, the return type of function must be nothing
         {
             if(!(returnType.equals("nothing")))
             {
                 error.returnDiffType(returnType);
             }
         }
-        else
+        else //non empty return, must be the same type as return type of function
         {
             RecType recType = typeStack.pop();
 
-            if(recType.getDimensions() != 0)
+            if(recType.getDimensions() != 0) //must be literal int/char
             {
                 error.returnDiffType(recType, returnType);
             }
-            else if (!recType.getType().equals(returnType))
+            else if (!recType.getType().equals(returnType)) //same type
             {
                 error.returnDiffType(recType, returnType);
             }
         }
-        returnStatement.push(returnType);
+        returnStatement.push(returnType); //put back function return type, there might be more than one return statements
         returnFound = true;
 
     }
@@ -275,7 +274,7 @@ public class Print extends DepthFirstAdapter
         rightType = typeStack.pop();
         leftType = typeStack.pop();
 
-        if(!(rightType.getType().equals("bool") && leftType.getType().equals("bool")))
+        if(!(rightType.getType().equals("bool") && leftType.getType().equals("bool"))) //must be bool
         {
             error.conditionOR(leftType, rightType);
         }
@@ -291,7 +290,7 @@ public class Print extends DepthFirstAdapter
         rightType = typeStack.pop();
         leftType = typeStack.pop();
 
-        if(!(rightType.getType().equals("bool") && leftType.getType().equals("bool")))
+        if(!(rightType.getType().equals("bool") && leftType.getType().equals("bool"))) //must be bool
         {
             error.conditionAND(leftType, rightType);
         }
@@ -305,7 +304,7 @@ public class Print extends DepthFirstAdapter
         RecType tempType, recType;
         tempType = typeStack.pop();
 
-        if(!(tempType.getType().equals("bool")))
+        if(!(tempType.getType().equals("bool"))) //must be bool
         {
             error.conditionNOT(tempType);
         }
@@ -322,6 +321,7 @@ public class Print extends DepthFirstAdapter
         rightType = typeStack.pop();
         leftType = typeStack.pop();
 
+        //must be same type and not pointers
         if(!((rightType.getType().equals(leftType.getType())) && rightType.getDimensions() == 0 && leftType.getDimensions() == 0))
         {
             error.conditionRelat(leftType, rightType, node.getSymbol().toString().trim());

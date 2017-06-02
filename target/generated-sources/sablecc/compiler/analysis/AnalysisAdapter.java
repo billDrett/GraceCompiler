@@ -444,6 +444,11 @@ public class AnalysisAdapter implements Analysis
         defaultCase(node);
     }
 
+    public void caseTErroneousNumber(TErroneousNumber node)
+    {
+        defaultCase(node);
+    }
+
     public void caseTConstChar(TConstChar node)
     {
         defaultCase(node);

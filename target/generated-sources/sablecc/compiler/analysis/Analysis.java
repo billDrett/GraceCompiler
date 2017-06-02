@@ -88,6 +88,7 @@ public interface Analysis extends Switch
     void caseTComma(TComma node);
     void caseTColon(TColon node);
     void caseTNumber(TNumber node);
+    void caseTErroneousNumber(TErroneousNumber node);
     void caseTConstChar(TConstChar node);
     void caseTConstString(TConstString node);
     void caseTChar(TChar node);

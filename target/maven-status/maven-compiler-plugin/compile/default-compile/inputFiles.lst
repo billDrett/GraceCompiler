@@ -16,9 +16,9 @@
 /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/target/generated-sources/sablecc/compiler/node/AFparType.java
 /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/target/generated-sources/sablecc/compiler/node/TNot.java
 /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/src/main/java/compiler/SymbolTable.java
-/home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/src/main/java/compiler/Print.java
 /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/target/generated-sources/sablecc/compiler/node/AModExpression.java
 /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/target/generated-sources/sablecc/compiler/node/ANEqualRelationOper.java
+/home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/src/main/java/compiler/Semantic.java
 /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/src/main/java/compiler/RecordParam.java
 /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/target/generated-sources/sablecc/compiler/node/TConstChar.java
 /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/target/generated-sources/sablecc/compiler/node/TDivision.java
@@ -102,6 +102,7 @@
 /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/target/generated-sources/sablecc/compiler/node/TComma.java
 /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/target/generated-sources/sablecc/compiler/node/AAssignStatement.java
 /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/target/generated-sources/sablecc/compiler/node/TGreaterEqual.java
+/home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/target/generated-sources/sablecc/compiler/node/TErroneousNumber.java
 /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/target/generated-sources/sablecc/compiler/node/TLPar.java
 /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/target/generated-sources/sablecc/compiler/node/TSemi.java
 /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/target/generated-sources/sablecc/compiler/node/AVarDefinition.java

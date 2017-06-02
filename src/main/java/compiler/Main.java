@@ -45,7 +45,7 @@ public class Main {
 
                         tree = p.parse();
 
-                        tree.apply(new Print());
+                        tree.apply(new Semantic());
                         //tree.apply(new VisitorIR());
 
 

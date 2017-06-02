@@ -62,6 +62,8 @@ Tokens
 
     number = digit+;
 
+    erroneous_number = (digit)+ (letter|'_')+;
+
     const_char   = ''' (input_char | escape_sequence) ''';
     const_string = '"' (input_string | escape_sequence)* '"';
 
@@ -141,8 +143,8 @@ Productions
                              | {par} l_par expr r_par          {-> expr.expression};
 
     term_sign {-> expression} = {term} term                    {-> term.expression}
-                              | {sign_plus} plus term          {-> New expression.pos(term.expression)}
-                              | {sign_minus} minus term        {-> New expression.neg(term.expression)};
+                              | {sign_plus} plus expr_par      {-> New expression.pos(expr_par.expression)}
+                              | {sign_minus} minus expr_par    {-> New expression.neg(expr_par.expression)};
 
     term {-> expression} = {int_const} number                  {-> New expression.int(number)}
                          | {char_const} const_char             {-> New expression.char(const_char)}
@@ -228,9 +230,6 @@ Productions
                         | {string_literal} const_string               {-> New lvalue.str(const_string)}
                         | {l_value} l_value l_bkt expr r_bkt          {-> New lvalue.val(l_value.lvalue, expr.expression)};
 
-  //  exp_list {-> exp*} = exp exp_list_tail* {-> [exp exp_list_tail.exp]};
-
-  //  exp_list_tail {-> exp} = comma exp {-> exp};
 
 Abstract Syntax Tree
     program = fun_definition;

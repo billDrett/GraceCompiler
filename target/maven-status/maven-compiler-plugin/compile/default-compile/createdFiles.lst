@@ -23,11 +23,13 @@ compiler/node/TAssign.class
 compiler/lexer/Lexer$State.class
 compiler/node/TSemi.class
 compiler/node/TRBrc.class
+compiler/Semantic.class
 compiler/node/PProgram.class
 compiler/node/Switchable.class
 compiler/node/TLBrc.class
 compiler/node/AFparDefinition.class
 compiler/node/ANegExpression.class
+compiler/node/TErroneousNumber.class
 compiler/node/PStatement.class
 compiler/node/TIdentifier.class
 compiler/Quad.class
@@ -45,7 +47,6 @@ compiler/node/TThen.class
 compiler/node/ACharGeneralType.class
 compiler/SymbolTable.class
 compiler/node/TLBkt.class
-compiler/Print.class
 compiler/node/AIdLvalue.class
 compiler/node/TVariable.class
 compiler/node/AVarDefinition.class

@@ -1,11 +1,5 @@
 fun hello () : nothing
-fun t(): int
-	{
-		return 1;
-	}
 {
-  puts("Hello world!\n");
-  $This is a comment
+  if(---2 < 0) then ;
 
-  t();
 }
