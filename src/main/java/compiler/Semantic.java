@@ -21,6 +21,7 @@ public class Semantic extends DepthFirstAdapter
     VisitorIR intermediateCode = new VisitorIR(symTable);
     Error error = new Error();
     Record extrFunction;
+    private int funCounter = 0;
 
     Semantic()
     {
@@ -66,7 +67,7 @@ public class Semantic extends DepthFirstAdapter
             functParameters.addLast(rec2);
         }
 
-        newFunctRecord = new RecordFunction(name, returnType, functParameters, 0); //create function record
+        newFunctRecord = new RecordFunction(name, returnType, functParameters, 0, 0); //create function record
         newFunctRecord.setDefined(true);
         symTable.insert(newFunctRecord);
 
@@ -451,7 +452,8 @@ public class Semantic extends DepthFirstAdapter
         AFparDefinition Apar;
         boolean functMatch;
 
-        recFunct = new RecordFunction(node.getIdentifier().toString().trim(), node.getGeneralType().toString().trim(), fParam, node.getIdentifier().getLine());
+        recFunct = new RecordFunction(node.getIdentifier().toString().trim(), node.getGeneralType().toString().trim(), fParam, node.getIdentifier().getLine(), funCounter);
+        funCounter++; //create next uniqueId
 
         if(symTable.getCurrentDepth() ==1) //main function
         {

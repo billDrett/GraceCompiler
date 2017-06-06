@@ -5,13 +5,24 @@ import java.util.LinkedList;
 public class RecordFunction extends Record
 {
     private LinkedList<Record> fparameters;
-    boolean defined;
+    private boolean defined;
+    private String fixedName;
 
-    public RecordFunction(String nameId, String vartp, LinkedList<Record> fparam, int line)
+    public RecordFunction(String nameId, String vartp, LinkedList<Record> fparam, int line, int uniqueId)
     {
         super(nameId, vartp, line);
         fparameters = new LinkedList<>(fparam);
         defined = false;
+
+        if(uniqueId == 0) //for main and library functions
+        {
+            fixedName = nameId+"_grace";
+        }
+        else
+        {
+            fixedName = nameId+"_"+uniqueId;
+        }
+
     }
 
     public int getNoParameters()
@@ -27,6 +38,11 @@ public class RecordFunction extends Record
     public boolean getDefined()
     {
         return defined;
+    }
+
+    public String getFixedName()
+    {
+        return fixedName;
     }
 
     public void setDefined(boolean Defined)

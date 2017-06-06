@@ -46,12 +46,14 @@ public class VisitorIR extends DepthFirstAdapter{
     @Override
     public void caseAFunDefinition(AFunDefinition node)
     {
+        RecordFunction functionRec;
         String functName ="";
         inAFunDefinition(node);
         if(node.getHeader() != null)
         {
             node.getHeader().apply(this);
-            functName = extrChild;
+            functionRec = (RecordFunction) symTable.lookup(extrChild);
+            functName = functionRec.getFixedName();
         }
 
         //dont visit local definitions
@@ -683,7 +685,7 @@ public class VisitorIR extends DepthFirstAdapter{
         }
 
 
-        quadList.GenQuad("call", "-", "-", functionName);
+        quadList.GenQuad("call", "-", "-", localRecordFunction.getFixedName());
         outAFunctionCall(node);
 
         extrChild = tmpVar;
