@@ -1,8 +1,5 @@
 package compiler;
 
-/**
- * Created by bill on 23/05/17.
- */
 public class StringLiteral extends RecordLValue
 {
     private String literalId;

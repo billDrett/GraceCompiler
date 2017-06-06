@@ -28,21 +28,21 @@ public class Semantic extends DepthFirstAdapter
         dimList.addLast(0); //no dimensions given
 
         //insert all the library functions at the symbol table
-        insertFunction("puti", "nothing", new RecordParam("n", "int", null, false, 0), null);
-        insertFunction("putc", "nothing", new RecordParam("c", "char", null, false, 0), null);
+        insertFunction("puti", "nothing", new RecordParam("n", "int", false, 0), null);
+        insertFunction("putc", "nothing", new RecordParam("c", "char", false, 0), null);
 
-        insertFunction("puts", "nothing", new RecordParamArray("s", "char", null, dimList, true, 0), null);
+        insertFunction("puts", "nothing", new RecordParamArray("s", "char", dimList, true, 0), null);
 
         insertFunction("geti", "int", null, null);
         insertFunction("getc", "char", null, null);
 
-        Record rec1Gets = new RecordParam("n", "int", null, false, 0);
-        Record rec2Gets = new RecordParamArray("s", "char", null, dimList, true, 0);
+        Record rec1Gets = new RecordParam("n", "int", false, 0);
+        Record rec2Gets = new RecordParamArray("s", "char", dimList, true, 0);
         insertFunction("geti", "nothing", rec1Gets, rec2Gets);
 
-        insertFunction("abs", "int", new RecordParam("n", "int", null, false, 0), null);
-        insertFunction("ord", "int", new RecordParam("c", "char", null, false, 0), null);
-        insertFunction("chr", "char", new RecordParam("n", "int", null, false, 0), null);
+        insertFunction("abs", "int", new RecordParam("n", "int", false, 0), null);
+        insertFunction("ord", "int", new RecordParam("c", "char", false, 0), null);
+        insertFunction("chr", "char", new RecordParam("n", "int", false, 0), null);
 
         insertStrFunction("strlen", "int", "char", null);
         insertStrFunction("strcmp", "int", "char", "char");
@@ -66,7 +66,7 @@ public class Semantic extends DepthFirstAdapter
             functParameters.addLast(rec2);
         }
 
-        newFunctRecord = new RecordFunction(name, returnType, "Function", functParameters, 0); //create function record
+        newFunctRecord = new RecordFunction(name, returnType, functParameters, 0); //create function record
         newFunctRecord.setDefined(true);
         symTable.insert(newFunctRecord);
 
@@ -81,17 +81,22 @@ public class Semantic extends DepthFirstAdapter
 
         if(rec1Type != null)
         {
-            rec1 = new RecordParamArray("s1", "char", null, dimList, true, 0);
+            rec1 = new RecordParamArray("s1", "char", dimList, true, 0);
         }
 
         if(rec2Type != null)
         {
-            rec2 = new RecordParamArray("s2", "char", null, dimList, true, 0);
+            rec2 = new RecordParamArray("s2", "char", dimList, true, 0);
         }
 
         insertFunction(name, returnType, rec1, rec2);
     }
 
+    @Override
+    public void outAProgram(AProgram node)
+    {
+        intermediateCode.printIntermidiateCode();
+    }
 
     @Override
     public void inAFunDefinition(AFunDefinition node) {
@@ -332,154 +337,63 @@ public class Semantic extends DepthFirstAdapter
 
     }
 
-    @Override
-    public void outAPlusExpression(APlusExpression node) {
+    public void arithmeticOperation(String oper)
+    {
         RecType leftType, rightType, recType;
 
         rightType = typeStack.pop();
         leftType = typeStack.pop();
 
+        //the operation must be between integers
         if(rightType.getType().equals("char"))
         {
-            error.exprOperationType(rightType, "+");
+            error.exprOperationType(rightType, oper);
         }
         else if(rightType.getDimensions() != 0)
         {
-            error.exprOperationArray(rightType, "+");
+            error.exprOperationArray(rightType, oper);
         }
 
         if(leftType.getType().equals("char"))
         {
-            error.exprOperationType(leftType, "+");
+            error.exprOperationType(leftType, oper);
         }
         else if(leftType.getDimensions() != 0)
         {
-            error.exprOperationArray(leftType, "+");
+            error.exprOperationArray(leftType, oper);
         }
 
-        recType = new RecType(node.getLeft().toString(), "int", 0, leftType.getLine());
+        recType = new RecType(leftType.getVarName(), "int", 0, leftType.getLine()); //result type is int
         typeStack.push(recType);
+    }
+    @Override
+    public void outAPlusExpression(APlusExpression node) {
+        arithmeticOperation("+");
     }
 
     @Override
     public void outAMinusExpression(AMinusExpression node) {
-        RecType leftType, rightType, recType;
-
-        rightType = typeStack.pop();
-        leftType = typeStack.pop();
-
-        if(rightType.getType().equals("char"))
-        {
-            error.exprOperationType(rightType, "-");
-        }
-        else if(rightType.getDimensions() != 0)
-        {
-            error.exprOperationArray(rightType, "-");
-        }
-
-        if(leftType.getType().equals("char"))
-        {
-            error.exprOperationType(leftType, "-");
-        }
-        else if(leftType.getDimensions() != 0)
-        {
-            error.exprOperationArray(leftType, "-");
-        }
-
-        recType = new RecType(node.getLeft().toString(), "int", 0, leftType.getLine());
-        typeStack.push(recType);
+        arithmeticOperation("-");
     }
 
     @Override
     public void outAMultExpression(AMultExpression node) {
-        RecType leftType, rightType, recType;
-
-        rightType = typeStack.pop();
-        leftType = typeStack.pop();
-
-        if(rightType.getType().equals("char"))
-        {
-            error.exprOperationType(rightType, "*");
-        }
-        else if(rightType.getDimensions() != 0)
-        {
-            error.exprOperationArray(rightType, "*");
-        }
-
-        if(leftType.getType().equals("char"))
-        {
-            error.exprOperationType(leftType, "*");
-        }
-        else if(leftType.getDimensions() != 0)
-        {
-            error.exprOperationArray(leftType, "*");
-        }
-
-        recType = new RecType(node.getLeft().toString(), "int", 0, leftType.getLine());
-        typeStack.push(recType);
+        arithmeticOperation("*");
     }
 
     @Override
     public void outADivExpression(ADivExpression node) {
-        RecType leftType, rightType, recType;
-
-        rightType = typeStack.pop();
-        leftType = typeStack.pop();
-
-        if(rightType.getType().equals("char"))
-        {
-            error.exprOperationType(rightType, "div");
-        }
-        else if(rightType.getDimensions() != 0)
-        {
-            error.exprOperationArray(rightType, "div");
-        }
-
-        if(leftType.getType().equals("char"))
-        {
-            error.exprOperationType(leftType, "div");
-        }
-        else if(leftType.getDimensions() != 0)
-        {
-            error.exprOperationArray(leftType, "div");
-        }
-
-        recType = new RecType(node.getLeft().toString(), "int", 0, leftType.getLine());
-        typeStack.push(recType);
+        arithmeticOperation("div");
     }
 
     @Override
     public void outAModExpression(AModExpression node) {
-        RecType leftType, rightType, recType;
-
-        rightType = typeStack.pop();
-        leftType = typeStack.pop();
-
-        if(rightType.getType().equals("char"))
-        {
-            error.exprOperationType(rightType, "mod");
-        }
-        else if(rightType.getDimensions() != 0)
-        {
-            error.exprOperationArray(rightType, "mod");
-        }
-
-        if(leftType.getType().equals("char"))
-        {
-            error.exprOperationType(leftType, "mod");
-        }
-        else if(leftType.getDimensions() != 0)
-        {
-            error.exprOperationArray(leftType, "mod");
-        }
-
-        recType = new RecType(node.getLeft().toString(), "int", 0, leftType.getLine());
-        typeStack.push(recType);
+        arithmeticOperation("mod");
     }
 
     @Override
     public void inAIntExpression(AIntExpression node) {
-        RecType recType = new RecType(node.getNumber().toString(), "int", 0, node.getNumber().getLine());
+        RecType recType = new RecType(node.getNumber().toString(), "int", 0, node.getNumber().getLine()); //type of child is int
 
         typeStack.push(recType);
     }
@@ -490,6 +404,7 @@ public class Semantic extends DepthFirstAdapter
 
         tempType = typeStack.pop();
 
+        //the operation must be between integers
         if(tempType.getType().equals("char"))
         {
             error.exprOperationType(tempType, "pos +");
@@ -509,6 +424,7 @@ public class Semantic extends DepthFirstAdapter
 
         tempType = typeStack.pop();
 
+        //the operation must be between integers
         if(tempType.getType().equals("char"))
         {
             error.exprOperationType(tempType, "neg -");
@@ -524,7 +440,7 @@ public class Semantic extends DepthFirstAdapter
 
     @Override
     public void inACharExpression(ACharExpression node) {
-        RecType recType = new RecType(node.getConstChar().toString(), "char", 0, node.getConstChar().getLine());
+        RecType recType = new RecType(node.getConstChar().toString(), "char", 0, node.getConstChar().getLine()); //type of child is char
 
         typeStack.push(recType);
     }
@@ -535,7 +451,7 @@ public class Semantic extends DepthFirstAdapter
         AFparDefinition Apar;
         boolean functMatch;
 
-        recFunct = new RecordFunction(node.getIdentifier().toString().trim(), node.getGeneralType().toString().trim(), "Function", fParam, node.getIdentifier().getLine());
+        recFunct = new RecordFunction(node.getIdentifier().toString().trim(), node.getGeneralType().toString().trim(), fParam, node.getIdentifier().getLine());
 
         if(symTable.getCurrentDepth() ==1) //main function
         {
@@ -591,12 +507,13 @@ public class Semantic extends DepthFirstAdapter
         returnStatement.push(node.getGeneralType().toString().trim());
     }
 
+    //checks if two function have the same return type and parameters
     private boolean functionMatch(RecordFunction recFunct1, RecordFunction recFunct2)
     {
         Iterator<Record> iter1, iter2;
         Record rec1, rec2;
 
-        if(!recFunct1.getType().equals(recFunct2.getType()))
+        if(!recFunct1.getType().equals(recFunct2.getType())) //differnt return type
         {
             return false;
         }
@@ -643,7 +560,7 @@ public class Semantic extends DepthFirstAdapter
                 }
 
             }
-            else //different type of argument
+            else //different type of argument, one is array and other is literal
             {
                 return false;
             }
@@ -672,16 +589,16 @@ public class Semantic extends DepthFirstAdapter
         {
             aVarId = (AVarIdentifier) varId;
 
-            if(dimList.isEmpty())
+            if(dimList.isEmpty()) //no dimensions found, so its a literal
             {
-                tmpRec = new RecordParam(varId.toString().trim(), tmpVarType, "functParam", ref, aVarId.getIdentifier().getLine());
+                tmpRec = new RecordParam(varId.toString().trim(), tmpVarType, ref, aVarId.getIdentifier().getLine());
             }
             else
             {
-                tmpRec = new RecordParamArray(varId.toString().trim(), tmpVarType, "functParamArray", dimList, ref, aVarId.getIdentifier().getLine());
+                tmpRec = new RecordParamArray(varId.toString().trim(), tmpVarType, dimList, ref, aVarId.getIdentifier().getLine());
             }
 
-            fParam.addLast(tmpRec);
+            fParam.addLast(tmpRec); //put parameter at the current function parameters list
         }
         dimList.clear();
     }
@@ -696,11 +613,11 @@ public class Semantic extends DepthFirstAdapter
             aVarId = (AVarIdentifier) varId;
             if(dimList.isEmpty())
             {
-                tmpRec = new Record(varId.toString().trim(), tmpVarType, "Variable", aVarId.getIdentifier().getLine());
+                tmpRec = new Record(varId.toString().trim(), tmpVarType, aVarId.getIdentifier().getLine());
             }
             else
             {
-                tmpRec = new RecordArray(varId.toString().trim(), tmpVarType, "Array", dimList, aVarId.getIdentifier().getLine());
+                tmpRec = new RecordArray(varId.toString().trim(), tmpVarType, dimList, aVarId.getIdentifier().getLine());
             }
 
             if(!symTable.insert(tmpRec)) //check if variable already exists
@@ -719,7 +636,7 @@ public class Semantic extends DepthFirstAdapter
 
         if(node.getEmptyBr() != null) dimList.addLast(0);
 
-        for(PConstIntBr arrayDimensions:node.getConstIntBr())
+        for(PConstIntBr arrayDimensions:node.getConstIntBr()) //add all the dimensions of the array in the dimList
         {
             tmpInteger = Integer.parseInt(arrayDimensions.toString().trim());
             dimList.addLast(tmpInteger);
@@ -731,7 +648,7 @@ public class Semantic extends DepthFirstAdapter
         int tmpInteger;
         tmpVarType = new String(node.getGeneralType().toString().trim());
 
-        for(PConstIntBr arrayDimensions:node.getConstIntBr())
+        for(PConstIntBr arrayDimensions:node.getConstIntBr()) //add all the dimensions of the array in the dimList
         {
             tmpInteger = Integer.parseInt(arrayDimensions.toString().trim());
             dimList.addLast(tmpInteger);
@@ -756,7 +673,7 @@ public class Semantic extends DepthFirstAdapter
         tmpFunct = symTable.lookup(node.getIdentifier().toString().trim());
 
 
-        if (node.getExprList() != null)
+        if (node.getExprList() != null) //check if function call has arguments
         {
             arguments = (AExprList)  node.getExprList();
             numberOfArguments = arguments.getExprs().size();
@@ -767,7 +684,7 @@ public class Semantic extends DepthFirstAdapter
             error.undeclaredFunct(node.getIdentifier().toString(), currentLine);
 
             recordType = new RecType(null, "null", 0, currentLine);
-            while (numberOfArguments > 0)
+            while (numberOfArguments > 0) //clean arguments
             {
                 typeStack.pop();
                 numberOfArguments--;
@@ -777,7 +694,7 @@ public class Semantic extends DepthFirstAdapter
             return;
         }
 
-        if(tmpFunct instanceof RecordFunction)
+        if(tmpFunct instanceof RecordFunction) //record must be function
         {
             recFunct = (RecordFunction) tmpFunct;
         }
@@ -786,7 +703,7 @@ public class Semantic extends DepthFirstAdapter
             error.callFunctionVarInsted(tmpFunct, currentLine);
 
             recordType = new RecType(null, "null", 0, currentLine);
-            while (numberOfArguments > 0)
+            while (numberOfArguments > 0) //clean arguments
             {
                 typeStack.pop();
                 numberOfArguments--;
@@ -802,7 +719,7 @@ public class Semantic extends DepthFirstAdapter
         {
             error.callFunctionArguments(recFunct, currentLine);
             recordType = new RecType(functName, recFunct.getType(), 0, currentLine);
-            while (numberOfArguments > 0)
+            while (numberOfArguments > 0) //clean arguments
             {
                 typeStack.pop();
                 numberOfArguments--;
@@ -812,7 +729,7 @@ public class Semantic extends DepthFirstAdapter
             return;
         }
 
-        if(numberOfArguments != 0)
+        if(numberOfArguments != 0) //check if arguments are the same type
         {
             iterRec = recFunct.getFparameters().descendingIterator();
             iterReferenceAllowed = arguments.getExprs().descendingIterator();
@@ -821,7 +738,7 @@ public class Semantic extends DepthFirstAdapter
                 paramType = typeStack.pop(); //gets last argument type
 
                 recParam = iterRec.next();
-                if(iterReferenceAllowed.next() instanceof AValExpression)
+                if(iterReferenceAllowed.next() instanceof AValExpression) //lvalue can be referenced
                 {
                     referable = true;
                 }
@@ -833,13 +750,13 @@ public class Semantic extends DepthFirstAdapter
                 if(recParam instanceof RecordParam)
                 {
                     RecordParam recParameter = (RecordParam) recParam;
-                    if(recParameter.getReference() == true && referable == false)
+                    if(recParameter.getReference() == true && referable == false) //we need a reference but its not lvalue
                     {
                         errorFound = true;
                         error.callFunctionParamRef(i, currentLine);
                     }
 
-                    if(!paramType.getType().equals(recParam.getType()) || paramType.getDimensions() !=0)
+                    if(!paramType.getType().equals(recParam.getType()) || paramType.getDimensions() !=0) //different type
                     {
                         errorFound = true;
                         error.callFunctionParamType(i, currentLine, recParam, 0, paramType.getType(),paramType.getDimensions());
@@ -848,13 +765,13 @@ public class Semantic extends DepthFirstAdapter
                 else if (recParam instanceof RecordArray)
                 {
                     RecordParamArray recParameter = (RecordParamArray) recParam;
-                    if(recParameter.getReference() == true && referable == false)
+                    if(recParameter.getReference() == true && referable == false)  //we need a reference but its not lvalue
                     {
                         errorFound = true;
                         error.callFunctionParamRef(i, currentLine);
                     }
 
-                    if(!paramType.getType().equals(recParam.getType()) || paramType.getDimensions() != recParameter.getDimensions().size())
+                    if(!paramType.getType().equals(recParam.getType()) || paramType.getDimensions() != recParameter.getDimensions().size()) //different type
                     {
                         errorFound = true;
                         error.callFunctionParamType(i, currentLine, recParam, recParameter.getDimensions().size(), paramType.getType(),paramType.getDimensions());
@@ -883,7 +800,7 @@ public class Semantic extends DepthFirstAdapter
         currentLine = node.getIdentifier().getLine();
         tmpRec = symTable.lookup(varName);
 
-        if(tmpRec == null)
+        if(tmpRec == null) //check if variable is defined
         {
             error.varUndefined(varName, currentLine);
             rectype = new RecType(varName, "null", 0, currentLine);
@@ -891,10 +808,10 @@ public class Semantic extends DepthFirstAdapter
             return;
         }
 
-        if (tmpRec instanceof RecordArray)
+        if (tmpRec instanceof RecordArray) //if its array keep its dimensions
         {
             RecordArray recArray = (RecordArray) tmpRec;
-            arraySize = recArray.getDimensions().size();
+            arraySize = recArray.getDimensions().size(); //keep number of dimensions
         }
 
         rectype = new RecType(varName, tmpRec.getType().trim(), arraySize, currentLine);
@@ -903,7 +820,7 @@ public class Semantic extends DepthFirstAdapter
 
     @Override
     public void inAStrLvalue(AStrLvalue node) {
-        RecType rectype = new RecType(node.getConstString().toString(), "char", 1, node.getConstString().getLine());
+        RecType rectype = new RecType(node.getConstString().toString(), "char", 1, node.getConstString().getLine()); //string literal is a char array
 
         typeStack.push(rectype);
     }
@@ -915,11 +832,11 @@ public class Semantic extends DepthFirstAdapter
         rightType = typeStack.pop();
         leftType = typeStack.pop();
 
-        if (!rightType.getType().equals("int") || rightType.getDimensions() !=0)
+        if (!rightType.getType().equals("int") || rightType.getDimensions() !=0) //index of the array must be int
         {
             error.arrayIndex(rightType.getType(), rightType.getLine());
         }
-        leftType.setDimensions(leftType.getDimensions()-1);
+        leftType.setDimensions(leftType.getDimensions()-1); //dimensions of the current array are decreased by one
         typeStack.push(leftType);
     }
 

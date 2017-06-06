@@ -1,9 +1,5 @@
 package compiler;
 
-/**
- * Created by d on 10/05/17.
- */
-
 public class RecType {
 
     private String varName;

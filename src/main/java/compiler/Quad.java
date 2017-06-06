@@ -1,8 +1,5 @@
 package compiler;
 
-/**
- * Created by bill on 17/05/17.
- */
 public class Quad
 {
     private int label;

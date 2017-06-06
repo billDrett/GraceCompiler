@@ -4,9 +4,6 @@ import com.sun.org.apache.regexp.internal.RE;
 
 import java.util.*;
 
-/**
- * Created by bill on 04/05/17.
- */
 public class SymbolTable {
     private Deque<HashMap<String, Record>> scopes;
 
@@ -16,11 +13,13 @@ public class SymbolTable {
         this.enter(); //starting scope
     }
 
+    //create a new scope
     public void enter()
     {
         scopes.addLast(new HashMap<String, Record>());
     }
 
+    //insert an Record in the current scope
     public boolean insert(Record newRec)
     {
         HashMap<String, Record> currentScope = scopes.getLast();
@@ -54,13 +53,17 @@ public class SymbolTable {
 
         }
 
-        System.out.println("the record depth "+depth+ " found "+ rec);
         return rec;
     }
 
     public void exit()
     {
         scopes.pollLast();
+    }
+
+    public int getCurrentDepth()
+    {
+        return scopes.size();
     }
 
     public void checkDefinedFunct(Error error)
@@ -85,6 +88,7 @@ public class SymbolTable {
         }
     }
 
+
     public void printALl()
     {
         Set set;
@@ -98,8 +102,8 @@ public class SymbolTable {
 
             for(Record rec : currentScope.values())
             {
-                System.out.println("Record "+rec.getName()+" "+rec.getType()+" "+rec.getDeftype()+" "+rec.getDepth());
-                if(rec.getDeftype()=="Array" || rec.getDeftype() == "functParamArray")
+                System.out.println("Record "+rec.getName()+" "+rec.getType()+" "+rec.getDepth());
+                if(rec instanceof RecordArray) // || rec instanceof RecordParamArray)
                 {
                     RecordArray rec2 = (RecordArray) rec;
                     System.out.print("Dimensions ");
@@ -111,7 +115,7 @@ public class SymbolTable {
                     }
                     System.out.println();
                 }
-                else if(rec.getDeftype()=="Function")
+                else if(rec instanceof RecordFunction)
                 {
                     RecordFunction recFunct = (RecordFunction) rec;
                     System.out.println("Function noParam"+recFunct.getNoParameters());
@@ -119,7 +123,7 @@ public class SymbolTable {
                     LinkedList<Record> parameters = ((RecordFunction) rec).getFparameters();
                     for(Record rec3:parameters)
                     {
-                        System.out.println("Function RecordParam "+rec3.getName()+" "+rec3.getType()+" "+rec3.getDeftype()+" "+rec3.getDepth());
+                        System.out.println("Function RecordParam "+rec3.getName()+" "+rec3.getType()+" "+rec3.getDepth());
 
                     }
 
@@ -130,11 +134,6 @@ public class SymbolTable {
             depth--;
 
         }
-    }
-
-    public int getCurrentDepth()
-    {
-        return scopes.size();
     }
 
 }

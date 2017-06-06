@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by bill on 20/05/17.
- */
 public class Condition {
     private ArrayList<Integer> trueList;
     private ArrayList<Integer> falseList;

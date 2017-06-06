@@ -1,23 +1,17 @@
 package compiler;
 
-/**
- * Created by bill on 04/05/17.
- */
-
 public class Record {
 
     private String name;
     private String type;
-    private String deftype;
     private int depth;
     private int Line;
 
 
-    public Record(String nameId, String vartp, String deftp, int line)
+    public Record(String nameId, String vartp, int line)
     {
         name = new String(nameId);
         type = vartp;
-        deftype = deftp;
         Line = line;
     }
 
@@ -27,10 +21,6 @@ public class Record {
 
     public String getType() {
         return type;
-    }
-
-    public String getDeftype() {
-        return deftype;
     }
 
     public int getDepth()

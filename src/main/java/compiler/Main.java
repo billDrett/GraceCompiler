@@ -33,38 +33,17 @@ public class Main {
                                                 new PushbackReader(
                                                         new InputStreamReader(inputStream), 1024)));
 
-                        // Create a Parser instance.
-                 /*       Parser p =
-                                new Parser(
-                                        new Lexer(
-                                                new PushbackReader(
-                                                        new InputStreamReader(System.in), 1024)));
-                        */
-
                         // Parse the input.
 
                         tree = p.parse();
 
-                        tree.apply(new Semantic());
-                        //tree.apply(new VisitorIR());
-
-
+                        tree.apply(new Semantic()); //do semantic analysis
 
                 }
                 catch(Exception e)
                 {
                         e.printStackTrace();
                 }
-/*
-                SymbolTable sm = new SymbolTable();
-                sm.enter();
-                System.out.println(sm.insert(new Record("id1", "Int", "Variable")));
-              //  sm.enter();
-                System.out.println(sm.insert(new Record("id1", "Char", "Variable")));
-
-                Record rec = sm.lookup("id1");
-                System.out.println(rec.getType());
-*/
 
         }
 

@@ -3,9 +3,6 @@ package compiler;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-/**
- * Created by bill on 17/05/17.
- */
 class TmpVar
 {
     private String type;
@@ -49,8 +46,6 @@ public class QuadList
     {
         Quad quad = new Quad(qList.size(), oper, opt1, opt2, opt3);
         qList.add(quad);
-
-        System.out.println(quad.getLabel()+": "+quad.getOperator()+",\t" +quad.getOpt1()+",\t"+ quad.getOpt2()+",\t" + quad.getOpt3());
     }
 
     public String NewTemp(String type)

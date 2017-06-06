@@ -2,17 +2,14 @@ package compiler;
 
 import java.util.LinkedList;
 
-/**
- * Created by bill on 08/05/17.
- */
 public class RecordFunction extends Record
 {
     private LinkedList<Record> fparameters;
     boolean defined;
 
-    public RecordFunction(String nameId, String vartp, String deftp, LinkedList<Record> fparam, int line)
+    public RecordFunction(String nameId, String vartp, LinkedList<Record> fparam, int line)
     {
-        super(nameId, vartp, deftp, line);
+        super(nameId, vartp, line);
         fparameters = new LinkedList<>(fparam);
         defined = false;
     }
@@ -42,26 +39,26 @@ public class RecordFunction extends Record
         System.out.print(this.getName()+"(");
         for(Record i : fparameters)
         {
-            if(i instanceof RecordParam) //print if its a reference
+            if(i instanceof RecordParam)
             {
-                if(((RecordParam) i).getReference())
+                if(((RecordParam) i).getReference()) //print if its a reference
                 {
                     System.out.print("ref ");
                 }
 
                 System.out.print(i.getName()+" : "+i.getType()+";");
             }
-            else
+            else //RecordParamArray
             {
                 RecordParamArray recParamArray = (RecordParamArray) i;
 
-                if(((RecordParamArray) i).getReference())
+                if(((RecordParamArray) i).getReference()) //print if its a reference
                 {
                     System.out.print("ref ");
                 }
 
                 System.out.print(i.getName()+" : "+i.getType()+" ");
-                for(Integer dim : recParamArray.getDimensions())
+                for(Integer dim : recParamArray.getDimensions()) //print dimensions of array
                 {
                     System.out.print("[");
                     if(dim != 0)
@@ -72,8 +69,6 @@ public class RecordFunction extends Record
                 }
                 System.out.print(";");
             }
-
-           // System.out.print(i.getName()+" : "+i.getType()+" dim " +dimensions+";");
         }
         System.out.println(")");
     }

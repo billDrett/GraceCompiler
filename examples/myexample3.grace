@@ -8,6 +8,6 @@ fun solve ( ) : nothing
 	}
 	
 	
-	fun foo (x :int[0][10]) :nothing{}
+	fun foo (x :int[][10]) :nothing{}
 {}
 
