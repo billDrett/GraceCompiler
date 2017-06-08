@@ -162,8 +162,6 @@ public class InstructionSelection
             }
             else if(currentQuad.getOperator().equals("call"))
             {
-
-
                 Record rec;
                 RecordFunction recFunct;
                 rec = symbolTable.lookup(unfixName(currentQuad.getOpt3()));
@@ -172,7 +170,8 @@ public class InstructionSelection
                 System.out.println("sub esp, 4");
                 updateAL(recFunct);
                 System.out.println("call near ptr "+currentQuad.getOpt3());
-                System.out.println("add esp, "+recFunct.getFparameters().size()*4+8);System.out.println("!!!!!!!!!!!!!!!!"+recFunct.getFparameters().size());
+                System.out.println("add esp, "+(recFunct.getFparameters().size()*4+8));
+
             }
             else if(currentQuad.getOperator().equals("ret"))
             {
@@ -368,6 +367,13 @@ public class InstructionSelection
         else //variables
         {
             boolean ref;
+
+            if(operator.equals("$$"))
+            {
+                System.out.println("mov esi, dword ptr [ebp+12]");
+                System.out.println("mov dword ptr [esi], "+register);
+                return;
+            }
 
             rec = symbolTable.lookup(operator);
             size = operatorSize(rec);

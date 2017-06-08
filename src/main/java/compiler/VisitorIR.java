@@ -691,7 +691,7 @@ public class VisitorIR extends DepthFirstAdapter{
         if(! localRecordFunction.getType().equals("nothing")) //if its returning values generate par, RET quad
         {
             tmpVar = quadList.NewTemp(localRecordFunction.getType());
-            quadList.GenQuad("par", "RET", tmpVar, "-");
+            quadList.GenQuad("par", tmpVar,"RET",  "-");
         }
 
 
