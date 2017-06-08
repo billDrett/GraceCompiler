@@ -1,6 +1,6 @@
 fun main () : nothing
 
-   fun bsort (n : int; ref x : int[]) : nothing
+   fun bsort (n : int; ref x : int[][2]) : nothing
 
       fun swap (ref x, y : int) : nothing
          var t : int;

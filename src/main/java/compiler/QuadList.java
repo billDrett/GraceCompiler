@@ -2,7 +2,7 @@ package compiler;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-
+/*
 class TmpVar
 {
     private String type;
@@ -23,18 +23,19 @@ class TmpVar
     {
         return type;
     }
-}
+}*/
 
 
 public class QuadList
 {
+    private SymbolTable symbolTable;
     private ArrayList<Quad> qList;
-    private LinkedList<TmpVar> tmpVars;
+    private int tmpVarCounter = 1;
 
-    public QuadList()
+    public QuadList(SymbolTable symTable)
     {
         qList = new ArrayList<>();
-        tmpVars = new LinkedList<>();
+        symbolTable = symTable;
     }
 
     public int NextQuad()
@@ -50,15 +51,23 @@ public class QuadList
 
     public String NewTemp(String type)
     {
-        String id = String.format("$%d",tmpVars.size()+1);
-        TmpVar tmpVar = new TmpVar(type, id);
-        tmpVars.addLast(tmpVar);
+        String id = String.format("$%d",tmpVarCounter);
+        Record tmpVar = new Record(id, type, 0);
+        symbolTable.insert(tmpVar);
+
+        tmpVarCounter++;
+
         return id;
     }
 
     public Quad getQuad(int label)
     {
         return qList.get(label);
+    }
+
+    public ArrayList<Quad> getQuadList()
+    {
+        return qList;
     }
     //public void BackPatch(LinkedList<Integer> labels, )
 

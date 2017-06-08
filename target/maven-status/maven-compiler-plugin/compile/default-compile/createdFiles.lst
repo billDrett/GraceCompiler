@@ -37,7 +37,6 @@ compiler/node/TElse.class
 compiler/node/TEqual.class
 compiler/lexer/Lexer.class
 compiler/node/TReturn.class
-compiler/TmpVar.class
 compiler/node/ANotCondition.class
 compiler/node/TConstString.class
 compiler/node/TInt.class
@@ -45,6 +44,7 @@ compiler/parser/ParserException.class
 compiler/node/PVarDefinition.class
 compiler/node/TThen.class
 compiler/node/ACharGeneralType.class
+compiler/ActivationRecord.class
 compiler/SymbolTable.class
 compiler/node/TLBkt.class
 compiler/node/AIdLvalue.class
@@ -90,6 +90,7 @@ compiler/node/EOF.class
 compiler/node/TNot.class
 compiler/node/ALessRelationOper.class
 compiler/node/PVarIdentifier.class
+compiler/InstructionSelection.class
 compiler/node/TLess.class
 compiler/node/Start.class
 compiler/node/AIntGeneralType.class

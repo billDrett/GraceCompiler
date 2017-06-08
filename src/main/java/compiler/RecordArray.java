@@ -18,4 +18,15 @@ public class RecordArray extends Record
         return dimensions;
     }
 
+    public int getSerializedSize()
+    {
+        int sum =1;
+        for(Integer i: dimensions)
+        {
+            sum *=i;
+        }
+
+        return sum;
+    }
+
 }

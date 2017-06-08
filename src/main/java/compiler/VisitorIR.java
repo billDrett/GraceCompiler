@@ -6,7 +6,7 @@ import compiler.node.*;
 import java.util.*;
 
 public class VisitorIR extends DepthFirstAdapter{
-    QuadList quadList = new QuadList();
+    QuadList quadList;
     SymbolTable symTable;
     String extrChild;
     Stack<RecordLValue> stackLValue = new Stack<>();
@@ -20,6 +20,8 @@ public class VisitorIR extends DepthFirstAdapter{
     public VisitorIR(SymbolTable symbolTable)
     {
         symTable = symbolTable;
+        quadList = new QuadList(symTable);
+
     }
 
     public void clearIR()
@@ -41,6 +43,10 @@ public class VisitorIR extends DepthFirstAdapter{
     public void printIntermidiateCode()
     {
         quadList.printAll();
+    }
+    public QuadList getQuadList()
+    {
+        return quadList;
     }
 
     @Override
@@ -322,7 +328,7 @@ public class VisitorIR extends DepthFirstAdapter{
             node.getSymbol().apply(this);
         }
 
-        operator = node.getSymbol().toString();
+        operator = node.getSymbol().toString().trim();
 
         if(node.getRight() != null)
         {
@@ -334,7 +340,7 @@ public class VisitorIR extends DepthFirstAdapter{
         extrCond = new Condition();
 
         extrCond.addLabelTrue(quadList.NextQuad());
-        quadList.GenQuad(leftChild, operator, rightChild, "*");
+        quadList.GenQuad(operator, leftChild, rightChild, "*");
 
         extrCond.addLabelFalse(quadList.NextQuad());
         quadList.GenQuad("jump", "-", "-", "*");
@@ -347,10 +353,12 @@ public class VisitorIR extends DepthFirstAdapter{
     public void caseAExprList(AExprList node)
     {
         RecordFunction currentFunct = extrRecordFunction;
-        Iterator<Record> iterRec = currentFunct.getFparameters().iterator();
-        List<String> allParameters = new ArrayList<>();
+        Iterator<Record> iterRec = currentFunct.getFparameters().descendingIterator();
+        Iterator<String> iterParam;
+        LinkedList<String> allParameters = new LinkedList<>();
         //String tmpVar;
         Record tmpParam;
+        String paramName;
         String paraMode;
 
 
@@ -364,9 +372,11 @@ public class VisitorIR extends DepthFirstAdapter{
             }
 
             //we want all the parameters of the function to be in order
-            for(String tmpVar : allParameters)
+            for(iterParam = allParameters.descendingIterator(); iterParam.hasNext();)
             {
                 tmpParam = iterRec.next();
+                paramName = iterParam.next();
+
                 if(tmpParam instanceof RecordParam)
                 {
                     RecordParam param = (RecordParam)tmpParam;
@@ -378,7 +388,7 @@ public class VisitorIR extends DepthFirstAdapter{
                     paraMode = "R";
                 }
 
-                quadList.GenQuad("par", tmpVar, paraMode, "-");
+                quadList.GenQuad("par", paramName, paraMode, "-");
             }
         }
         outAExprList(node);
@@ -720,7 +730,7 @@ public class VisitorIR extends DepthFirstAdapter{
             node.getConstString().apply(this);
         }
 
-        tmpVar = quadList.NewTemp("pointer");
+        tmpVar = quadList.NewTemp("pointerStr");
         quadList.GenQuad(":=", node.getConstString().toString().trim(), "-", tmpVar);
 
         RecordLValue lVar = new StringLiteral(tmpVar);

@@ -6,6 +6,8 @@ import java.util.*;
 
 public class SymbolTable {
     private Deque<HashMap<String, Record>> scopes;
+    private int paramOffset;
+    private int localOffset;
 
     public SymbolTable()
     {
@@ -17,8 +19,14 @@ public class SymbolTable {
     public void enter()
     {
         scopes.addLast(new HashMap<String, Record>());
+        paramOffset = 16;
+        localOffset = 0;
     }
 
+    public int getLocalOffset()
+    {
+        return localOffset;
+    }
     //insert an Record in the current scope
     public boolean insert(Record newRec)
     {
@@ -28,10 +36,60 @@ public class SymbolTable {
             return false;
         }
 
+        if(!(newRec instanceof RecordFunction))
+        {
+            setOffsetAR(newRec);
+        }
+
         newRec.setDepth(scopes.size());
         currentScope.put(newRec.getName(), newRec);
 
         return true;
+    }
+
+    public void setOffsetAR(Record newRec)
+    {
+        int arraySerialize;
+        if(newRec instanceof RecordParam)
+        {
+            newRec.setOffset(paramOffset);
+            paramOffset +=4;
+        }
+        else if(newRec instanceof RecordParamArray)
+        {
+            RecordArray recArray = (RecordArray) newRec;
+            arraySerialize = recArray.getSerializedSize();
+            newRec.setOffset(paramOffset);
+            paramOffset +=4;//because its a reference of the array that was given as an argument, so dont calculate
+        }
+        else if (newRec instanceof RecordArray)
+        {
+            RecordArray recArray = (RecordArray) newRec;
+            arraySerialize = recArray.getSerializedSize();
+
+            if(newRec.getType().equals("int"))
+            {
+                localOffset -=4*arraySerialize;
+            }
+            else
+            {
+                if(arraySerialize%4 ==0)
+                {
+                    localOffset -=arraySerialize;
+                }
+                else
+                {
+                    localOffset -=arraySerialize+4;
+                }
+            }
+
+            newRec.setOffset(localOffset);
+        }
+        else //Record
+        {
+            localOffset -=4;
+            newRec.setOffset(localOffset);
+        }
     }
 
     public Record lookup(String varName)
@@ -55,6 +113,7 @@ public class SymbolTable {
 
         return rec;
     }
+
 
     public void exit()
     {
@@ -102,8 +161,8 @@ public class SymbolTable {
 
             for(Record rec : currentScope.values())
             {
-                System.out.println("Record "+rec.getName()+" "+rec.getType()+" "+rec.getDepth());
-                if(rec instanceof RecordArray) // || rec instanceof RecordParamArray)
+                System.out.println("Record "+rec.getName()+" "+rec.getType()+" "+rec.getDepth()+" "+rec.getOffset());
+ /*               if(rec instanceof RecordArray) // || rec instanceof RecordParamArray)
                 {
                     RecordArray rec2 = (RecordArray) rec;
                     System.out.print("Dimensions ");
@@ -126,9 +185,8 @@ public class SymbolTable {
                         System.out.println("Function RecordParam "+rec3.getName()+" "+rec3.getType()+" "+rec3.getDepth());
 
                     }
-
                 }
-
+*/
             }
 
             depth--;

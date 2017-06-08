@@ -1,5 +1,9 @@
 fun hello () : nothing
+var x :int;
+var y :int;
+fun foo(x :int; y :int):nothing
 {
-  if(---2 < 0) then ;
-
+}
+{
+foo(1,2);
 }

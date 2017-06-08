@@ -22,6 +22,7 @@ public class Semantic extends DepthFirstAdapter
     Error error = new Error();
     Record extrFunction;
     private int funCounter = 0;
+    private InstructionSelection instructionSelection = new InstructionSelection(symTable, intermediateCode.getQuadList());
 
     Semantic()
     {
@@ -150,12 +151,17 @@ public class Semantic extends DepthFirstAdapter
         if(!error.getErrorFound()) //there wasnt any semantic error
         {
             intermediateCode.caseAFunDefinition(node);
+            //create ASSEmbly
+            intermediateCode.printIntermidiateCode();
+            instructionSelection.production();
+
         }
         else //semantic error found, delete the intermediateCode
         {
             intermediateCode.clearIR();
         }
 
+       // symTable.printALl();
         symTable.exit(); //function block is finished, delete the current scope
 
     }
