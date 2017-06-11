@@ -4,14 +4,44 @@ import com.sun.org.apache.regexp.internal.RE;
 
 import java.util.*;
 
-public class SymbolTable {
-    private Deque<HashMap<String, Record>> scopes;
+class FunctionOffset
+{
     private int paramOffset;
     private int localOffset;
+
+    public FunctionOffset()
+    {
+        paramOffset = 16;
+        localOffset = 0;
+    }
+
+    public int getParamOffset()
+    {
+        return paramOffset;
+    }
+    public int getLocalOffset()
+    {
+        return localOffset;
+    }
+    public void setParamOffset(int param_offset)
+    {
+        paramOffset = param_offset;
+    }
+    public void setLocalOffset(int local_offset)
+    {
+        localOffset = local_offset;
+    }
+
+}
+
+public class SymbolTable {
+    private Deque<HashMap<String, Record>> scopes;
+    private Deque<FunctionOffset> offsets;
 
     public SymbolTable()
     {
         scopes = new ArrayDeque<>();
+        offsets = new ArrayDeque<>();
         this.enter(); //starting scope
     }
 
@@ -19,13 +49,12 @@ public class SymbolTable {
     public void enter()
     {
         scopes.addLast(new HashMap<String, Record>());
-        paramOffset = 16;
-        localOffset = 0;
+        offsets.addLast(new FunctionOffset());
     }
 
     public int getLocalOffset()
     {
-        return localOffset;
+        return offsets.getLast().getLocalOffset();
     }
     //insert an Record in the current scope
     public boolean insert(Record newRec)
@@ -52,15 +81,15 @@ public class SymbolTable {
         int arraySerialize;
         if(newRec instanceof RecordParam)
         {
-            newRec.setOffset(paramOffset);
-            paramOffset +=4;
+            newRec.setOffset(offsets.getLast().getParamOffset());
+            offsets.getLast().setParamOffset(offsets.getLast().getParamOffset()+4);         //paramOffset +=4;
         }
         else if(newRec instanceof RecordParamArray)
         {
             RecordArray recArray = (RecordArray) newRec;
             arraySerialize = recArray.getSerializedSize();
-            newRec.setOffset(paramOffset);
-            paramOffset +=4;//because its a reference of the array that was given as an argument, so dont calculate
+            newRec.setOffset(offsets.getLast().getParamOffset());
+            offsets.getLast().setParamOffset(offsets.getLast().getParamOffset()+4);    //because its a reference of the array that was given as an argument, so dont calculate
         }
         else if (newRec instanceof RecordArray)
         {
@@ -69,26 +98,26 @@ public class SymbolTable {
 
             if(newRec.getType().equals("int"))
             {
-                localOffset -=4*arraySerialize;
+                offsets.getLast().setLocalOffset(offsets.getLast().getLocalOffset()-4*arraySerialize);   //   localOffset -=4*arraySerialize;
             }
             else
             {
                 if(arraySerialize%4 ==0)
                 {
-                    localOffset -=arraySerialize;
+                    offsets.getLast().setLocalOffset(offsets.getLast().getLocalOffset()-arraySerialize);   //   localOffset -=arraySerialize;
                 }
                 else
                 {
-                    localOffset -=arraySerialize+4;
+                    offsets.getLast().setLocalOffset(offsets.getLast().getLocalOffset()-(arraySerialize/4)*4-4);   //   localOffset -=(arraySerialize/4)*4-4;
                 }
             }
 
-            newRec.setOffset(localOffset);
+            newRec.setOffset(offsets.getLast().getLocalOffset());
         }
         else //Record
         {
-            localOffset -=4;
-            newRec.setOffset(localOffset);
+            offsets.getLast().setLocalOffset(offsets.getLast().getLocalOffset()-4);   //   localOffset -=4;
+            newRec.setOffset(offsets.getLast().getLocalOffset());
         }
     }
 
@@ -118,6 +147,7 @@ public class SymbolTable {
     public void exit()
     {
         scopes.pollLast();
+        offsets.pollLast();
     }
 
     public int getCurrentDepth()

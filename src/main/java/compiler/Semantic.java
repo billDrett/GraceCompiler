@@ -152,7 +152,7 @@ public class Semantic extends DepthFirstAdapter
         {
             intermediateCode.caseAFunDefinition(node);
             //create ASSEmbly
-            intermediateCode.printIntermidiateCode();
+            //intermediateCode.printIntermidiateCode();
             instructionSelection.production();
 
         }

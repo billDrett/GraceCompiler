@@ -227,9 +227,10 @@ public class VisitorIR extends DepthFirstAdapter{
         if(node.getExpression() != null)
         {
             node.getExpression().apply(this);
+            quadList.GenQuad(":=", extrChild, "-", "$$"); //we create assignment only when there is an expresion at the return
         }
 
-        quadList.GenQuad(":=", extrChild, "-", "$$");
+        quadList.GenQuad("ret","-", "-", "-");
 
         outAReturnStatement(node);
     }
@@ -569,8 +570,12 @@ public class VisitorIR extends DepthFirstAdapter{
         {
             node.getConstChar().apply(this);
         }
+
+        extrChild = node.getConstChar().toString().trim();
+
         outACharExpression(node);
     }
+
 
     @Override
     public void caseAValExpression(AValExpression node)

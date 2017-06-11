@@ -48,6 +48,11 @@ public class Record {
         return Integer.toString(offset);
     }
 
+    public int getLocalOffset()
+    {
+        return offset;
+    }
+
     public int getLine()
     {
         return Line;

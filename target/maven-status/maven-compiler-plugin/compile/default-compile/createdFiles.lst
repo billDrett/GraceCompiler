@@ -145,6 +145,7 @@ compiler/node/AExprList.class
 compiler/node/AFunDefinition.class
 compiler/VisitorIR.class
 compiler/node/TIf.class
+compiler/FunctionOffset.class
 compiler/node/ACharExpression.class
 compiler/node/TRPar.class
 compiler/node/TColon.class
