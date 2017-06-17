@@ -1,0 +1,8 @@
+fun main(): nothing
+    fun foo(e: int): nothing
+    {
+        puti(e);
+    }
+{
+    foo(20, 20);
+}

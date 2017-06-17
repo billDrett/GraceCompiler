@@ -16,12 +16,6 @@ public class Error
         System.out.println("[line:"+line+"]:Error variable "+ varName+ " is undeclared");
     }
 
-    public void returnStatement(Record rec)
-    {
-        errorFound =true;
-        System.out.println("[line:"+rec.getLine()+"]:Error in function "+ rec.getName()+ " no return statement");
-    }
-
     public void returnDiffType(String type)
     {
         errorFound =true;
@@ -32,6 +26,12 @@ public class Error
     {
         errorFound =true;
         System.out.println("[line:"+recType.getLine()+"]:Error return type expects "+type+", but you gave "+recType.getType()+" "+recType.getDimensions());
+    }
+
+    public void returnStatement(Record rec)
+    {
+        errorFound =true;
+        System.out.println("[line:"+rec.getLine()+"]:Error in function "+rec.getName()+" no return statement");
     }
 
     public void varAssignment(RecType leftType, RecType rightType)
@@ -162,6 +162,11 @@ public class Error
         System.out.println("[line:"+line+"]:Error call for function with name "+ rec.getName()+ " but its variable instead");
     }
 
+    public void arrayNotReference(String varName, int line)
+    {
+        errorFound =true;
+        System.out.println("[line:"+line+"]:Error variable: "+varName+" of type array must be referenced");
+    }
 
     public boolean getErrorFound()
     {

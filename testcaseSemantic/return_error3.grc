@@ -1,0 +1,12 @@
+fun main(): nothing
+    fun wrong_type(): int
+    {
+        if 3 = 3 then {
+            return;
+        } else {
+            return 0;
+        }
+    }
+{
+    puti(wrong_type());
+}

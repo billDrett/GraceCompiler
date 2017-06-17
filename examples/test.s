@@ -2,56 +2,24 @@
 .text
 .global main
 main:
-Label_8: hello_grace: 
+Label_0: hello_grace: 
 push ebp
 mov ebp, esp
-sub esp, 4
-mov byte ptr[ebp-4], 65
-mov byte ptr[ebp-3], 65
-mov byte ptr[ebp-2], 0
+sub esp, 48
 
-Label_19: lea esi, byte ptr [ebp-4]
-push esi
-Label_20: sub esp, 4
-push dword ptr [ebp+8]
-call puts_grace
-add esp, 12
+lea edi, mystring
+mov al, byte ptr [edi]
+mov al, byte ptr [edi-1]
+mov al, byte ptr [edi+2]
+mov al, 65
+mov byte ptr [edi+2], al
+mov al, 43
+mov al, byte ptr [edi+2]
 
-
-Label_21: mov esp, ebp
+Label_18: mov esp, ebp
 pop ebp
 ret
 
-Label_0: foo_1: 
-push ebp
-mov ebp, esp
-sub esp, 4
-Label_1: mov esi, dword ptr [ebp+16]
-mov eax, dword ptr [esi]
-mov edx, 1
-add eax, edx
-mov dword ptr [ebp-4], eax
-Label_2: mov eax, dword ptr [ebp-4]
-mov esi, dword ptr [ebp+16]
-mov dword ptr [esi], eax
-Label_3: mov esp, ebp
-pop ebp
-ret
-Label_4: foo2_2: 
-push ebp
-mov ebp, esp
-sub esp, 4
-Label_5: mov esi, dword ptr [ebp+16]
-mov eax, dword ptr [esi]
-mov edx, 1
-sub eax, edx
-mov dword ptr [ebp-4], eax
-Label_6: mov eax, dword ptr [ebp-4]
-mov esi, dword ptr [ebp+16]
-mov dword ptr [esi], eax
-Label_7: mov esp, ebp
-pop ebp
-ret
 
 
 
@@ -81,7 +49,7 @@ putc_grace:
 	push ebp
 	mov ebp, esp
 		
-	mov eax, byte ptr[ebp+16]
+	movzx eax, byte ptr[ebp+16]
 	push eax
 	mov eax, OFFSET FLAT:char
 	push eax
@@ -115,50 +83,53 @@ puts_grace:
 	push ebp
 	mov ebp, esp
 	sub esp, 20
-	mov eax, 0
+	Label_1P: mov eax, 0
 	mov dword ptr [ebp-8], eax
-	Label_loopPuts: mov eax, dword ptr [ebp-8]
+	Label_2P: mov eax, dword ptr [ebp-8]
 	mov ecx, 1
 	imul ecx
 	mov ecx, dword ptr [ebp+16]
 	add eax, ecx
 	mov dword ptr [ebp-12], eax
-	mov edi, dword ptr [ebp-12]
-	mov eax, dword ptr [edi]
-	mov edi, dword ptr [ebp-12]
-	mov edx, dword ptr [edi]
+	Label_3P: mov edi, dword ptr [ebp-12]
+	movzx eax, byte ptr [edi]
+	mov edx, 0
 	cmp eax, edx
-	jne Label_n0Puts
-	jmp Label_loopendPuts
-	Label_n0Puts: mov eax, dword ptr [ebp-8]
+	jne Label_5P
+	Label_4P: jmp Label_11P
+	Label_5P: mov eax, dword ptr [ebp-8]
 	mov ecx, 1
 	imul ecx
 	mov ecx, dword ptr [ebp+16]
 	add eax, ecx
 	mov dword ptr [ebp-16], eax
-	mov edi, dword ptr [ebp-16]
-	mov eax, dword ptr [edi]
+	Label_6P: mov edi, dword ptr [ebp-16]
+	movzx eax, byte ptr [edi]
 	push eax
-	sub esp, 4
+	Label_7P: sub esp, 4
 	mov esi, dword ptr [ebp+8]
-	push dword ptr [esi+8]
+	#push dword ptr [esi+8]
+	push 0
 	call putc_grace
 	add esp, 12
-	mov eax, dword ptr [ebp-8]
+	Label_8P: mov eax, dword ptr [ebp-8]
 	mov edx, 1
 	add eax, edx
 	mov dword ptr [ebp-20], eax
-	mov eax, dword ptr [ebp-20]
+	Label_9P: mov eax, dword ptr [ebp-20]
 	mov dword ptr [ebp-8], eax
-	jmp Label_loopPuts
-	Label_loopendPuts: mov esp, ebp
+	Label_10P: jmp Label_2P
+	Label_11P: mov esp, ebp
 	pop ebp
 	ret
+
+
 
 
 .data
     integer: .asciz  "%d"
     char: .asciz "%c"
+    mystring: .asciz "Assembly"
 scanf_fmt: .asciz  "%d"
 
 

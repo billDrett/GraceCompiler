@@ -1,0 +1,4 @@
+fun main(): nothing
+{
+    puti(chr(20, 30));
+}

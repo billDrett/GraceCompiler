@@ -1,0 +1,15 @@
+fun main(): nothing
+    fun correct(ref n: int[20]): int
+    {
+        return n[0];
+    }
+    fun correct2(ref n: int[]): int
+    {
+        return n[0];
+    }
+
+    var arr: int[10];
+{
+    correct(arr);
+    correct2(arr);
+}

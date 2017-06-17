@@ -1,0 +1,5 @@
+fun main(): nothing
+{
+    if 3 > 4 and 5 then {
+    }
+}

@@ -261,6 +261,8 @@ public class InstructionSelection
             {
                 asciValue = covertEscapedChar(character);
             }
+
+            //System.out.println("movzx "+register+", "+asciValue);
             System.out.println("mov "+register+", "+asciValue);//ASCI(Operator) missing!!!
         }
         else if(!(derefOper=isDereference(operator)).equals(""))
@@ -269,14 +271,28 @@ public class InstructionSelection
             load("edi", derefOper);
             size = operatorSize(rec);
 
-            System.out.println("mov "+register+", "+size+" ptr [edi]");
+            if(rec.getType().equals("pointerchar"))
+            {
+                //me movzx
+                size = "byte";
+                System.out.println("movzx "+register+", "+size+" ptr [edi]");
+            }
+            else
+            {
+                System.out.println("mov "+register+", "+size+" ptr [edi]");
+            }
+
+
         }
         else //variables
         {
             boolean ref;
-
+            String mov;
             rec = symbolTable.lookup(operator);
             size = operatorSize(rec);
+
+            if(size.equals("byte")) mov = "movzx";
+            else mov = "mov";
 
             /*if(rec instanceof RecordArray || rec.getType().equals("pointer") ||rec.getType().equals("pointerStr")) //address
             {
@@ -288,11 +304,11 @@ public class InstructionSelection
                 if(ref) //has reference
                 {
                     System.out.println("mov esi, dword ptr [ebp"+rec.getOffset()+"]");
-                    System.out.println("mov "+register+", "+size+" ptr [esi]");
+                    System.out.println(mov+" "+register+", "+size+" ptr [esi]");
                 }
                 else
                 {
-                    System.out.println("mov "+register+", "+size+" ptr [ebp"+rec.getOffset()+"]"); //mov R, size ptr [bp + offset]
+                    System.out.println(mov+" "+register+", "+size+" ptr [ebp"+rec.getOffset()+"]"); //mov R, size ptr [bp + offset]
                 }
 
             }
@@ -303,12 +319,12 @@ public class InstructionSelection
                 {
                     getAR(rec);
                     System.out.println("mov esi, dword ptr [esi"+rec.getOffset()+"]");
-                    System.out.println("mov "+register+", "+size+" ptr [esi]");
+                    System.out.println(mov+" "+register+", "+size+" ptr [esi]");
                 }
                 else
                 {
                     getAR(rec);
-                    System.out.println("mov "+register+", "+size+" ptr [esi"+rec.getOffset()+"]");
+                    System.out.println(mov+" "+register+", "+size+" ptr [esi"+rec.getOffset()+"]");
                 }
             }
         }
@@ -376,6 +392,13 @@ public class InstructionSelection
             load("edi", derefOper);
             size = operatorSize(rec);
 
+            if(size.equals("byte")) register = "al";
+            if(rec.getType().equals("pointerchar"))
+            {
+                register = "al";
+                size ="byte";
+            }
+
             System.out.println("mov "+size+" ptr [edi], "+register);
         }
         else //variables
@@ -391,6 +414,7 @@ public class InstructionSelection
 
             rec = symbolTable.lookup(operator);
             size = operatorSize(rec);
+            if(size.equals("byte")) register = "al";
 
             if(rec.getDepth() == symbolTable.getCurrentDepth()) //local scope
             {

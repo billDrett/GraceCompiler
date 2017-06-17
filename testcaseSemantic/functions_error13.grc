@@ -1,0 +1,9 @@
+fun main(): nothing
+	fun error(): int;
+	fun error(): int
+	{
+		return 0;
+	}
+	fun error(): nothing;
+{
+}

@@ -1,0 +1,7 @@
+fun main(): nothing
+    var a:int;
+    var b:char;
+{
+    a <- 0;
+    b <- 0;
+}

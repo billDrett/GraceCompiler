@@ -1,0 +1,7 @@
+fun main(): nothing
+    var i: int[100];
+    var j: char[10][10];
+{
+    if i < j then {
+    }
+}

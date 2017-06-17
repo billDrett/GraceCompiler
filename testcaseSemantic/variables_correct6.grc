@@ -1,0 +1,9 @@
+fun main(): nothing
+    fun foo(): int
+        var main: int;
+    {
+        main <- 10;
+        return main;
+    }
+{
+}

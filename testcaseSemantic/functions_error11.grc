@@ -1,0 +1,11 @@
+fun main(): nothing
+    fun wrong_type(): int[2]
+        var array: int[2];
+    {
+        array[0] <- 1;
+        array[1] <- 2;
+
+        return array;
+    }
+{
+}

@@ -1,0 +1,7 @@
+fun main(): nothing
+    var i: int;
+    var j: char;
+{
+    if i > 3 and j > 200 then {
+    }
+}

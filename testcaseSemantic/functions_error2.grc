@@ -1,0 +1,12 @@
+fun main(): nothing
+    fun missing_return(n: int): int
+    {
+        if n > 0 then {
+            n <- 0;
+        } else {
+            n <- 1;
+        }
+    }
+{
+    missing_return(10);
+}

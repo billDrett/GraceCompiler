@@ -1,0 +1,9 @@
+fun main(): nothing
+	fun ok(): int;
+	fun ok(): int
+	{
+		return 0;
+	}
+	fun ok(): int;
+{
+}

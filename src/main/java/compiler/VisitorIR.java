@@ -614,7 +614,16 @@ public class VisitorIR extends DepthFirstAdapter{
         String tmpValue, newValue;
         tmpValue = recordLValue.getAddressIndex();
 
-        newValue = quadList.NewTemp("pointer");
+        //newValue = quadList.NewTemp("pointer"+recordLValue.getRecord().getType());
+        if(recordLValue instanceof StringLiteral)
+        {
+            newValue = quadList.NewTemp("pointerLiteral");
+        }
+        else
+        {
+            newValue = quadList.NewTemp("pointer"+recordLValue.getRecord().getType());
+        }
+        //newValue = quadList.NewTemp(recordLValue.getRecord().getType());
 
         if(recordLValue.getAddressIndex() != null)
         {

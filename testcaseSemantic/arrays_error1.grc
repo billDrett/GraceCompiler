@@ -1,0 +1,9 @@
+fun main(): nothing
+    var array: int[10];
+    var i: int[10];
+{
+    array[0] <- 10;
+    i[10] <- 20;
+
+    array[i] <- 5;
+}

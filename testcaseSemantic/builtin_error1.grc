@@ -1,0 +1,4 @@
+fun main(): nothing
+{
+    puti(strcmp("7 GRAND DAD", "HADOUKEN!", 9999));
+}

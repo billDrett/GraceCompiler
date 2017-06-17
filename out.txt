@@ -1,24 +1,1349 @@
-hello_grace proc near
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/arrays_error1.grc
+ 
+[line:8]:Error array index must be int not int
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/arrays_error2.grc
+ 
+[line:4]:Error cannot convert int 0 to int 1
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/arrays_error3.grc
+ 
+[line:4]:Error cannot convert int 0 to int 2
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/arrays_error4.grc
+ 
+[line:4]:Error array index must be int not char
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/arrays_error5.grc
+ 
+[line:5]:Error cannot convert int 1 to int 0
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/bsort.grc
+ 
+Label_0: swap_2: 
+push ebp
+mov ebp, esp
+sub esp, 4
+Label_1: mov esi, dword ptr [ebp+16]
+mov eax, dword ptr [esi]
+mov dword ptr [ebp-4], eax
+Label_2: mov esi, dword ptr [ebp+20]
+mov eax, dword ptr [esi]
+mov esi, dword ptr [ebp+16]
+mov dword ptr [esi], eax
+Label_3: mov eax, dword ptr [ebp-4]
+mov esi, dword ptr [ebp+20]
+mov dword ptr [esi], eax
+Label_4: mov esp, ebp
+pop ebp
+ret
+Label_5: bsort_1: 
+push ebp
+mov ebp, esp
+sub esp, 40
+Label_6: mov eax, 1
+mov dword ptr [ebp-4], eax
+Label_7: mov eax, dword ptr [ebp-4]
+mov edx, 0
+cmp eax, edx
+jg Label_9
+Label_8: jmp Label_30
+Label_9: mov eax, 0
+mov dword ptr [ebp-4], eax
+Label_10: mov eax, 0
+mov dword ptr [ebp-8], eax
+Label_11: mov eax, dword ptr [ebp+16]
+mov edx, 1
+sub eax, edx
+mov dword ptr [ebp-12], eax
+Label_12: mov eax, dword ptr [ebp-8]
+mov edx, dword ptr [ebp-12]
+cmp eax, edx
+jl Label_14
+Label_13: jmp Label_29
+Label_14: mov eax, dword ptr [ebp-8]
+mov ecx, 4
+imul ecx
+mov ecx, dword ptr [ebp+20]
+add eax, ecx
+mov dword ptr [ebp-16], eax
+Label_15: mov eax, dword ptr [ebp-8]
+mov edx, 1
+add eax, edx
+mov dword ptr [ebp-20], eax
+Label_16: mov eax, dword ptr [ebp-20]
+mov ecx, 4
+imul ecx
+mov ecx, dword ptr [ebp+20]
+add eax, ecx
+mov dword ptr [ebp-24], eax
+Label_17: mov edi, dword ptr [ebp-16]
+mov eax, dword ptr [edi]
+mov edi, dword ptr [ebp-24]
+mov edx, dword ptr [edi]
+cmp eax, edx
+jg Label_19
+Label_18: jmp Label_26
+Label_19: mov eax, dword ptr [ebp-8]
+mov ecx, 4
+imul ecx
+mov ecx, dword ptr [ebp+20]
+add eax, ecx
+mov dword ptr [ebp-28], eax
+Label_20: mov eax, dword ptr [ebp-8]
+mov edx, 1
+add eax, edx
+mov dword ptr [ebp-32], eax
+Label_21: mov eax, dword ptr [ebp-32]
+mov ecx, 4
+imul ecx
+mov ecx, dword ptr [ebp+20]
+add eax, ecx
+mov dword ptr [ebp-36], eax
+Label_22: java.lang.NullPointerException
+	at compiler.InstructionSelection.loadAddr(InstructionSelection.java:338)
+	at compiler.InstructionSelection.production(InstructionSelection.java:160)
+	at compiler.Semantic.caseAFunDefinition(Semantic.java:156)
+	at compiler.node.AFunDefinition.apply(AFunDefinition.java:45)
+	at compiler.analysis.DepthFirstAdapter.caseAFunDefLocalDef(DepthFirstAdapter.java:302)
+	at compiler.node.AFunDefLocalDef.apply(AFunDefLocalDef.java:34)
+	at compiler.Semantic.caseAFunDefinition(Semantic.java:137)
+	at compiler.node.AFunDefinition.apply(AFunDefinition.java:45)
+	at compiler.analysis.DepthFirstAdapter.caseAProgram(DepthFirstAdapter.java:55)
+	at compiler.node.AProgram.apply(AProgram.java:34)
+	at compiler.analysis.DepthFirstAdapter.caseStart(DepthFirstAdapter.java:34)
+	at compiler.node.Start.apply(Start.java:36)
+	at compiler.Main.main(Main.java:40)
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/builtin_correct1.grc
+ 
+java.lang.NullPointerException
+	at compiler.VisitorIR.createArrayQuad(VisitorIR.java:617)
+	at compiler.VisitorIR.caseAValExpression(VisitorIR.java:597)
+	at compiler.node.AValExpression.apply(AValExpression.java:34)
+	at compiler.VisitorIR.caseAExprList(VisitorIR.java:371)
+	at compiler.node.AExprList.apply(AExprList.java:35)
+	at compiler.VisitorIR.caseAFunctionCall(VisitorIR.java:694)
+	at compiler.node.AFunctionCall.apply(AFunctionCall.java:39)
+	at compiler.VisitorIR.caseAFuncCallStatement(VisitorIR.java:133)
+	at compiler.node.AFuncCallStatement.apply(AFuncCallStatement.java:34)
+	at compiler.VisitorIR.caseAFunDefinition(VisitorIR.java:74)
+	at compiler.Semantic.caseAFunDefinition(Semantic.java:153)
+	at compiler.node.AFunDefinition.apply(AFunDefinition.java:45)
+	at compiler.analysis.DepthFirstAdapter.caseAProgram(DepthFirstAdapter.java:55)
+	at compiler.node.AProgram.apply(AProgram.java:34)
+	at compiler.analysis.DepthFirstAdapter.caseStart(DepthFirstAdapter.java:34)
+	at compiler.node.Start.apply(Start.java:36)
+	at compiler.Main.main(Main.java:40)
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/builtin_error1.grc
+ 
+[line:3]:Error call for function with name strcmp but has different number of argument function header is strcmp(ref s1 : char [];ref s2 : char [];)
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/builtin_error2.grc
+ 
+[line:3]:Error call for function with name chr but has different number of argument function header is chr(n : int;)
+[line:3]:Error the 1 parameter must be int dimensions 0instead of type char dimensions 0
+[line:3]:Error call for function with name puti but has different number of argument function header is puti(n : int;)
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/builtin_error3.grc
+ 
+[line:3]:Error the 1 parameter must be int dimensions 0instead of type char dimensions 0
+[line:3]:Error call for function with name chr but has different number of argument function header is chr(n : int;)
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/builtin_error4.grc
+ 
+[line:3]:Error the 1 parameter must be int dimensions 0instead of type char dimensions 0
+[line:3]:Error call for function with name abs but has different number of argument function header is abs(n : int;)
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/conditions_error1.grc
+ 
+compiler.parser.ParserException: [3,20] expecting: '+', '-', '=', '#', '<', '<=', '>', '>='
+	at compiler.parser.Parser.parse(Parser.java:809)
+	at compiler.Main.main(Main.java:38)
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/conditions_error2.grc
+ 
+[line:5]:Error operation > expects same types, but you gave char 0 > int 0
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/conditions_error3.grc
+ 
+[line:3]:Error operation > expects same types, but you gave char 1 > char 1
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/conditions_error4.grc
+ 
+[line:4]:Error operation <= expects same types, but you gave int 0 <= int 1
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/conditions_error5.grc
+ 
+[line:5]:Error operation < expects same types, but you gave int 1 < char 2
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/conditions_error6.grc
+ 
+[line:3]:Error operation < expects same types, but you gave int 0 < char 0
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/expressions_error1.grc
+ 
+[line:6]:Error cannot convert int 0 to char 0
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/expressions_error2.grc
+ 
+[line:8]:Error operation + expects int, but you gave char type char 0
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/expressions_error3.grc
+ 
+[line:5]:Error operation * expects int, but you gave char type char 0
+[line:5]:Error operation * expects int, but you gave char type char 0
+[line:5]:Error cannot convert int 0 to char 0
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/expressions_error4.grc
+ 
+[line:7]:Error operation mod expects int, but you gave char type char 0
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/expressions_error5.grc
+ 
+compiler.parser.ParserException: [6,12] expecting: '+', '-', ';'
+	at compiler.parser.Parser.parse(Parser.java:809)
+	at compiler.Main.main(Main.java:38)
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/expressions_error6.grc
+ 
+[line:4]:Error operation neg - expects int, but you gave char type char 0
+[line:4]:Error cannot convert int 0 to char 0
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/expressions_error7.grc
+ 
+Label_0: foo_1: 
+push ebp
+mov ebp, esp
+sub esp, 0
+Label_1: mov eax, dword ptr [ebp+16]
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_2: jmp Label_3
+Label_3: mov esp, ebp
+pop ebp
+ret
+[line:7]:Error the 2 parameter must be char dimensions 0instead of type int dimensions 0
+[line:7]:Error the 1 parameter must be int dimensions 0instead of type char dimensions 0
+[line:7]:Error call for function with name foo but has different number of argument function header is foo(b : int;c : char;)
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/expressions_error8.grc
+ 
+[line:4]:Error cannot convert int 0 to char 0
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/expressions_error9.grc
+ 
+[line:4]:Error cannot convert char -1 to char 0
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/functions_correct1.grc
+ 
+Label_0: correct_1: 
+push ebp
+mov ebp, esp
+sub esp, 4
+Label_1: mov eax, 0
+mov ecx, 4
+imul ecx
+mov ecx, dword ptr [ebp+16]
+add eax, ecx
+mov dword ptr [ebp-4], eax
+Label_2: mov edi, dword ptr [ebp-4]
+mov eax, dword ptr [edi]
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_3: jmp Label_4
+Label_4: mov esp, ebp
+pop ebp
+ret
+Label_5: correct2_2: 
+push ebp
+mov ebp, esp
+sub esp, 4
+Label_6: mov eax, 0
+mov ecx, 4
+imul ecx
+mov ecx, dword ptr [ebp+16]
+add eax, ecx
+mov dword ptr [ebp-4], eax
+Label_7: mov edi, dword ptr [ebp-4]
+mov eax, dword ptr [edi]
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_8: jmp Label_9
+Label_9: mov esp, ebp
+pop ebp
+ret
+Label_10: main_grace: 
+push ebp
+mov ebp, esp
+sub esp, 56
+Label_11: lea esi, dword ptr [ebp-40]
+push esi
+Label_12: lea esi, dword ptr [ebp-48]
+push esi
+Label_13: push ebp
+call correct_1
+add esp, 12
+Label_14: lea esi, dword ptr [ebp-40]
+push esi
+Label_15: lea esi, dword ptr [ebp-56]
+push esi
+Label_16: push ebp
+call correct2_2
+add esp, 12
+Label_17: mov esp, ebp
+pop ebp
+ret
+0: unit,	correct_1,	-,	-
+1: array,	n,	0,	$1
+2: :=,	[$1],	-,	$$
+3: ret,	-,	-,	-
+4: endu,	correct_1,	-,	-
+5: unit,	correct2_2,	-,	-
+6: array,	n,	0,	$2
+7: :=,	[$2],	-,	$$
+8: ret,	-,	-,	-
+9: endu,	correct2_2,	-,	-
+10: unit,	main_grace,	-,	-
+11: par,	arr,	R,	-
+12: par,	$4,	RET,	-
+13: call,	-,	-,	correct_1
+14: par,	arr,	R,	-
+15: par,	$6,	RET,	-
+16: call,	-,	-,	correct2_2
+17: endu,	main_grace,	-,	-
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/functions_error10.grc
+ 
+Label_0: bar_2: 
+push ebp
+mov ebp, esp
+sub esp, 0
+Label_1: mov esp, ebp
+pop ebp
+ret
+Label_2: foo_1: 
+push ebp
+mov ebp, esp
+sub esp, 4
+Label_3: mov esp, ebp
+pop ebp
+ret
+[line:11]:Error call to function with name bar  but function is not declared or defined
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/functions_error11.grc
+ 
+compiler.parser.ParserException: [2,26] expecting: '{', ';', 'fun', 'var'
+	at compiler.parser.Parser.parse(Parser.java:809)
+	at compiler.Main.main(Main.java:38)
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/functions_error12.grc
+ 
+[line:3]:Error function wrong_signature already exists but with header: wrong_signature()
+[line:8]:Error call for function with name wrong_signature but has different number of argument function header is wrong_signature()
+[line:2]:Error function wrong_signature not defined 
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/functions_error13.grc
+ 
+Label_0: error_1: 
+push ebp
+mov ebp, esp
+sub esp, 0
+Label_1: mov eax, 0
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_2: jmp Label_3
+Label_3: mov esp, ebp
+pop ebp
+ret
+[line:7]:Error function error already defined/declared
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/functions_error14.grc
+ 
+[line:2]:Error function only_declaration not defined 
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/functions_error15.grc
+ 
+Label_0: ok_1: 
+push ebp
+mov ebp, esp
+sub esp, 0
+Label_1: mov eax, 0
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_2: jmp Label_3
+Label_3: mov esp, ebp
+pop ebp
+ret
+[line:7]:Error function ok already defined/declared
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/functions_error1.grc
+ 
+[line:3]:Error return type expects nothing, but you gave int 0
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/functions_error2.grc
+ 
+[line:2]:Error in function missing_return no return statement
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/functions_error3.grc
+ 
+Label_0: wrong_argument_num_1: 
+push ebp
+mov ebp, esp
+sub esp, 4
+Label_1: mov eax, dword ptr [ebp+16]
+mov edx, dword ptr [ebp+20]
+add eax, edx
+mov dword ptr [ebp-4], eax
+Label_2: mov eax, dword ptr [ebp-4]
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_3: jmp Label_4
+Label_4: mov esp, ebp
+pop ebp
+ret
+[line:7]:Error call for function with name wrong_argument_num but has different number of argument function header is wrong_argument_num(n : int;m : int;)
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/functions_error4.grc
+ 
+Label_0: wrong_argument_type_1: 
+push ebp
+mov ebp, esp
+sub esp, 4
+Label_1: mov eax, dword ptr [ebp+16]
+mov edx, dword ptr [ebp+20]
+add eax, edx
+mov dword ptr [ebp-4], eax
+Label_2: mov eax, dword ptr [ebp-4]
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_3: jmp Label_4
+Label_4: mov esp, ebp
+pop ebp
+ret
+[line:10]:Error the 2 parameter must be int dimensions 0instead of type char dimensions 0
+[line:10]:Error call for function with name wrong_argument_type but has different number of argument function header is wrong_argument_type(n : int;m : int;)
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/functions_error5.grc
+ 
+Label_0: ref_must_be_lvalue_1: 
+push ebp
+mov ebp, esp
+sub esp, 4
+Label_1: mov esi, dword ptr [ebp+16]
+mov eax, dword ptr [esi]
+mov edx, 1
+add eax, edx
+mov dword ptr [ebp-4], eax
+Label_2: mov eax, dword ptr [ebp-4]
+mov esi, dword ptr [ebp+16]
+mov dword ptr [esi], eax
+Label_3: mov esi, dword ptr [ebp+16]
+mov eax, dword ptr [esi]
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_4: jmp Label_5
+Label_5: mov esp, ebp
+pop ebp
+ret
+[line:8]:Error the 1 parameter must be lvalue
+[line:8]:Error call for function with name ref_must_be_lvalue but has different number of argument function header is ref_must_be_lvalue(ref n : int;)
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/functions_error6.grc
+ 
+[line:2]:Error variable: n of type array must be referenced
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/functions_error7.grc
+ 
+Label_0: wrong_size_1: 
+push ebp
+mov ebp, esp
+sub esp, 40
+Label_1: mov eax, 0
+mov ecx, 10
+imul eax, ecx
+mov dword ptr [ebp-4], eax
+Label_2: mov eax, dword ptr [ebp-4]
+mov edx, 0
+add eax, edx
+mov dword ptr [ebp-8], eax
+Label_3: mov eax, dword ptr [ebp-8]
+mov ecx, 4
+imul ecx
+mov ecx, dword ptr [ebp+16]
+add eax, ecx
+mov dword ptr [ebp-12], eax
+Label_4: mov eax, 0
+mov ecx, 10
+imul eax, ecx
+mov dword ptr [ebp-16], eax
+Label_5: mov eax, dword ptr [ebp-16]
+mov edx, 0
+add eax, edx
+mov dword ptr [ebp-20], eax
+Label_6: mov eax, dword ptr [ebp-20]
+mov ecx, 4
+imul ecx
+mov ecx, dword ptr [ebp+16]
+add eax, ecx
+mov dword ptr [ebp-24], eax
+Label_7: mov edi, dword ptr [ebp-24]
+mov eax, dword ptr [edi]
+mov edx, 1
+add eax, edx
+mov dword ptr [ebp-28], eax
+Label_8: mov eax, dword ptr [ebp-28]
+mov edi, dword ptr [ebp-12]
+mov dword ptr [edi], eax
+Label_9: mov eax, 0
+mov ecx, 10
+imul eax, ecx
+mov dword ptr [ebp-32], eax
+Label_10: mov eax, dword ptr [ebp-32]
+mov edx, 0
+add eax, edx
+mov dword ptr [ebp-36], eax
+Label_11: mov eax, dword ptr [ebp-36]
+mov ecx, 4
+imul ecx
+mov ecx, dword ptr [ebp+16]
+add eax, ecx
+mov dword ptr [ebp-40], eax
+Label_12: mov edi, dword ptr [ebp-40]
+mov eax, dword ptr [edi]
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_13: jmp Label_14
+Label_14: mov esp, ebp
+pop ebp
+ret
+Label_15: main_grace: 
+push ebp
+mov ebp, esp
+sub esp, 808
+Label_16: lea esi, dword ptr [ebp-800]
+push esi
+Label_17: lea esi, dword ptr [ebp-808]
+push esi
+Label_18: push ebp
+call wrong_size_1
+add esp, 12
+Label_19: mov esp, ebp
+pop ebp
+ret
+0: unit,	wrong_size_1,	-,	-
+1: *,	0,	10,	$1
+2: +,	$1,	0,	$2
+3: array,	n,	$2,	$3
+4: *,	0,	10,	$4
+5: +,	$4,	0,	$5
+6: array,	n,	$5,	$6
+7: +,	[$6],	1,	$7
+8: :=,	$7,	-,	[$3]
+9: *,	0,	10,	$8
+10: +,	$8,	0,	$9
+11: array,	n,	$9,	$10
+12: :=,	[$10],	-,	$$
+13: ret,	-,	-,	-
+14: endu,	wrong_size_1,	-,	-
+15: unit,	main_grace,	-,	-
+16: par,	arr,	R,	-
+17: par,	$12,	RET,	-
+18: call,	-,	-,	wrong_size_1
+19: endu,	main_grace,	-,	-
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/functions_error8.grc
+ 
+Label_0: must_not_be_char_1: 
+push ebp
+mov ebp, esp
+sub esp, 4
+Label_1: mov eax, 0
+mov ecx, 4
+imul ecx
+mov ecx, dword ptr [ebp+16]
+add eax, ecx
+mov dword ptr [ebp-4], eax
+Label_2: mov edi, dword ptr [ebp-4]
+mov eax, dword ptr [edi]
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_3: jmp Label_4
+Label_4: mov esp, ebp
+pop ebp
+ret
+[line:7]:Error the 1 parameter must be int dimensions 1instead of type char dimensions 1
+[line:7]:Error call for function with name must_not_be_char but has different number of argument function header is must_not_be_char(ref n : int [20];)
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/functions_error9.grc
+ 
+[line:3]:Error call to function with name missing_method  but function is not declared or defined
+[line:3]:Error the 1 parameter must be int dimensions 0instead of type null dimensions 0
+[line:3]:Error call for function with name puti but has different number of argument function header is puti(n : int;)
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/hanoi_error.grc
+ 
+java.lang.NullPointerException
+	at compiler.VisitorIR.createArrayQuad(VisitorIR.java:617)
+	at compiler.VisitorIR.caseAValExpression(VisitorIR.java:597)
+	at compiler.node.AValExpression.apply(AValExpression.java:34)
+	at compiler.VisitorIR.caseAExprList(VisitorIR.java:371)
+	at compiler.node.AExprList.apply(AExprList.java:35)
+	at compiler.VisitorIR.caseAFunctionCall(VisitorIR.java:694)
+	at compiler.node.AFunctionCall.apply(AFunctionCall.java:39)
+	at compiler.VisitorIR.caseAFuncCallStatement(VisitorIR.java:133)
+	at compiler.node.AFuncCallStatement.apply(AFuncCallStatement.java:34)
+	at compiler.VisitorIR.caseAFunDefinition(VisitorIR.java:74)
+	at compiler.Semantic.caseAFunDefinition(Semantic.java:153)
+	at compiler.node.AFunDefinition.apply(AFunDefinition.java:45)
+	at compiler.analysis.DepthFirstAdapter.caseAFunDefLocalDef(DepthFirstAdapter.java:302)
+	at compiler.node.AFunDefLocalDef.apply(AFunDefLocalDef.java:34)
+	at compiler.Semantic.caseAFunDefinition(Semantic.java:137)
+	at compiler.node.AFunDefinition.apply(AFunDefinition.java:45)
+	at compiler.analysis.DepthFirstAdapter.caseAFunDefLocalDef(DepthFirstAdapter.java:302)
+	at compiler.node.AFunDefLocalDef.apply(AFunDefLocalDef.java:34)
+	at compiler.Semantic.caseAFunDefinition(Semantic.java:137)
+	at compiler.node.AFunDefinition.apply(AFunDefinition.java:45)
+	at compiler.analysis.DepthFirstAdapter.caseAProgram(DepthFirstAdapter.java:55)
+	at compiler.node.AProgram.apply(AProgram.java:34)
+	at compiler.analysis.DepthFirstAdapter.caseStart(DepthFirstAdapter.java:34)
+	at compiler.node.Start.apply(Start.java:36)
+	at compiler.Main.main(Main.java:40)
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/hanoi.grc
+ 
+java.lang.NullPointerException
+	at compiler.VisitorIR.createArrayQuad(VisitorIR.java:617)
+	at compiler.VisitorIR.caseAValExpression(VisitorIR.java:597)
+	at compiler.node.AValExpression.apply(AValExpression.java:34)
+	at compiler.VisitorIR.caseAExprList(VisitorIR.java:371)
+	at compiler.node.AExprList.apply(AExprList.java:35)
+	at compiler.VisitorIR.caseAFunctionCall(VisitorIR.java:694)
+	at compiler.node.AFunctionCall.apply(AFunctionCall.java:39)
+	at compiler.VisitorIR.caseAFuncCallStatement(VisitorIR.java:133)
+	at compiler.node.AFuncCallStatement.apply(AFuncCallStatement.java:34)
+	at compiler.VisitorIR.caseAFunDefinition(VisitorIR.java:74)
+	at compiler.Semantic.caseAFunDefinition(Semantic.java:153)
+	at compiler.node.AFunDefinition.apply(AFunDefinition.java:45)
+	at compiler.analysis.DepthFirstAdapter.caseAFunDefLocalDef(DepthFirstAdapter.java:302)
+	at compiler.node.AFunDefLocalDef.apply(AFunDefLocalDef.java:34)
+	at compiler.Semantic.caseAFunDefinition(Semantic.java:137)
+	at compiler.node.AFunDefinition.apply(AFunDefinition.java:45)
+	at compiler.analysis.DepthFirstAdapter.caseAFunDefLocalDef(DepthFirstAdapter.java:302)
+	at compiler.node.AFunDefLocalDef.apply(AFunDefLocalDef.java:34)
+	at compiler.Semantic.caseAFunDefinition(Semantic.java:137)
+	at compiler.node.AFunDefinition.apply(AFunDefinition.java:45)
+	at compiler.analysis.DepthFirstAdapter.caseAProgram(DepthFirstAdapter.java:55)
+	at compiler.node.AProgram.apply(AProgram.java:34)
+	at compiler.analysis.DepthFirstAdapter.caseStart(DepthFirstAdapter.java:34)
+	at compiler.node.Start.apply(Start.java:36)
+	at compiler.Main.main(Main.java:40)
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/hello.grc
+ 
+java.lang.NullPointerException
+	at compiler.VisitorIR.createArrayQuad(VisitorIR.java:617)
+	at compiler.VisitorIR.caseAValExpression(VisitorIR.java:597)
+	at compiler.node.AValExpression.apply(AValExpression.java:34)
+	at compiler.VisitorIR.caseAExprList(VisitorIR.java:371)
+	at compiler.node.AExprList.apply(AExprList.java:35)
+	at compiler.VisitorIR.caseAFunctionCall(VisitorIR.java:694)
+	at compiler.node.AFunctionCall.apply(AFunctionCall.java:39)
+	at compiler.VisitorIR.caseAFuncCallStatement(VisitorIR.java:133)
+	at compiler.node.AFuncCallStatement.apply(AFuncCallStatement.java:34)
+	at compiler.VisitorIR.caseAFunDefinition(VisitorIR.java:74)
+	at compiler.Semantic.caseAFunDefinition(Semantic.java:153)
+	at compiler.node.AFunDefinition.apply(AFunDefinition.java:45)
+	at compiler.analysis.DepthFirstAdapter.caseAProgram(DepthFirstAdapter.java:55)
+	at compiler.node.AProgram.apply(AProgram.java:34)
+	at compiler.analysis.DepthFirstAdapter.caseStart(DepthFirstAdapter.java:34)
+	at compiler.node.Start.apply(Start.java:36)
+	at compiler.Main.main(Main.java:40)
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/main_error1.grc
+ 
+[line:1]:Error main function must have 0 arguments
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/main_error2.grc
+ 
+[line:1]:Error main function must be nothing
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/main_error3.grc
+ 
+compiler.parser.ParserException: [1,20] expecting: '{', 'fun', 'var'
+	at compiler.parser.Parser.parse(Parser.java:809)
+	at compiler.Main.main(Main.java:38)
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/primes_error.grc
+ 
+Label_0: prime_1: 
+push ebp
+mov ebp, esp
+sub esp, 28
+Label_1: mov eax, dword ptr [ebp+16]
+mov edx, 0
+cmp eax, edx
+jl Label_3
+Label_2: jmp Label_10
+Label_3: mov eax, 0
+mov edx, 1
+sub eax, edx
+mov dword ptr [ebp-8], eax
+Label_4: mov eax, dword ptr [ebp-8]
+push eax
+Label_5: lea esi, dword ptr [ebp-12]
+push esi
+Label_6: push dword ptr [ebp+8]
+call prime_1
+add esp, 12
+Label_7: mov eax, dword ptr [ebp-12]
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_8: jmp Label_40
+Label_9: jmp Label_40
+Label_10: mov eax, dword ptr [ebp+16]
+mov edx, 2
+cmp eax, edx
+jl Label_12
+Label_11: jmp Label_15
+Label_12: mov eax, 0
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_13: jmp Label_40
+Label_14: jmp Label_40
+Label_15: mov eax, dword ptr [ebp+16]
+mov edx, 2
+cmp eax, edx
+je Label_17
+Label_16: jmp Label_20
+Label_17: mov eax, 1
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_18: jmp Label_40
+Label_19: jmp Label_40
+Label_20: mov eax, dword ptr [ebp+16]
+cdq
+mov ebx, 2
+idiv ebx
+mov dword ptr [ebp-16], edx
+Label_21: mov eax, dword ptr [ebp-16]
+mov edx, 0
+cmp eax, edx
+je Label_23
+Label_22: jmp Label_26
+Label_23: mov eax, 0
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_24: jmp Label_40
+Label_25: jmp Label_40
+Label_26: mov eax, 3
+mov dword ptr [ebp-4], eax
+Label_27: mov eax, dword ptr [ebp+16]
+cdq
+mov ebx, 2
+idiv ebx
+mov dword ptr [ebp-20], eax
+Label_28: mov eax, dword ptr [ebp-4]
+mov edx, dword ptr [ebp-20]
+cmp eax, edx
+jle Label_30
+Label_29: jmp Label_38
+Label_30: mov eax, dword ptr [ebp+16]
+cdq
+mov ebx, dword ptr [ebp-4]
+idiv ebx
+mov dword ptr [ebp-24], edx
+Label_31: mov eax, dword ptr [ebp-24]
+mov edx, 0
+cmp eax, edx
+je Label_33
+Label_32: jmp Label_35
+Label_33: mov eax, 0
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_34: jmp Label_40
+Label_35: mov eax, dword ptr [ebp-4]
+mov edx, 2
+add eax, edx
+mov dword ptr [ebp-28], eax
+Label_36: mov eax, dword ptr [ebp-28]
+mov dword ptr [ebp-4], eax
+Label_37: jmp Label_27
+Label_38: mov eax, 1
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_39: jmp Label_40
+Label_40: mov esp, ebp
+pop ebp
+ret
+[line:29]:Error call for function with name geti but has different number of argument function header is geti()
+[line:34]:Error call for function with name geti but has different number of argument function header is geti()
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/primes.grc
+ 
+Label_0: prime_1: 
+push ebp
+mov ebp, esp
+sub esp, 28
+Label_1: mov eax, dword ptr [ebp+16]
+mov edx, 0
+cmp eax, edx
+jl Label_3
+Label_2: jmp Label_10
+Label_3: mov eax, 0
+mov edx, 1
+sub eax, edx
+mov dword ptr [ebp-8], eax
+Label_4: mov eax, dword ptr [ebp-8]
+push eax
+Label_5: lea esi, dword ptr [ebp-12]
+push esi
+Label_6: push dword ptr [ebp+8]
+call prime_1
+add esp, 12
+Label_7: mov eax, dword ptr [ebp-12]
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_8: jmp Label_40
+Label_9: jmp Label_40
+Label_10: mov eax, dword ptr [ebp+16]
+mov edx, 2
+cmp eax, edx
+jl Label_12
+Label_11: jmp Label_15
+Label_12: mov eax, 0
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_13: jmp Label_40
+Label_14: jmp Label_40
+Label_15: mov eax, dword ptr [ebp+16]
+mov edx, 2
+cmp eax, edx
+je Label_17
+Label_16: jmp Label_20
+Label_17: mov eax, 1
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_18: jmp Label_40
+Label_19: jmp Label_40
+Label_20: mov eax, dword ptr [ebp+16]
+cdq
+mov ebx, 2
+idiv ebx
+mov dword ptr [ebp-16], edx
+Label_21: mov eax, dword ptr [ebp-16]
+mov edx, 0
+cmp eax, edx
+je Label_23
+Label_22: jmp Label_26
+Label_23: mov eax, 0
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_24: jmp Label_40
+Label_25: jmp Label_40
+Label_26: mov eax, 3
+mov dword ptr [ebp-4], eax
+Label_27: mov eax, dword ptr [ebp+16]
+cdq
+mov ebx, 2
+idiv ebx
+mov dword ptr [ebp-20], eax
+Label_28: mov eax, dword ptr [ebp-4]
+mov edx, dword ptr [ebp-20]
+cmp eax, edx
+jle Label_30
+Label_29: jmp Label_38
+Label_30: mov eax, dword ptr [ebp+16]
+cdq
+mov ebx, dword ptr [ebp-4]
+idiv ebx
+mov dword ptr [ebp-24], edx
+Label_31: mov eax, dword ptr [ebp-24]
+mov edx, 0
+cmp eax, edx
+je Label_33
+Label_32: jmp Label_35
+Label_33: mov eax, 0
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_34: jmp Label_40
+Label_35: mov eax, dword ptr [ebp-4]
+mov edx, 2
+add eax, edx
+mov dword ptr [ebp-28], eax
+Label_36: mov eax, dword ptr [ebp-28]
+mov dword ptr [ebp-4], eax
+Label_37: jmp Label_27
+Label_38: mov eax, 1
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_39: jmp Label_40
+Label_40: mov esp, ebp
+pop ebp
+ret
+java.lang.NullPointerException
+	at compiler.VisitorIR.createArrayQuad(VisitorIR.java:617)
+	at compiler.VisitorIR.caseAValExpression(VisitorIR.java:597)
+	at compiler.node.AValExpression.apply(AValExpression.java:34)
+	at compiler.VisitorIR.caseAExprList(VisitorIR.java:371)
+	at compiler.node.AExprList.apply(AExprList.java:35)
+	at compiler.VisitorIR.caseAFunctionCall(VisitorIR.java:694)
+	at compiler.node.AFunctionCall.apply(AFunctionCall.java:39)
+	at compiler.VisitorIR.caseAFuncCallStatement(VisitorIR.java:133)
+	at compiler.node.AFuncCallStatement.apply(AFuncCallStatement.java:34)
+	at compiler.VisitorIR.caseAFunDefinition(VisitorIR.java:74)
+	at compiler.Semantic.caseAFunDefinition(Semantic.java:153)
+	at compiler.node.AFunDefinition.apply(AFunDefinition.java:45)
+	at compiler.analysis.DepthFirstAdapter.caseAProgram(DepthFirstAdapter.java:55)
+	at compiler.node.AProgram.apply(AProgram.java:34)
+	at compiler.analysis.DepthFirstAdapter.caseStart(DepthFirstAdapter.java:34)
+	at compiler.node.Start.apply(Start.java:36)
+	at compiler.Main.main(Main.java:40)
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/return_either_works.grc
+ 
+Label_0: maybe_passes_1: 
+push ebp
+mov ebp, esp
+sub esp, 0
+Label_1: mov eax, 3
+mov edx, 3
+cmp eax, edx
+je Label_3
+Label_2: jmp Label_5
+Label_3: mov eax, 0
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_4: jmp Label_5
+Label_5: mov esp, ebp
+pop ebp
+ret
+Label_6: main_grace: 
+push ebp
+mov ebp, esp
+sub esp, 4
+Label_7: lea esi, dword ptr [ebp-4]
+push esi
+Label_8: push ebp
+call maybe_passes_1
+add esp, 8
+Label_9: mov eax, dword ptr [ebp-4]
+push eax
+Label_10: sub esp, 4
+push dword ptr [ebp+8]
+call puti_grace
+add esp, 12
+Label_11: mov esp, ebp
+pop ebp
+ret
+0: unit,	maybe_passes_1,	-,	-
+1: =,	3,	3,	3
+2: jump,	-,	-,	5
+3: :=,	0,	-,	$$
+4: ret,	-,	-,	-
+5: endu,	maybe_passes_1,	-,	-
+6: unit,	main_grace,	-,	-
+7: par,	$1,	RET,	-
+8: call,	-,	-,	maybe_passes_1
+9: par,	$1,	V,	-
+10: call,	-,	-,	puti_grace
+11: endu,	main_grace,	-,	-
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/return_error1.grc
+ 
+[line:2]:Error in function missing_return no return statement
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/return_error2.grc
+ 
+[line:5]:Error return type expects int, but you gave char 0
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/return_error3.grc
+ 
+[line:???]:Error return type expects int, but you gave nothing
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/return_error4.grc
+ 
+[line:4]:Error return type expects nothing, but you gave int 0
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/reverse.grc
+ 
+Label_0: reverse_1: 
+push ebp
+mov ebp, esp
+sub esp, 40
+Label_1: mov esi, dword ptr [ebp+16]
+push esi
+Label_2: lea esi, dword ptr [ebp-16]
+push esi
+Label_3: mov esi, dword ptr [ebp+8]
+push dword ptr [esi+8]
+call strlen_grace
+add esp, 12
+Label_4: mov eax, dword ptr [ebp-16]
+mov dword ptr [ebp-8], eax
+Label_5: mov eax, 0
+mov dword ptr [ebp-4], eax
+Label_6: mov eax, dword ptr [ebp-4]
+mov edx, dword ptr [ebp-8]
+cmp eax, edx
+jl Label_8
+Label_7: jmp Label_16
+Label_8: mov eax, dword ptr [ebp-4]
+mov ecx, 1
+imul ecx
+mov esi, dword ptr [ebp+8]
+lea ecx, byte ptr [esi-32]
+add eax, ecx
+mov dword ptr [ebp-20], eax
+Label_9: mov eax, dword ptr [ebp-8]
+mov edx, dword ptr [ebp-4]
+sub eax, edx
+mov dword ptr [ebp-24], eax
+Label_10: mov eax, dword ptr [ebp-24]
+mov edx, 1
+sub eax, edx
+mov dword ptr [ebp-28], eax
+Label_11: mov eax, dword ptr [ebp-28]
+mov ecx, 1
+imul ecx
+mov ecx, dword ptr [ebp+16]
+add eax, ecx
+mov dword ptr [ebp-32], eax
+Label_12: mov edi, dword ptr [ebp-32]
+movzx eax, byte ptr [edi]
+mov edi, dword ptr [ebp-20]
+mov byte ptr [edi], al
+Label_13: mov eax, dword ptr [ebp-4]
+mov edx, 1
+add eax, edx
+mov dword ptr [ebp-36], eax
+Label_14: mov eax, dword ptr [ebp-36]
+mov dword ptr [ebp-4], eax
+Label_15: jmp Label_6
+Label_16: mov eax, dword ptr [ebp-4]
+mov ecx, 1
+imul ecx
+mov esi, dword ptr [ebp+8]
+lea ecx, byte ptr [esi-32]
+add eax, ecx
+mov dword ptr [ebp-40], eax
+Label_17: mov eax, 0
+mov edi, dword ptr [ebp-40]
+mov byte ptr [edi], al
+Label_18: mov esp, ebp
+pop ebp
+ret
+java.lang.NullPointerException
+	at compiler.VisitorIR.createArrayQuad(VisitorIR.java:617)
+	at compiler.VisitorIR.caseAValExpression(VisitorIR.java:597)
+	at compiler.node.AValExpression.apply(AValExpression.java:34)
+	at compiler.VisitorIR.caseAExprList(VisitorIR.java:371)
+	at compiler.node.AExprList.apply(AExprList.java:35)
+	at compiler.VisitorIR.caseAFunctionCall(VisitorIR.java:694)
+	at compiler.node.AFunctionCall.apply(AFunctionCall.java:39)
+	at compiler.VisitorIR.caseAFuncCallStatement(VisitorIR.java:133)
+	at compiler.node.AFuncCallStatement.apply(AFuncCallStatement.java:34)
+	at compiler.VisitorIR.caseAFunDefinition(VisitorIR.java:74)
+	at compiler.Semantic.caseAFunDefinition(Semantic.java:153)
+	at compiler.node.AFunDefinition.apply(AFunDefinition.java:45)
+	at compiler.analysis.DepthFirstAdapter.caseAProgram(DepthFirstAdapter.java:55)
+	at compiler.node.AProgram.apply(AProgram.java:34)
+	at compiler.analysis.DepthFirstAdapter.caseStart(DepthFirstAdapter.java:34)
+	at compiler.node.Start.apply(Start.java:36)
+	at compiler.Main.main(Main.java:40)
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/statements_error1.grc
+ 
+Label_0: foo_1: 
+push ebp
+mov ebp, esp
+sub esp, 0
+Label_1: mov eax, dword ptr [ebp+16]
+push eax
+Label_2: sub esp, 4
+mov esi, dword ptr [ebp+8]
+push dword ptr [esi+8]
+call puti_grace
+add esp, 12
+Label_3: mov esp, ebp
+pop ebp
+ret
+[line:7]:Error call for function with name foo but has different number of argument function header is foo(e : int;)
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/variables_correct1.grc
+ 
+Label_0: main_grace: 
+push ebp
+mov ebp, esp
+sub esp, 24
+Label_1: mov eax, 0
+mov edx, 20
+sub eax, edx
+mov dword ptr [ebp-20], eax
+Label_2: mov eax, dword ptr [ebp-20]
+mov dword ptr [ebp-4], eax
+Label_3: mov eax, dword ptr [ebp-4]
+mov dword ptr [ebp-8], eax
+Label_4: mov eax, dword ptr [ebp-8]
+mov edx, 30
+add eax, edx
+mov dword ptr [ebp-24], eax
+Label_5: mov eax, dword ptr [ebp-24]
+mov dword ptr [ebp-12], eax
+Label_6: mov eax, 36
+mov byte ptr [ebp-16], al
+Label_7: mov esp, ebp
+pop ebp
+ret
+0: unit,	main_grace,	-,	-
+1: -,	0,	20,	$1
+2: :=,	$1,	-,	a
+3: :=,	a,	-,	b
+4: +,	b,	30,	$2
+5: :=,	$2,	-,	c
+6: :=,	'$',	-,	d
+7: endu,	main_grace,	-,	-
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/variables_correct2.grc
+ 
+Label_0: meme_1: 
+push ebp
+mov ebp, esp
+sub esp, 0
+Label_1: mov eax, 35
+mov esi, dword ptr [ebp+8]
+mov dword ptr [esi-4], eax
+Label_2: mov esp, ebp
+pop ebp
+ret
+Label_3: main_grace: 
+push ebp
+mov ebp, esp
+sub esp, 8
+Label_4: mov eax, 0
+mov edx, 20
+sub eax, edx
+mov dword ptr [ebp-8], eax
+Label_5: mov eax, dword ptr [ebp-8]
+mov dword ptr [ebp-4], eax
+Label_6: sub esp, 4
+push ebp
+call meme_1
+add esp, 8
+Label_7: mov esp, ebp
+pop ebp
+ret
+0: unit,	meme_1,	-,	-
+1: :=,	35,	-,	a
+2: endu,	meme_1,	-,	-
+3: unit,	main_grace,	-,	-
+4: -,	0,	20,	$1
+5: :=,	$1,	-,	a
+6: call,	-,	-,	meme_1
+7: endu,	main_grace,	-,	-
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/variables_correct3.grc
+ 
+Label_0: dank_2: 
+push ebp
+mov ebp, esp
+sub esp, 4
+Label_1: mov esi, dword ptr [ebp+8]
+mov esi, dword ptr [esi+8]
+mov eax, dword ptr [esi-4]
+mov esi, dword ptr [ebp+8]
+mov edx, dword ptr [esi-4]
+add eax, edx
+mov dword ptr [ebp-4], eax
+Label_2: mov eax, dword ptr [ebp-4]
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_3: jmp Label_4
+Label_4: mov esp, ebp
+pop ebp
+ret
+Label_5: meme_1: 
+push ebp
+mov ebp, esp
+sub esp, 8
+Label_6: lea esi, dword ptr [ebp-8]
+push esi
+Label_7: push ebp
+call dank_2
+add esp, 8
+Label_8: mov eax, dword ptr [ebp-8]
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_9: jmp Label_10
+Label_10: mov esp, ebp
+pop ebp
+ret
+Label_11: main_grace: 
+push ebp
+mov ebp, esp
+sub esp, 8
+Label_12: lea esi, dword ptr [ebp-8]
+push esi
+Label_13: push ebp
+call meme_1
+add esp, 8
+Label_14: mov eax, dword ptr [ebp-8]
+push eax
+Label_15: sub esp, 4
+push dword ptr [ebp+8]
+call puti_grace
+add esp, 12
+Label_16: mov esp, ebp
+pop ebp
+ret
+0: unit,	dank_2,	-,	-
+1: +,	a,	b,	$1
+2: :=,	$1,	-,	$$
+3: ret,	-,	-,	-
+4: endu,	dank_2,	-,	-
+5: unit,	meme_1,	-,	-
+6: par,	$2,	RET,	-
+7: call,	-,	-,	dank_2
+8: :=,	$2,	-,	$$
+9: ret,	-,	-,	-
+10: endu,	meme_1,	-,	-
+11: unit,	main_grace,	-,	-
+12: par,	$3,	RET,	-
+13: call,	-,	-,	meme_1
+14: par,	$3,	V,	-
+15: call,	-,	-,	puti_grace
+16: endu,	main_grace,	-,	-
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/variables_correct4.grc
+ 
+Label_0: foo_2: 
 push ebp
 mov ebp, esp
 sub esp, 12
-mov eax, 1
+Label_1: mov eax, dword ptr [ebp+16]
+mov edx, 0
+cmp eax, edx
+jg Label_3
+Label_2: jmp Label_10
+Label_3: mov eax, dword ptr [ebp+16]
+mov edx, 1
+sub eax, edx
 mov dword ptr [ebp-4], eax
-mov eax, 2
-mov dword ptr [ebp-8], eax
-mov eax, dword ptr [ebp-4]
+Label_4: mov eax, dword ptr [ebp-4]
+push eax
+Label_5: lea esi, dword ptr [ebp-8]
+push esi
+Label_6: push dword ptr [ebp+8]
+call bar_1
+add esp, 12
+Label_7: mov eax, 1
 mov edx, dword ptr [ebp-8]
 add eax, edx
 mov dword ptr [ebp-12], eax
-mov eax, dword ptr [ebp-12]
-mov dword ptr [ebp-4], eax
-5: mov esp, ebp
+Label_8: mov eax, dword ptr [ebp-12]
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_9: jmp Label_12
+Label_10: mov eax, 0
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_11: jmp Label_12
+Label_12: mov esp, ebp
 pop ebp
 ret
-hello_grace endp
-0: unit,	hello_grace,	-,	-
-1: :=,	1,	-,	x
-2: :=,	2,	-,	y
-3: +,	x,	y,	$1
-4: :=,	$1,	-,	x
-5: endu,	hello_grace,	-,	-
+Label_13: bar_1: 
+push ebp
+mov ebp, esp
+sub esp, 12
+Label_14: mov eax, dword ptr [ebp+16]
+mov edx, 0
+cmp eax, edx
+jg Label_16
+Label_15: jmp Label_23
+Label_16: mov eax, dword ptr [ebp+16]
+mov edx, 1
+sub eax, edx
+mov dword ptr [ebp-4], eax
+Label_17: mov eax, dword ptr [ebp-4]
+push eax
+Label_18: lea esi, dword ptr [ebp-8]
+push esi
+Label_19: push dword ptr [ebp+8]
+call foo_2
+add esp, 12
+Label_20: mov eax, 1
+mov edx, dword ptr [ebp-8]
+add eax, edx
+mov dword ptr [ebp-12], eax
+Label_21: mov eax, dword ptr [ebp-12]
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_22: jmp Label_25
+Label_23: mov eax, 0
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_24: jmp Label_25
+Label_25: mov esp, ebp
+pop ebp
+ret
+Label_26: main_grace: 
+push ebp
+mov ebp, esp
+sub esp, 4
+Label_27: mov eax, 10
+push eax
+Label_28: lea esi, dword ptr [ebp-4]
+push esi
+Label_29: push ebp
+call foo_2
+add esp, 12
+Label_30: mov eax, dword ptr [ebp-4]
+push eax
+Label_31: sub esp, 4
+push dword ptr [ebp+8]
+call puti_grace
+add esp, 12
+Label_32: mov esp, ebp
+pop ebp
+ret
+0: unit,	foo_2,	-,	-
+1: >,	n,	0,	3
+2: jump,	-,	-,	10
+3: -,	n,	1,	$1
+4: par,	$1,	V,	-
+5: par,	$2,	RET,	-
+6: call,	-,	-,	bar_1
+7: +,	1,	$2,	$3
+8: :=,	$3,	-,	$$
+9: ret,	-,	-,	-
+10: :=,	0,	-,	$$
+11: ret,	-,	-,	-
+12: endu,	foo_2,	-,	-
+13: unit,	bar_1,	-,	-
+14: >,	n,	0,	16
+15: jump,	-,	-,	23
+16: -,	n,	1,	$4
+17: par,	$4,	V,	-
+18: par,	$5,	RET,	-
+19: call,	-,	-,	foo_2
+20: +,	1,	$5,	$6
+21: :=,	$6,	-,	$$
+22: ret,	-,	-,	-
+23: :=,	0,	-,	$$
+24: ret,	-,	-,	-
+25: endu,	bar_1,	-,	-
+26: unit,	main_grace,	-,	-
+27: par,	10,	V,	-
+28: par,	$7,	RET,	-
+29: call,	-,	-,	foo_2
+30: par,	$7,	V,	-
+31: call,	-,	-,	puti_grace
+32: endu,	main_grace,	-,	-
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/variables_correct5.grc
+ 
+Label_0: main_grace: 
+push ebp
+mov ebp, esp
+sub esp, 4
+Label_1: mov esp, ebp
+pop ebp
+ret
+0: unit,	main_grace,	-,	-
+1: endu,	main_grace,	-,	-
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/variables_correct6.grc
+ 
+Label_0: foo_1: 
+push ebp
+mov ebp, esp
+sub esp, 4
+Label_1: mov eax, 10
+mov dword ptr [ebp-4], eax
+Label_2: mov eax, dword ptr [ebp-4]
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_3: jmp Label_4
+Label_4: mov esp, ebp
+pop ebp
+ret
+Label_5: main_grace: 
+push ebp
+mov ebp, esp
+sub esp, 0
+Label_6: mov esp, ebp
+pop ebp
+ret
+0: unit,	foo_1,	-,	-
+1: :=,	10,	-,	main
+2: :=,	main,	-,	$$
+3: ret,	-,	-,	-
+4: endu,	foo_1,	-,	-
+5: unit,	main_grace,	-,	-
+6: endu,	main_grace,	-,	-
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/variables_error1.grc
+ 
+[line:7]:Error variable missing is undeclared
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/variables_error2.grc
+ 
+[line:4]:Error variable a is undeclared
+[line:4]:Error cannot convert int 0 to null 0
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/variables_error3.grc
+ 
+[line:5]:Error call to function with name bar  but function is not declared or defined
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/variables_error4.grc
+ 
+[line:2]:Error variable foo already declared in the same scope
+  /home/bill/Dropbox/Eksamino8/metaglwtistes/GraceCompiler/testcaseSemantic/variables_error5.grc
+ 
+Label_0: foo_1: 
+push ebp
+mov ebp, esp
+sub esp, 0
+Label_1: mov eax, 420
+mov esi, dword ptr [ebp+12]
+mov dword ptr [esi], eax
+Label_2: jmp Label_3
+Label_3: mov esp, ebp
+pop ebp
+ret
+[line:6]:Error variable foo already declared in the same scope

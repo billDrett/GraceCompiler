@@ -1,0 +1,11 @@
+fun main(): nothing
+    fun meme(): nothing
+    {
+        a <- 35;
+    }
+
+    var a: int;
+{
+    a <- -20;
+    meme();
+}

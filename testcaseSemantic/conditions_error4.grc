@@ -1,0 +1,6 @@
+fun main(): nothing
+    var arr: int[20];
+{
+    if arr[0] <= arr then {
+    }
+}

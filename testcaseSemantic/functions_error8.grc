@@ -1,0 +1,8 @@
+fun main(): nothing
+    fun must_not_be_char(ref n: int[20]): int
+    {
+        return n[0];
+    }
+{
+    must_not_be_char("Hello");
+}

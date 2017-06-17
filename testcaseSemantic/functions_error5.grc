@@ -1,0 +1,9 @@
+fun main(): nothing
+    fun ref_must_be_lvalue(ref n: int): int
+    {
+        n <- n + 1;
+        return n;
+    }
+{
+    ref_must_be_lvalue(10);
+}

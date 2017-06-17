@@ -1,0 +1,8 @@
+fun main(): nothing
+    fun wrong_type(): nothing
+    {
+        return 0;
+    }
+{
+    wrong_type();
+}

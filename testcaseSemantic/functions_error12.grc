@@ -1,0 +1,9 @@
+fun main(): nothing
+	fun wrong_signature(): int;
+    fun wrong_signature(s: int): nothing
+    {
+    }
+
+{
+    wrong_signature(20);
+}

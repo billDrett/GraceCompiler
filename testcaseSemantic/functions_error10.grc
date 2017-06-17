@@ -1,0 +1,12 @@
+fun main(): nothing
+    fun foo(): nothing
+        fun bar(): nothing
+        {
+        }
+
+        var kappa: int;
+    {
+    }
+{
+    bar();
+}

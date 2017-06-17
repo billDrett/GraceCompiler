@@ -1,0 +1,8 @@
+fun main(): nothing
+    var a: int;
+    var b: char;
+{
+    a <- 0;
+    b <- 'a';
+    a <- b mod a;
+}

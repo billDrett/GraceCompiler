@@ -1,0 +1,7 @@
+fun main(): nothing
+    fun missing_return(): int
+    {
+    }
+{
+    puti(missing_return());
+}

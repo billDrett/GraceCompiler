@@ -1,0 +1,4 @@
+fun main(): nothing
+{
+    return 0;
+}

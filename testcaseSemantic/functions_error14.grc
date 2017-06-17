@@ -1,0 +1,4 @@
+fun main(): nothing
+    fun only_declaration(): nothing;
+{
+}

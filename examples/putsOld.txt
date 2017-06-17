@@ -1,0 +1,44 @@
+
+puts_grace: 
+	push ebp
+	mov ebp, esp
+	sub esp, 20
+	mov eax, 0
+	mov dword ptr [ebp-8], eax
+	Label_loopPuts: mov eax, dword ptr [ebp-8]
+	mov ecx, 1
+	imul ecx
+	mov ecx, dword ptr [ebp+16]
+	add eax, ecx
+	mov dword ptr [ebp-12], eax
+	mov edi, dword ptr [ebp-12]
+	mov eax, dword ptr [edi]
+	mov edi, dword ptr [ebp-12]
+	mov edx, dword ptr [edi]
+	cmp eax, edx
+	jne Label_n0Puts
+	jmp Label_loopendPuts
+	Label_n0Puts: mov eax, dword ptr [ebp-8]
+	mov ecx, 1
+	imul ecx
+	mov ecx, dword ptr [ebp+16]
+	add eax, ecx
+	mov dword ptr [ebp-16], eax
+	mov edi, dword ptr [ebp-16]
+	mov eax, dword ptr [edi]
+	push eax
+	sub esp, 4
+	mov esi, dword ptr [ebp+8]
+	push dword ptr [esi+8]
+	call putc_grace
+	add esp, 12
+	mov eax, dword ptr [ebp-8]
+	mov edx, 1
+	add eax, edx
+	mov dword ptr [ebp-20], eax
+	mov eax, dword ptr [ebp-20]
+	mov dword ptr [ebp-8], eax
+	jmp Label_loopPuts
+	Label_loopendPuts: mov esp, ebp
+	pop ebp
+	ret

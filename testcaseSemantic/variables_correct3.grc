@@ -1,0 +1,16 @@
+fun main(): nothing
+    var a: int;
+
+    fun meme(): int
+        var b: int;
+        fun dank(): int
+        {
+            return a + b;
+        }
+	{
+
+        return dank();
+    }
+{
+    puti(meme());
+}

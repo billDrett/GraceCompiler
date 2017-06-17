@@ -1,0 +1,10 @@
+fun main(): nothing
+    var a, b, c: int;
+    var d: char;
+{
+    a <- -20;
+    b <- a;
+    c <- missing + 30;
+
+    d <- '$';
+}

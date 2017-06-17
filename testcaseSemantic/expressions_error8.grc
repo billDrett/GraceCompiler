@@ -1,0 +1,5 @@
+fun main(): nothing
+    var ch: char;
+{
+    ch <- geti();
+}

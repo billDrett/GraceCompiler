@@ -1,0 +1,6 @@
+fun main(): nothing;
+
+fun main(): nothing
+{
+    puts("Hello world!");
+}

@@ -1,0 +1,8 @@
+fun main(): nothing
+    fun foo(): int
+    {
+        return 420;
+    }
+    var foo: int;
+{
+}

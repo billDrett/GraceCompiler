@@ -1,0 +1,8 @@
+fun main(): nothing
+    fun foo(b: int; c: char): int
+    {
+        return b;
+    }
+{
+    foo('a', 10);
+}

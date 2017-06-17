@@ -1,0 +1,11 @@
+fun main(): nothing
+    fun wrong_argument_type(n, m: int): int
+    {
+        return n + m;
+    }
+
+    var a: char;
+{
+    a <- '!';
+    wrong_argument_type(10, a);
+}

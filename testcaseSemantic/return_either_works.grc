@@ -1,0 +1,10 @@
+fun main(): nothing
+    fun maybe_passes(): int
+    {
+        if 3 = 3 then {
+            return 0;
+        }
+    }
+{
+    puti(maybe_passes());
+}

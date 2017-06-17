@@ -16,7 +16,7 @@ public class Semantic extends DepthFirstAdapter
     private Stack<RecType> typeStack = new Stack<>();
     private Stack<String> returnStatement = new Stack<>();
     //private LinkedList<Record> currentFunctionHeader = new LinkedList<>();
-    boolean returnFound =false;
+    boolean returnFound = false;
     boolean functDefinition = true;
     VisitorIR intermediateCode = new VisitorIR(symTable);
     Error error = new Error();
@@ -152,7 +152,7 @@ public class Semantic extends DepthFirstAdapter
         {
             intermediateCode.caseAFunDefinition(node);
             //create ASSEmbly
-            //intermediateCode.printIntermidiateCode();
+
             instructionSelection.production();
 
         }
@@ -173,7 +173,7 @@ public class Semantic extends DepthFirstAdapter
         Record currentHeader;
 
         returnType = returnStatement.pop();
-        if(!returnFound && !returnType.equals("nothing")) //return not found and the type return type was int or char
+        if(!returnFound && !returnType.equals("nothing"))
         {
             error.returnStatement(extrFunction);
         }
@@ -191,7 +191,7 @@ public class Semantic extends DepthFirstAdapter
         leftType = typeStack.pop();
 
         //check if the assigment is the same type and they are literals int/char
-        if(!(rightType.getType().equals(leftType.getType()) && rightType.getDimensions() == leftType.getDimensions()) && rightType.getDimensions() == 0)
+        if(!(rightType.getType().equals(leftType.getType()) && rightType.getDimensions() == leftType.getDimensions() && rightType.getDimensions() == 0))
         {
             error.varAssignment(leftType, rightType);
         }
@@ -201,12 +201,12 @@ public class Semantic extends DepthFirstAdapter
     @Override
     public void outAFuncCallStatement(AFuncCallStatement node)
     {
-        RecType recType = typeStack.pop();
+        RecType recType = typeStack.pop(); //pop the return value of function
 
-        if(!recType.getType().equals("nothing"))
+       /* if(!recType.getType().equals("nothing"))
         {
             error.nothingFunctCall(recType);
-        }
+        }*/
     }
 
     @Override
@@ -254,7 +254,7 @@ public class Semantic extends DepthFirstAdapter
         {
             RecType recType = typeStack.pop();
 
-            if(recType.getDimensions() != 0) //must be literal int/char
+            if(recType.getDimensions() != 0) //must be int/char
             {
                 error.returnDiffType(recType, returnType);
             }
@@ -265,7 +265,6 @@ public class Semantic extends DepthFirstAdapter
         }
         returnStatement.push(returnType); //put back function return type, there might be more than one return statements
         returnFound = true;
-
     }
 
     @Override
@@ -277,6 +276,7 @@ public class Semantic extends DepthFirstAdapter
     public void outAFunDeclLocalDef(AFunDeclLocalDef node) {
         returnStatement.pop();
         returnFound = false;
+        fParam.clear();
     }
 
     @Override
@@ -511,9 +511,10 @@ public class Semantic extends DepthFirstAdapter
             }
         }
 
-
+        extrFunction = recFunct;
         returnStatement.push(node.getGeneralType().toString().trim());
     }
+
 
     //checks if two function have the same return type and parameters
     private boolean functionMatch(RecordFunction recFunct1, RecordFunction recFunct2)
@@ -603,6 +604,10 @@ public class Semantic extends DepthFirstAdapter
             }
             else
             {
+                if(!ref) //check if variable already exists
+                {
+                    error.arrayNotReference(varId.toString().trim(), aVarId.getIdentifier().getLine());
+                }
                 tmpRec = new RecordParamArray(varId.toString().trim(), tmpVarType, dimList, ref, aVarId.getIdentifier().getLine());
             }
 

@@ -1,0 +1,11 @@
+fun main(): nothing
+    fun missing_ref(n: int[10]): int
+    {
+        n[0] <- n[0] + 1;
+        return n[0];
+    }
+
+    var arr: int[10];
+{
+    missing_ref(arr);
+}

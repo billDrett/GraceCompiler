@@ -1,0 +1,4 @@
+fun main(argc: int; ref argv: char[][100]): nothing
+{
+    puts("Hello world!");
+}

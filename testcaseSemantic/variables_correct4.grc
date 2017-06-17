@@ -1,0 +1,21 @@
+fun main(): nothing
+    fun bar(n: int) : int;
+
+    fun foo(n: int) : int
+    {
+        if n > 0 then {
+            return 1 + bar(n - 1);
+        }
+        return 0;
+    }
+
+    fun bar(n: int) : int
+    {
+        if n > 0 then {
+            return 1 + foo(n - 1);
+        }
+        return 0;
+    }
+{
+    puti(foo(10));
+}

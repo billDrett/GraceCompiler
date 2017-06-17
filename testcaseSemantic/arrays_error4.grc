@@ -1,0 +1,5 @@
+fun main(): nothing
+    var array: int[256];
+{
+    array['a'] <- 1;
+}
