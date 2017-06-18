@@ -373,14 +373,15 @@ public class InstructionSelection
         String derefOper;
         String size;
 
-        if(rec.getType().equals("pointerStr"))
+
+        if(!(derefOper=isDereference(operator)).equals("")) //[x]
+        {
+            load(register, derefOper);
+        }
+        else if(rec.getType().equals("pointerStr"))
         {
             //writer.println("lea "+register+", byte ptr [ebp"+rec.getOffset()+"]");//lea R, byte ptr a
             writer.println("mov "+register+", dword ptr [ebp"+rec.getOffset()+"]");//lea R, byte ptr a
-        }
-        else if(!(derefOper=isDereference(operator)).equals("")) //[x]
-        {
-            load(register, derefOper);
         }
         else //variables
         {

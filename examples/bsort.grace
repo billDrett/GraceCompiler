@@ -1,6 +1,6 @@
 fun main () : nothing
 
-   fun bsort (n : int; ref x : int[][2]) : nothing
+   fun bsort (n : int; ref x : int[]) : nothing
 
       fun swap (ref x, y : int) : nothing
          var t : int;
@@ -27,12 +27,12 @@ fun main () : nothing
    }
 
    fun putArray (ref msg : char[]; n : int; ref x : int[]) : nothing
-      var i : int;   
+      var i : int;
    {
       puts(msg);
       i <- 0;
       while i < n do {
-        if i > 0 then 
+        if i > 0 then puts(", ");
         puti(x[i]);
         i <- i+1;
       }
