@@ -28,7 +28,7 @@ putc_grace:
 
 	mov esp, ebp
    	pop ebp
-    ret
+    	ret
 
 geti_grace:
 	push ebp
@@ -91,9 +91,7 @@ puts_grace:
 	ret
 
 .data
-    integer: .asciz  "%d"
-    char: .asciz "%c"
-    mystring: .asciz "Assembly"
-    scanf_fmt: .asciz  "%d"
-
-
+    	integer: .asciz  "%d"
+  	char: .asciz "%c"
+   	mystring: .asciz "Assembly"
+    	scanf_fmt: .asciz  "%d"

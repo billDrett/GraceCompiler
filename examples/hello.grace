@@ -1,9 +1,9 @@
 fun hello () : nothing
-var x, z, bill : int[10][10000];
-var x2, z2, bill2 : int[10][10000];
-var xdim : char;
+var c1 :char;
 {
   puts("Hello world!\n");
+  c1 <-"heeeee"[2];putc(c1);
+   "hey"[1] <-'a';
   $This is a comment
 
   $$This

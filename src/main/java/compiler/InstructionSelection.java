@@ -11,7 +11,8 @@ public class InstructionSelection
     private SymbolTable symbolTable;
     private QuadList quadList;
     private int startLabel;
-    PrintWriter writer;
+    private ArrayList<String> stringLiterals;
+    private PrintWriter writer;
 
     InstructionSelection(SymbolTable symTable, QuadList qList)
     {
@@ -26,6 +27,8 @@ public class InstructionSelection
         } catch (IOException e) {
             // do something
         }
+
+        stringLiterals = new ArrayList<>();
     }
 
     public void production()
@@ -106,7 +109,7 @@ public class InstructionSelection
             }
             else if(currentQuad.getOperator().equals("unit"))
             {
-                if(symbolTable.getCurrentDepth()==2) //main function
+                if(symbolTable.getCurrentDepth()==2) //main function, must have main label
                 {
                     writer.println("main: ");
                 }
@@ -123,9 +126,17 @@ public class InstructionSelection
                 writer.println("pop ebp");
                 writer.println("ret");
 
-                if(symbolTable.getCurrentDepth()==2) //main function
+                if(symbolTable.getCurrentDepth()==2) //main function, add at the end the library calls and .data part
                 {
+                    int counter =1;
                     addLibraryCalls();
+                    //libraryCalls has .data part at the end
+                    //so add all the string literals at the end
+                    for(String i : stringLiterals)
+                    {
+                        writer.println("\tl"+counter+": .asciz \""+i+"\"");
+                        counter++;
+                    }
                     writer.close();
                 }
 
@@ -286,6 +297,13 @@ public class InstructionSelection
             //writer.println("movzx "+register+", "+asciValue);
             writer.println("mov "+register+", "+asciValue);//ASCI(Operator) missing!!!
         }
+        else if(isString(operator))
+        {
+            String stringLiteral = operator.substring(1, operator.length()-1); //ignore the quotes
+            stringLiterals.add(stringLiteral);
+
+            writer.println("mov "+register+", OFFSET FLAT: l"+stringLiterals.size()); //string literal will have as label l id
+        }
         else if(!(derefOper=isDereference(operator)).equals(""))
         {
             rec = symbolTable.lookup(derefOper);
@@ -303,9 +321,8 @@ public class InstructionSelection
                 writer.println("mov "+register+", "+size+" ptr [edi]");
             }
 
-
         }
-        else //variables
+        else    //variables
         {
             boolean ref;
             String mov;
@@ -358,7 +375,8 @@ public class InstructionSelection
 
         if(rec.getType().equals("pointerStr"))
         {
-            writer.println("lea "+register+", byte ptr "+rec.getName());//lea R, byte ptr a
+            //writer.println("lea "+register+", byte ptr [ebp"+rec.getOffset()+"]");//lea R, byte ptr a
+            writer.println("mov "+register+", dword ptr [ebp"+rec.getOffset()+"]");//lea R, byte ptr a
         }
         else if(!(derefOper=isDereference(operator)).equals("")) //[x]
         {
@@ -518,6 +536,12 @@ public class InstructionSelection
         return false;
     }
 
+    public boolean isString(String operator)
+    {
+        if(operator.charAt(0) == '\"') return true;
+        return false;
+    }
+
     public String isDereference(String operator)
     {
         if(operator.charAt(0) == '[' && operator.charAt(operator.length()-1)==']')
@@ -535,11 +559,9 @@ public class InstructionSelection
         try
         {
             FileReader fileReader = new FileReader("libraryFunctions.s");
-            /*InputStream inputStream = new FileInputStream("libraryFunctions.s");
-            InputStreamReader reader = new InputStreamReader((inputStream), "UTF-8");
-*/
             BufferedReader br = new BufferedReader(fileReader);
             String line;
+
             while ((line = br.readLine()) != null) {
                 writer.println(line);
             }
