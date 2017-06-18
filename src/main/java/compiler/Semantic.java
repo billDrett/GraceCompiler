@@ -153,7 +153,7 @@ public class Semantic extends DepthFirstAdapter
             intermediateCode.caseAFunDefinition(node);
             //create ASSEmbly
 
-            instructionSelection.production();
+            //instructionSelection.production();
 
         }
         else //semantic error found, delete the intermediateCode
@@ -778,6 +778,7 @@ public class Semantic extends DepthFirstAdapter
                 else if (recParam instanceof RecordArray)
                 {
                     RecordParamArray recParameter = (RecordParamArray) recParam;
+
                     if(recParameter.getReference() == true && referable == false)  //we need a reference but its not lvalue
                     {
                         errorFound = true;
@@ -788,6 +789,36 @@ public class Semantic extends DepthFirstAdapter
                     {
                         errorFound = true;
                         error.callFunctionParamType(i, currentLine, recParam, recParameter.getDimensions().size(), paramType.getType(),paramType.getDimensions());
+                    }
+                    else //same type and dimensions
+                    {
+                        Record tmprec = symTable.lookup(paramType.getVarName()); //find the RecordArray in the symbol table
+                        int dimension2;
+
+                        //string literal array can have any size, so we ignore that case
+                        if(tmprec != null && tmprec instanceof RecordArray) //check if the dimension much
+                        {
+                            RecordArray recCallParam = (RecordArray) tmprec;
+                            Iterator<Integer> dim1 = recCallParam.getDimensions().descendingIterator(); //start from the last dimension
+                            Iterator<Integer> dim2 = recParameter.getDimensions().descendingIterator();
+                            for(int j=recParameter.getDimensions().size(); j>1; j--)
+                            {
+                                if(dim1.next() != dim2.next()) //differnt dimension of array
+                                {
+                                    errorFound = true;
+                                }
+                            }
+
+                            //check the first dimension of the array separate because it can be empty
+                            dimension2 = dim2.next();
+                            if(dimension2 != 0) //dimension on the parameter of the function might be empty array[][2]
+                            {
+                                if(dimension2 != dim1.next())
+                                {
+                                    errorFound = true;
+                                }
+                            }
+                        }
                     }
                 }
             }

@@ -2,6 +2,7 @@ package compiler;
 
 import compiler.node.PVarIdentifier;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -10,12 +11,21 @@ public class InstructionSelection
     private SymbolTable symbolTable;
     private QuadList quadList;
     private int startLabel;
+    PrintWriter writer;
 
     InstructionSelection(SymbolTable symTable, QuadList qList)
     {
         symbolTable = symTable;
         quadList = qList;
         startLabel = 0;
+        try{
+            writer = new PrintWriter("assembly.s");
+            writer.println(".intel_syntax noprefix");
+            writer.println(".text");
+            writer.println(".global main");
+        } catch (IOException e) {
+            // do something
+        }
     }
 
     public void production()
@@ -28,7 +38,7 @@ public class InstructionSelection
         for(iterQuad = qList.listIterator(startLabel); iterQuad.hasNext(); )
         {
             currentQuad = iterQuad.next();
-            System.out.print(labelTag+currentQuad.getLabel()+": ");
+            writer.print(labelTag+currentQuad.getLabel()+": ");
             //generate object code
             if(currentQuad.getOperator().equals(":="))
             {
@@ -51,63 +61,74 @@ public class InstructionSelection
                 }
 
                 load("eax", currentQuad.getOpt2());
-                System.out.println("mov ecx, "+size);
-                System.out.println("imul ecx");
+                writer.println("mov ecx, "+size);
+                writer.println("imul ecx");
                 loadAddr("ecx", currentQuad.getOpt1(), rec);
-                System.out.println("add eax, ecx");
+                writer.println("add eax, ecx");
                 store("eax", currentQuad.getOpt3());
             }
             else if(currentQuad.getOperator().equals("+"))
             {
                 load("eax", currentQuad.getOpt1());
                 load("edx", currentQuad.getOpt2());
-                System.out.println("add eax, edx");
+                writer.println("add eax, edx");
                 store("eax", currentQuad.getOpt3());
             }
             else if(currentQuad.getOperator().equals("-"))
             {
                 load("eax", currentQuad.getOpt1());
                 load("edx", currentQuad.getOpt2());
-                System.out.println("sub eax, edx");
+                writer.println("sub eax, edx");
                 store("eax", currentQuad.getOpt3());
             }
             else if(currentQuad.getOperator().equals("*"))
             {
                 load("eax", currentQuad.getOpt1());
                 load("ecx", currentQuad.getOpt2());
-                System.out.println("imul eax, ecx");
+                writer.println("imul eax, ecx");
                 store("eax", currentQuad.getOpt3());
             }
             else if(currentQuad.getOperator().equals("/"))
             {
                 load("eax", currentQuad.getOpt1());
-                System.out.println("cdq");
+                writer.println("cdq");
                 load("ebx", currentQuad.getOpt2());
-                System.out.println("idiv ebx");
+                writer.println("idiv ebx");
                 store("eax", currentQuad.getOpt3());
             }
             else if(currentQuad.getOperator().equals("%"))
             {
                 load("eax", currentQuad.getOpt1());
-                System.out.println("cdq");
+                writer.println("cdq");
                 load("ebx", currentQuad.getOpt2());
-                System.out.println("idiv ebx");
+                writer.println("idiv ebx");
                 store("edx", currentQuad.getOpt3());
             }
             else if(currentQuad.getOperator().equals("unit"))
             {
-                System.out.println(currentQuad.getOpt1()+": ");
-                System.out.println("push ebp");
-                System.out.println("mov ebp, esp");
-                System.out.println("sub esp, "+ Math.abs(symbolTable.getLocalOffset()));
+                if(symbolTable.getCurrentDepth()==2) //main function
+                {
+                    writer.println("main: ");
+                }
+                writer.println(currentQuad.getOpt1()+": ");
+                writer.println("push ebp");
+                writer.println("mov ebp, esp");
+                writer.println("sub esp, "+ Math.abs(symbolTable.getLocalOffset()));
             }
             else if(currentQuad.getOperator().equals("endu"))
             {
-                //System.out.println("add esp, "+ Math.abs(symbolTable.getLocalOffset()));
+                //writer.println("add esp, "+ Math.abs(symbolTable.getLocalOffset()));
 
-                System.out.println("mov esp, ebp");
-                System.out.println("pop ebp");
-                System.out.println("ret");
+                writer.println("mov esp, ebp");
+                writer.println("pop ebp");
+                writer.println("ret");
+
+                if(symbolTable.getCurrentDepth()==2) //main function
+                {
+                    addLibraryCalls();
+                    writer.close();
+                }
+
             }
             else if (currentQuad.getOperator().equals("=") || currentQuad.getOperator().equals("#")
                   || currentQuad.getOperator().equals("<") || currentQuad.getOperator().equals("<=")
@@ -115,42 +136,42 @@ public class InstructionSelection
             {
                 load("eax", currentQuad.getOpt1());
                 load("edx", currentQuad.getOpt2());
-                System.out.println("cmp eax, edx");
+                writer.println("cmp eax, edx");
                 if(currentQuad.getOperator().equals("="))
                 {
-                    System.out.println("je "+labelTag+currentQuad.getOpt3());
+                    writer.println("je "+labelTag+currentQuad.getOpt3());
                 }
                 else if(currentQuad.getOperator().equals("#"))
                 {
-                    System.out.println("jne "+labelTag+currentQuad.getOpt3());
+                    writer.println("jne "+labelTag+currentQuad.getOpt3());
                 }
                 else if(currentQuad.getOperator().equals("<"))
                 {
-                    System.out.println("jl "+labelTag+currentQuad.getOpt3());
+                    writer.println("jl "+labelTag+currentQuad.getOpt3());
                 }
                 else if(currentQuad.getOperator().equals("<="))
                 {
-                    System.out.println("jle "+labelTag+currentQuad.getOpt3());
+                    writer.println("jle "+labelTag+currentQuad.getOpt3());
                 }
                 else if(currentQuad.getOperator().equals(">"))
                 {
-                    System.out.println("jg "+labelTag+currentQuad.getOpt3());
+                    writer.println("jg "+labelTag+currentQuad.getOpt3());
                 }
                 else if(currentQuad.getOperator().equals(">="))
                 {
-                    System.out.println("jge "+labelTag+currentQuad.getOpt3());
+                    writer.println("jge "+labelTag+currentQuad.getOpt3());
                 }
             }
             else if(currentQuad.getOperator().equals("jump"))
             {
-                System.out.println("jmp "+labelTag+currentQuad.getOpt3());
+                writer.println("jmp "+labelTag+currentQuad.getOpt3());
             }
             else if(currentQuad.getOperator().equals("par"))
             {
                 if (currentQuad.getOpt2().equals("V"))
                 {
                     load("eax", currentQuad.getOpt1());
-                    System.out.println("push eax");
+                    writer.println("push eax");
                 }
                 else
                 {
@@ -158,7 +179,7 @@ public class InstructionSelection
                     rec = symbolTable.lookup(currentQuad.getOpt1());
 
                     loadAddr("esi", currentQuad.getOpt1(), rec);
-                    System.out.println("push esi");
+                    writer.println("push esi");
                 }
             }
             else if(currentQuad.getOperator().equals("call"))
@@ -169,18 +190,18 @@ public class InstructionSelection
                 recFunct = (RecordFunction) rec;
                 if(recFunct.getType().equals("nothing"))
                 {
-                    System.out.println("sub esp, 4");
+                    writer.println("sub esp, 4");
                 }
 
                 updateAL(recFunct);
-                System.out.println("call "+currentQuad.getOpt3()); //push return address ?
-                System.out.println("add esp, "+(recFunct.getFparameters().size()*4+8));
+                writer.println("call "+currentQuad.getOpt3()); //push return address ?
+                writer.println("add esp, "+(recFunct.getFparameters().size()*4+8));
 
             }
             else if(currentQuad.getOperator().equals("ret"))
             {
 
-                System.out.println("jmp "+labelTag+(qList.get(qList.size()-1)).getLabel());
+                writer.println("jmp "+labelTag+(qList.get(qList.size()-1)).getLabel());
             }
 
         }
@@ -199,13 +220,13 @@ public class InstructionSelection
     public void getAR(Record rec)
     {
         int varScope, currentScope;
-        System.out.println("mov esi, dword ptr [ebp+8]");
+        writer.println("mov esi, dword ptr [ebp+8]");
 
         varScope = rec.getDepth();
         currentScope = symbolTable.getCurrentDepth()-1;
         while (currentScope > varScope)
         {
-            System.out.println("mov esi, dword ptr [esi+8]");
+            writer.println("mov esi, dword ptr [esi+8]");
             currentScope--;
         }
     }
@@ -217,24 +238,24 @@ public class InstructionSelection
 
         if(callerScope < calleeScope)
         {
-            System.out.println("push ebp");
+            writer.println("push ebp");
         }
         else if(callerScope == calleeScope)
         {
-            System.out.println("push dword ptr [ebp+8]");
+            writer.println("push dword ptr [ebp+8]");
         }
         else
         {
-            System.out.println("mov esi, dword ptr [ebp+8]");
+            writer.println("mov esi, dword ptr [ebp+8]");
             callerScope--;
 
             while (callerScope > calleeScope)
             {
-                System.out.println("mov esi, dword ptr [esi+8]");
+                writer.println("mov esi, dword ptr [esi+8]");
                 callerScope--;
             }
 
-            System.out.println("push dword ptr [esi+8]");
+            writer.println("push dword ptr [esi+8]");
         }
     }
 
@@ -246,7 +267,7 @@ public class InstructionSelection
 
         if(isNumber(operator))
         {
-            System.out.println("mov "+register+", "+operator);
+            writer.println("mov "+register+", "+operator);
         }
         else if(isChar(operator))
         {
@@ -262,8 +283,8 @@ public class InstructionSelection
                 asciValue = covertEscapedChar(character);
             }
 
-            //System.out.println("movzx "+register+", "+asciValue);
-            System.out.println("mov "+register+", "+asciValue);//ASCI(Operator) missing!!!
+            //writer.println("movzx "+register+", "+asciValue);
+            writer.println("mov "+register+", "+asciValue);//ASCI(Operator) missing!!!
         }
         else if(!(derefOper=isDereference(operator)).equals(""))
         {
@@ -275,11 +296,11 @@ public class InstructionSelection
             {
                 //me movzx
                 size = "byte";
-                System.out.println("movzx "+register+", "+size+" ptr [edi]");
+                writer.println("movzx "+register+", "+size+" ptr [edi]");
             }
             else
             {
-                System.out.println("mov "+register+", "+size+" ptr [edi]");
+                writer.println("mov "+register+", "+size+" ptr [edi]");
             }
 
 
@@ -303,12 +324,12 @@ public class InstructionSelection
                 ref = hasRef(rec);
                 if(ref) //has reference
                 {
-                    System.out.println("mov esi, dword ptr [ebp"+rec.getOffset()+"]");
-                    System.out.println(mov+" "+register+", "+size+" ptr [esi]");
+                    writer.println("mov esi, dword ptr [ebp"+rec.getOffset()+"]");
+                    writer.println(mov+" "+register+", "+size+" ptr [esi]");
                 }
                 else
                 {
-                    System.out.println(mov+" "+register+", "+size+" ptr [ebp"+rec.getOffset()+"]"); //mov R, size ptr [bp + offset]
+                    writer.println(mov+" "+register+", "+size+" ptr [ebp"+rec.getOffset()+"]"); //mov R, size ptr [bp + offset]
                 }
 
             }
@@ -318,13 +339,13 @@ public class InstructionSelection
                 if(ref)
                 {
                     getAR(rec);
-                    System.out.println("mov esi, dword ptr [esi"+rec.getOffset()+"]");
-                    System.out.println(mov+" "+register+", "+size+" ptr [esi]");
+                    writer.println("mov esi, dword ptr [esi"+rec.getOffset()+"]");
+                    writer.println(mov+" "+register+", "+size+" ptr [esi]");
                 }
                 else
                 {
                     getAR(rec);
-                    System.out.println(mov+" "+register+", "+size+" ptr [esi"+rec.getOffset()+"]");
+                    writer.println(mov+" "+register+", "+size+" ptr [esi"+rec.getOffset()+"]");
                 }
             }
         }
@@ -337,7 +358,7 @@ public class InstructionSelection
 
         if(rec.getType().equals("pointerStr"))
         {
-            System.out.println("lea "+register+", byte ptr "+rec.getName());//lea R, byte ptr a
+            writer.println("lea "+register+", byte ptr "+rec.getName());//lea R, byte ptr a
         }
         else if(!(derefOper=isDereference(operator)).equals("")) //[x]
         {
@@ -354,11 +375,11 @@ public class InstructionSelection
                 ref = hasRef(rec);
                 if(ref) //has reference
                 {
-                    System.out.println("mov "+register+", dword ptr [ebp"+rec.getOffset()+"]");
+                    writer.println("mov "+register+", dword ptr [ebp"+rec.getOffset()+"]");
                 }
                 else
                 {
-                    System.out.println("lea "+register+", "+size+" ptr [ebp"+rec.getOffset()+"]");
+                    writer.println("lea "+register+", "+size+" ptr [ebp"+rec.getOffset()+"]");
                 }
 
             }
@@ -368,12 +389,12 @@ public class InstructionSelection
                 if(ref)
                 {
                     getAR(rec);
-                    System.out.println("mov "+register+", "+size+" ptr [esi"+rec.getOffset()+"]");
+                    writer.println("mov "+register+", "+size+" ptr [esi"+rec.getOffset()+"]");
                 }
                 else
                 {
                     getAR(rec);
-                    System.out.println("lea "+register+", "+size+" ptr [esi"+rec.getOffset()+"]");
+                    writer.println("lea "+register+", "+size+" ptr [esi"+rec.getOffset()+"]");
                 }
             }
         }
@@ -399,7 +420,7 @@ public class InstructionSelection
                 size ="byte";
             }
 
-            System.out.println("mov "+size+" ptr [edi], "+register);
+            writer.println("mov "+size+" ptr [edi], "+register);
         }
         else //variables
         {
@@ -407,8 +428,8 @@ public class InstructionSelection
 
             if(operator.equals("$$"))
             {
-                System.out.println("mov esi, dword ptr [ebp+12]");
-                System.out.println("mov dword ptr [esi], "+register);
+                writer.println("mov esi, dword ptr [ebp+12]");
+                writer.println("mov dword ptr [esi], "+register);
                 return;
             }
 
@@ -421,12 +442,12 @@ public class InstructionSelection
                 ref = hasRef(rec);
                 if(ref) //has reference
                 {
-                    System.out.println("mov esi, dword ptr [ebp"+rec.getOffset()+"]");
-                    System.out.println("mov "+size+" ptr [esi], "+register);
+                    writer.println("mov esi, dword ptr [ebp"+rec.getOffset()+"]");
+                    writer.println("mov "+size+" ptr [esi], "+register);
                 }
                 else
                 {
-                    System.out.println("mov "+size+" ptr [ebp"+rec.getOffset()+"], "+register); //mov R, size ptr [bp + offset]
+                    writer.println("mov "+size+" ptr [ebp"+rec.getOffset()+"], "+register); //mov R, size ptr [bp + offset]
                 }
             }
             else //non local
@@ -435,13 +456,13 @@ public class InstructionSelection
                 if(ref)
                 {
                     getAR(rec);
-                    System.out.println("mov esi, dword ptr [esi"+rec.getOffset()+"]");
-                    System.out.println("mov "+size+" ptr [esi],"+register);
+                    writer.println("mov esi, dword ptr [esi"+rec.getOffset()+"]");
+                    writer.println("mov "+size+" ptr [esi],"+register);
                 }
                 else
                 {
                     getAR(rec);
-                    System.out.println("mov "+size+" ptr [esi"+rec.getOffset()+"], "+register);
+                    writer.println("mov "+size+" ptr [esi"+rec.getOffset()+"], "+register);
                 }
             }
         }
@@ -507,63 +528,30 @@ public class InstructionSelection
         return "";
     }
 
+
     //public void addDataSegment()
     public void addLibraryCalls()
     {
-        String puti= "puti_grace:\n" +
-                "\tpush ebp\n" +
-                "\tmov ebp, esp\n" +
-                "\t\t\n" +
-                "\tmov eax, dword ptr[ebp+16]\n" +
-                "\tpush eax\n" +
-                "\tmov eax, OFFSET FLAT:in\n" +
-                "\tpush eax\n" +
-                "\n" +
-                "\tcall printf\n" +
-                "\tadd esp, 4\n" +
-                "\n" +
-                "\tmov esp, ebp\n" +
-                "   \tpop ebp\n" +
-                "    \tret\n";
+        try
+        {
+            FileReader fileReader = new FileReader("libraryFunctions.s");
+            /*InputStream inputStream = new FileInputStream("libraryFunctions.s");
+            InputStreamReader reader = new InputStreamReader((inputStream), "UTF-8");
+*/
+            BufferedReader br = new BufferedReader(fileReader);
+            String line;
+            while ((line = br.readLine()) != null) {
+                writer.println(line);
+            }
 
-        String putc = "putc_grace:\n" +
-                "\tpush ebp\n" +
-                "\tmov ebp, esp\n" +
-                "\t\t\n" +
-                "\tmov eax, byte ptr[ebp+16]\n" +
-                "\tpush eax\n" +
-                "\tmov eax, OFFSET FLAT:char\n" +
-                "\tpush eax\n" +
-                "\n" +
-                "\tcall printf\n" +
-                "\tadd esp, 4\n" +
-                "\n" +
-                "\tmov esp, ebp\n" +
-                "   \tpop ebp\n" +
-                "    \tret";
 
-        String geti = "geti_grace:\n" +
-                "\tpush ebp\n" +
-                "\tmov ebp, esp\n" +
-                "\n" +
-                " # This is the address of the local variable that we're passing to scanf\n" +
-                "    mov eax, dword ptr[ebp+12]\n" +
-                "    push eax\n" +
-                "\n" +
-                "    # Pass the format string literal to scanf\n" +
-                "    mov eax, OFFSET FLAT:scanf_fmt\n" +
-                "    push eax\n" +
-                "    call scanf\n" +
-                "    add esp, 8\n" +
-                "\n" +
-                "\tmov esp, ebp\n" +
-                "   \tpop ebp\n" +
-                "    ret";
+        }
+        catch(Exception e)
+        {
 
-        String dataPart = ".data\n" +
-                "    integer: .asciz  \"%d\"\n" +
-                "    char: .asciz \"%c\"\n"+
-                "scanf_fmt: .asciz  \"%d\"";
+        }
+
+
     }
 
     //format of hex is '\xnn'

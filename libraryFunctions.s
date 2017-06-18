@@ -1,35 +1,4 @@
-.intel_syntax noprefix # Use Intel syntax instead of AT&T
-.text
-.global main
-main:
-Label_0: hello_grace: 
-push ebp
-mov ebp, esp
-sub esp, 48
-
-lea edi, mystring
-mov al, byte ptr [edi]
-mov al, byte ptr [edi-1]
-mov al, byte ptr [edi+2]
-mov al, 65
-mov byte ptr [edi+2], al
-mov al, 43
-mov al, byte ptr [edi+2]
-
-Label_18: mov esp, ebp
-pop ebp
-ret
-
-
-
-
-
-
-
-
-
-
-puti_grace:
+puti_grace:	
 	push ebp
 	mov ebp, esp
 		
@@ -43,7 +12,7 @@ puti_grace:
 
 	mov esp, ebp
    	pop ebp
-    ret
+   	ret
 
 putc_grace:
 	push ebp
@@ -65,19 +34,17 @@ geti_grace:
 	push ebp
 	mov ebp, esp
 
- # This is the address of the local variable that we're passing to scanf
-    mov eax, dword ptr[ebp+12]
-    push eax
-
-    # Pass the format string literal to scanf
-    mov eax, OFFSET FLAT:scanf_fmt
-    push eax
-    call scanf
-    add esp, 8
+    	mov eax, dword ptr[ebp+12]
+    	push eax
+	
+    	mov eax, OFFSET FLAT:scanf_fmt
+    	push eax
+  	call scanf
+   	add esp, 8
 
 	mov esp, ebp
    	pop ebp
-    ret
+   	ret
 
 puts_grace: 
 	push ebp
@@ -123,13 +90,10 @@ puts_grace:
 	pop ebp
 	ret
 
-
-
-
 .data
     integer: .asciz  "%d"
     char: .asciz "%c"
     mystring: .asciz "Assembly"
-scanf_fmt: .asciz  "%d"
+    scanf_fmt: .asciz  "%d"
 
 
