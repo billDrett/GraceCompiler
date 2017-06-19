@@ -40,7 +40,7 @@ public class Semantic extends DepthFirstAdapter
 
         Record rec1Gets = new RecordParam("n", "int", false, 0);
         Record rec2Gets = new RecordParamArray("s", "char", dimList, true, 0);
-        insertFunction("geti", "nothing", rec1Gets, rec2Gets);
+        insertFunction("gets", "nothing", rec1Gets, rec2Gets);
 
         insertFunction("abs", "int", new RecordParam("n", "int", false, 0), null);
         insertFunction("ord", "int", new RecordParam("c", "char", false, 0), null);

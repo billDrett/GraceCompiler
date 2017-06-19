@@ -297,7 +297,7 @@ public class InstructionSelection
             //writer.println("movzx "+register+", "+asciValue);
             writer.println("mov "+register+", "+asciValue);//ASCI(Operator) missing!!!
         }
-        else if(isString(operator))
+        else if(isString(operator)) //string literal
         {
             String stringLiteral = operator.substring(1, operator.length()-1); //ignore the quotes
             stringLiterals.add(stringLiteral);

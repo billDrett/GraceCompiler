@@ -1,12 +1,8 @@
 fun hello () : nothing
- fun foo(ref array:int[][1]):nothing
-  {
-	
-  }
-
-var array:int[10][10];
-{
-   foo(array);
+var i :char[10];
+{ 
+   strcat(i,"hi");strcat(i,"ihi");
+   puts(i);
 }
 
 
