@@ -22,9 +22,13 @@ public class Semantic extends DepthFirstAdapter
     Error error = new Error();
     Record extrFunction;
     private int funCounter = 0;
-    private InstructionSelection instructionSelection = new InstructionSelection(symTable, intermediateCode.getQuadList());
+    private InstructionSelection instructionSelection;
+    int startLabel = 0;
 
-    Semantic()
+    boolean optimize;
+    int noLooops;
+
+    Semantic(String outFile, boolean optimizeQuads, int numberLoops)
     {
         LinkedList<Integer> dimList = new LinkedList<>();
         dimList.addLast(0); //no dimensions given
@@ -50,6 +54,12 @@ public class Semantic extends DepthFirstAdapter
         insertStrFunction("strcmp", "int", "char", "char");
         insertStrFunction("strcpy", "nothing", "char", "char");
         insertStrFunction("strcat", "nothing", "char", "char");
+
+        optimize = optimizeQuads;
+        noLooops = numberLoops;
+
+        instructionSelection = new InstructionSelection(symTable, intermediateCode.getQuadList(), outFile);
+
     }
 
     //insert a library function at the symbol table
@@ -151,8 +161,18 @@ public class Semantic extends DepthFirstAdapter
         if(!error.getErrorFound()) //there wasnt any semantic error
         {
             intermediateCode.caseAFunDefinition(node);
+
+            //optimize
+            if(optimize)
+            {
+                Optimise opt = new Optimise(intermediateCode.getQuadList(), startLabel, symTable.getCurrentScope(), symTable); //fix the start quad not always 0
+                opt.run(noLooops);
+            }
+
+            //point the first quad of the next function
+            startLabel = intermediateCode.getQuadList().getQuadList().size();
+
             //create ASSEmbly
-            //intermediateCode.printIntermidiateCode();
             instructionSelection.production();
 
         }

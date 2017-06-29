@@ -4,7 +4,7 @@ public class StringLiteral extends RecordLValue
 {
     private String literalId;
 
-    StringLiteral(String id)
+    public StringLiteral(String id)
     {
         super();
         literalId =id;

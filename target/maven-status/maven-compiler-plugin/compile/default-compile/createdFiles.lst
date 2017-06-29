@@ -44,6 +44,7 @@ compiler/parser/ParserException.class
 compiler/node/PVarDefinition.class
 compiler/node/TThen.class
 compiler/node/ACharGeneralType.class
+compiler/Graph.class
 compiler/ActivationRecord.class
 compiler/SymbolTable.class
 compiler/node/TLBkt.class
@@ -81,6 +82,7 @@ compiler/node/PFunDefinition.class
 compiler/lexer/LexerException.class
 compiler/node/Token.class
 compiler/node/AMultExpression.class
+compiler/Node.class
 compiler/node/PLocalDef.class
 compiler/Main.class
 compiler/node/AStrLvalue.class
@@ -122,6 +124,7 @@ compiler/node/ARelatCondition.class
 compiler/node/PGeneralType.class
 compiler/node/AWhileStatement.class
 compiler/node/AConstIntBr.class
+compiler/Optimise.class
 compiler/node/TMinus.class
 compiler/RecordFunction.class
 compiler/node/TDivision.class

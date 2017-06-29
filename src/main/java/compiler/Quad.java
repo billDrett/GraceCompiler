@@ -15,9 +15,9 @@ public class Quad
         opt3 = new String(option3);
     }
 
-    public void setOpt3(String option3)
+    public int getLabel()
     {
-        opt3 = option3;
+        return label;
     }
 
     public String getOperator()
@@ -40,8 +40,30 @@ public class Quad
         return opt3;
     }
 
-    public int getLabel()
+    public void setOperator(String oper)
     {
-        return label;
+        operator = oper;
+    }
+
+    public void setOpt1(String option1)
+    {
+        opt1 = option1;
+    }
+
+    public void setOpt2(String option2)
+    {
+        opt2 = option2;
+    }
+    public void setOpt3(String option3)
+    {
+        opt3 = option3;
+    }
+
+    public void setNop()
+    {
+        operator ="nop";
+        opt1 = "-";
+        opt2 = "-";
+        opt3 = "-";
     }
 }

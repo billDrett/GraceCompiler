@@ -177,6 +177,10 @@ public class SymbolTable {
         }
     }
 
+    public HashMap<String, Record> getCurrentScope()
+    {
+        return scopes.getLast();
+    }
 
     public void printALl()
     {

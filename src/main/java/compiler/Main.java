@@ -14,14 +14,16 @@ public class Main {
 
         public static void main(String args[])
         {
+                boolean optimize = false;
+                int noLoops = 100;
                 Start tree;
                 try
                 {
-                        if (args.length != 1)
+                        if (args.length <2 || args.length > 4)
                         {
-                                System.out.println("Most have the file name as argument");
+                                System.out.println("Most have the input file and output file as argument, optional -optimize NoLoops");
                                 return;
-                        }
+                           }
 
 
                         InputStream inputStream = new FileInputStream(args[0]);
@@ -37,7 +39,23 @@ public class Main {
 
                         tree = p.parse();
 
-                        tree.apply(new Semantic()); //do semantic analysis
+                        if(args.length >=3) //we want to optimize
+                        {
+                                optimize = true;
+                        }
+
+                        if(args.length ==4) //read the number
+                        {
+                                try
+                                {
+                                        noLoops = Integer.parseInt(args[3]);
+                                }catch(Exception e)
+                                {
+                                        return;
+                                }
+                        }
+
+                        tree.apply(new Semantic(args[1], optimize, noLoops)); //do semantic analysis
 
                 }
                 catch(Exception e)

@@ -14,13 +14,13 @@ public class InstructionSelection
     private ArrayList<String> stringLiterals;
     private PrintWriter writer;
 
-    InstructionSelection(SymbolTable symTable, QuadList qList)
+    InstructionSelection(SymbolTable symTable, QuadList qList, String outputFile)
     {
         symbolTable = symTable;
         quadList = qList;
         startLabel = 0;
         try{
-            writer = new PrintWriter("assembly.s");
+            writer = new PrintWriter(outputFile);
             writer.println(".intel_syntax noprefix");
             writer.println(".text");
             writer.println(".global main");
@@ -211,9 +211,12 @@ public class InstructionSelection
             }
             else if(currentQuad.getOperator().equals("ret"))
             {
-
                 writer.println("jmp "+labelTag+(qList.get(qList.size()-1)).getLabel());
-            }
+            }/*
+            else if(currentQuad.getOperator().equals("label"))
+            {
+                writer.println("jmp "+labelTag+(qList.get(qList.size()-1)).getLabel());
+            }*/
 
         }
         startLabel = qList.size();

@@ -1,248 +1,27 @@
 .intel_syntax noprefix
 .text
 .global main
-Label_0: swap_2: 
+Label_0: foo_1: 
 push ebp
 mov ebp, esp
 sub esp, 4
-Label_1: mov esi, dword ptr [ebp+16]
-mov eax, dword ptr [esi]
+Label_1: mov eax, dword ptr [ebp+16]
 mov dword ptr [ebp-4], eax
-Label_2: mov esi, dword ptr [ebp+20]
-mov eax, dword ptr [esi]
-mov esi, dword ptr [ebp+16]
-mov dword ptr [esi], eax
-Label_3: mov eax, dword ptr [ebp-4]
-mov esi, dword ptr [ebp+20]
-mov dword ptr [esi], eax
-Label_4: mov esp, ebp
+Label_2: mov esp, ebp
 pop ebp
 ret
-Label_5: bsort_1: 
+Label_3: main: 
+hello_grace: 
 push ebp
 mov ebp, esp
-sub esp, 40
-Label_6: mov eax, 1
-mov dword ptr [ebp-4], eax
-Label_7: mov eax, dword ptr [ebp-4]
-mov edx, 0
-cmp eax, edx
-jle Label_30
-Label_9: mov eax, 0
-mov dword ptr [ebp-4], eax
-Label_10: mov eax, 0
-mov dword ptr [ebp-8], eax
-Label_11: mov eax, dword ptr [ebp+16]
-mov edx, 1
-sub eax, edx
-mov dword ptr [ebp-12], eax
-Label_12: mov eax, dword ptr [ebp-8]
-mov edx, dword ptr [ebp-12]
-cmp eax, edx
-jge Label_29
-Label_14: mov eax, dword ptr [ebp-8]
-mov ecx, 4
-imul ecx
-mov ecx, dword ptr [ebp+20]
-add eax, ecx
-mov dword ptr [ebp-16], eax
-Label_15: mov eax, dword ptr [ebp-8]
-mov edx, 1
-add eax, edx
-mov dword ptr [ebp-20], eax
-Label_16: mov eax, dword ptr [ebp-20]
-mov ecx, 4
-imul ecx
-mov ecx, dword ptr [ebp+20]
-add eax, ecx
-mov dword ptr [ebp-24], eax
-Label_17: mov edi, dword ptr [ebp-16]
-mov eax, dword ptr [edi]
-mov edi, dword ptr [ebp-24]
-mov edx, dword ptr [edi]
-cmp eax, edx
-jle Label_26
-Label_19: mov eax, dword ptr [ebp-8]
-mov ecx, 4
-imul ecx
-mov ecx, dword ptr [ebp+20]
-add eax, ecx
-mov dword ptr [ebp-28], eax
-Label_20: mov eax, dword ptr [ebp-8]
-mov edx, 1
-add eax, edx
-mov dword ptr [ebp-32], eax
-Label_21: mov eax, dword ptr [ebp-32]
-mov ecx, 4
-imul ecx
-mov ecx, dword ptr [ebp+20]
-add eax, ecx
-mov dword ptr [ebp-36], eax
-Label_22: mov esi, dword ptr [ebp-36]
-push esi
-Label_23: mov esi, dword ptr [ebp-28]
-push esi
-Label_24: sub esp, 4
-push ebp
-call swap_2
-add esp, 16
-Label_25: mov eax, 1
-mov dword ptr [ebp-4], eax
-Label_26: mov eax, dword ptr [ebp-8]
-mov edx, 1
-add eax, edx
-mov dword ptr [ebp-40], eax
-Label_27: mov eax, dword ptr [ebp-40]
-mov dword ptr [ebp-8], eax
-Label_28: jmp Label_11
-Label_29: jmp Label_7
-Label_30: mov esp, ebp
-pop ebp
-ret
-Label_28: putArray_3: 
-push ebp
-mov ebp, esp
-sub esp, 32
-Label_29: mov esi, dword ptr [ebp+16]
-push esi
-Label_30: sub esp, 4
-mov esi, dword ptr [ebp+8]
-push dword ptr [esi+8]
-call puts_grace
-add esp, 12
-Label_31: mov eax, 0
-mov dword ptr [ebp-4], eax
-Label_32: mov eax, dword ptr [ebp-4]
-mov edx, dword ptr [ebp+20]
-cmp eax, edx
-jge Label_45
-Label_34: mov eax, dword ptr [ebp-4]
-mov edx, 0
-cmp eax, edx
-jle Label_39
-Label_36: mov eax, OFFSET FLAT: l1
-mov dword ptr [ebp-12], eax
-Label_37: mov esi, dword ptr [ebp-12]
-push esi
-Label_38: sub esp, 4
-mov esi, dword ptr [ebp+8]
-push dword ptr [esi+8]
-call puts_grace
-add esp, 12
-Label_39: mov eax, dword ptr [ebp-4]
-mov ecx, 4
-imul ecx
-mov ecx, dword ptr [ebp+24]
-add eax, ecx
-mov dword ptr [ebp-20], eax
-Label_40: mov edi, dword ptr [ebp-20]
-mov eax, dword ptr [edi]
+sub esp, 16
+Label_4: mov eax, 2
 push eax
-Label_41: sub esp, 4
-mov esi, dword ptr [ebp+8]
-push dword ptr [esi+8]
-call puti_grace
+Label_5: sub esp, 4
+push ebp
+call foo_1
 add esp, 12
-Label_42: mov eax, dword ptr [ebp-4]
-mov edx, 1
-add eax, edx
-mov dword ptr [ebp-24], eax
-Label_43: mov eax, dword ptr [ebp-24]
-mov dword ptr [ebp-4], eax
-Label_44: jmp Label_32
-Label_45: mov eax, OFFSET FLAT: l2
-mov dword ptr [ebp-28], eax
-Label_46: mov esi, dword ptr [ebp-28]
-push esi
-Label_47: sub esp, 4
-mov esi, dword ptr [ebp+8]
-push dword ptr [esi+8]
-call puts_grace
-add esp, 12
-Label_48: mov esp, ebp
-pop ebp
-ret
-Label_47: main: 
-main_grace: 
-push ebp
-mov ebp, esp
-sub esp, 124
-Label_48: mov eax, 65
-mov dword ptr [ebp-4], eax
-Label_49: mov eax, 0
-mov dword ptr [ebp-8], eax
-Label_50: mov eax, dword ptr [ebp-8]
-mov edx, 16
-cmp eax, edx
-jge Label_62
-Label_52: mov eax, dword ptr [ebp-4]
-mov ecx, 137
-imul eax, ecx
-mov dword ptr [ebp-76], eax
-Label_53: mov eax, dword ptr [ebp-76]
-mov edx, 220
-add eax, edx
-mov dword ptr [ebp-80], eax
-Label_54: mov eax, dword ptr [ebp-80]
-mov edx, dword ptr [ebp-8]
-add eax, edx
-mov dword ptr [ebp-84], eax
-Label_55: mov eax, dword ptr [ebp-84]
-cdq
-mov ebx, 101
-idiv ebx
-mov dword ptr [ebp-88], edx
-Label_56: mov eax, dword ptr [ebp-88]
-mov dword ptr [ebp-4], eax
-Label_57: mov eax, dword ptr [ebp-8]
-mov ecx, 4
-imul ecx
-lea ecx, dword ptr [ebp-72]
-add eax, ecx
-mov dword ptr [ebp-92], eax
-Label_58: mov eax, dword ptr [ebp-4]
-mov edi, dword ptr [ebp-92]
-mov dword ptr [edi], eax
-Label_59: mov eax, dword ptr [ebp-8]
-mov edx, 1
-add eax, edx
-mov dword ptr [ebp-96], eax
-Label_60: mov eax, dword ptr [ebp-96]
-mov dword ptr [ebp-8], eax
-Label_61: jmp Label_50
-Label_62: mov eax, OFFSET FLAT: l3
-mov dword ptr [ebp-100], eax
-Label_63: lea esi, dword ptr [ebp-72]
-push esi
-Label_64: mov eax, 16
-push eax
-Label_65: mov esi, dword ptr [ebp-100]
-push esi
-Label_66: sub esp, 4
-push ebp
-call putArray_3
-add esp, 20
-Label_67: lea esi, dword ptr [ebp-72]
-push esi
-Label_68: mov eax, 16
-push eax
-Label_69: sub esp, 4
-push ebp
-call bsort_1
-add esp, 16
-Label_70: mov eax, OFFSET FLAT: l4
-mov dword ptr [ebp-116], eax
-Label_71: lea esi, dword ptr [ebp-72]
-push esi
-Label_72: mov eax, 16
-push eax
-Label_73: mov esi, dword ptr [ebp-116]
-push esi
-Label_74: sub esp, 4
-push ebp
-call putArray_3
-add esp, 20
-Label_75: mov esp, ebp
+Label_6: mov esp, ebp
 pop ebp
 ret
 puti_grace:	
@@ -789,7 +568,3 @@ strcat_grace:
    	mystring: .asciz "Assembly"
     	scanf_int: .asciz  "%d"
     scanf_char: .asciz  "%c"
-	l1: .asciz ", "
-	l2: .asciz "\n"
-	l3: .asciz "Initial array: "
-	l4: .asciz "Sorted array: "
