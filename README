@@ -1,1 +1,8 @@
-The Readme file is at the README.pdf
+A Compiler for a pascal look alike programming language.
+For the project we had to develop both the front end and back end of the compiler.
+For the front end we used the SableCC library which is a LALR(1) parser and creates automatically
+the concrete and abstract syntax tree based on the grammar that was given.
+
+The Abstract syntax tree was translated to an Intermediate language so it’s easier to be transformed to final x86 code.
+After the intermediate level code we developed some  optimization at block level as well as function level to improve the code.
+At the back end part we converted the intermediate code to the final executable x86 code.
