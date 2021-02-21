@@ -36,7 +36,8 @@ Tokens
     comment = end_of_line_comment | traditional_comment;
 
     plus = '+';
-    minus = '-';
+    
+minus = '-';
     mult = '*';
     division = '/';
     div = 'div';
